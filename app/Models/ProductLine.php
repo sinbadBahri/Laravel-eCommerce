@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Widgets\ProductWidget;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +31,17 @@ class ProductLine extends Model
             related: AttributeValue::class,
             table: 'product_line_attr_values',
 
+        );
+        
+    }
+
+    public function widgets()
+    {
+
+        return $this->belongsToMany
+        (
+            related: ProductWidget::class,
+            table: 'product_widget_product_line',
         );
         
     }
