@@ -35,6 +35,15 @@ class ProductLine extends Model
         
     }
 
+
+    public function images()
+    {
+
+        return $this->hasMany(related:ProductImage::class);
+        
+    }
+
+
     public function widgets()
     {
 

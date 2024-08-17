@@ -1,27 +1,31 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Images;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductImage extends Model
-{
+class CategoryImage extends Model
+{ 
+
+    use HasFactory;
+    
 
     protected $fillable = [
         'alternative_text',
         'mime_type',
         'image',
-        'product_line_id',
+        'category_id',
     ];
 
-    # Disable mass-assignment protection for these fields
     protected $guarded = [];
+
 
     public function product()
     {
 
-        return $this->belongsTo(related:ProductLine::class);
+        return $this->belongsTo(related:Category::class);
         
     }
 
