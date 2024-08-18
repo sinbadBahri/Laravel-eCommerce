@@ -14,4 +14,12 @@ class SocialMedia extends Model
 
     protected $fillable = ['key', 'value', 'is_active'];
 
+
+    public function footerName()
+    {
+
+        return "Social Medias";
+        
+    }
+    
 }

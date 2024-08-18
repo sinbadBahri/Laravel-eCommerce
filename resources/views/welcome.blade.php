@@ -72,7 +72,18 @@
                     </main>
 
                     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                        @foreach ($footerCollection as $footerItems)
+                            
+                        <div>
+                            <h4>{{$footerItems[0]->footerName()}}</h4>
+                            <ul>
+                                @foreach($footerItems as $item)
+                                <li><a href="{{ $item->value }}">{{ $item->key }}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <br>
+                        @endforeach
                     </footer>
                 </div>
             </div>

@@ -14,4 +14,12 @@ class Rivas extends Model
 
     protected $fillable = ['key', 'value', 'is_active'];
 
+
+    public function footerName()
+    {
+
+        return "Rivas System";
+        
+    }
+    
 }

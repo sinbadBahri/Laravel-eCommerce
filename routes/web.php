@@ -1,13 +1,11 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Widgets\ProductWidget;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $product_widget = ProductWidget::with('products.images')->where('is_active', true)->first();
-
-    return view('welcome', compact('product_widget'));});
+Route::get('/', [MainController::class, 'index'])->name('mainPage');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
