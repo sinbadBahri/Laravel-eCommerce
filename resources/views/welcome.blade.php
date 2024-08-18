@@ -36,6 +36,10 @@
                         </div>
                         @if (Route::has('login'))
                             <nav class="-mx-3 flex flex-1 justify-end">
+                                <li class="pt-3" style="display: inline-block; padding: 5px;">
+                                    <span class="quantity" style="font-weight:700; color: #ff0000; position: absolute; top: 40px; margin-right: 7px;">{{$cartItems}}</span><a href="#"><img src="{{ asset('img/shopping-cart.png') }}" alt="" width="30"
+                                        height="30"></a>
+                                    </li>
                                 @auth
                                     <a
                                         href="{{ url('/dashboard') }}"

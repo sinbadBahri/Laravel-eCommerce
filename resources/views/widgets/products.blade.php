@@ -61,18 +61,18 @@
                                             <p style="font-size: 18px; padding-top: 4px;">{{ $product->price }} تومان</p>
                                             
                                         </div>
-                                        {{-- <div class="col-md-3 pt-1 text-center add-to-cart-btn">
-                                            <form action="" method="post">
+                                        <div class="col-md-3 pt-1 text-center add-to-cart-btn">
+                                            <form action="/update_item" method="post">
                                                 @csrf
                                                 
-                                                <button class="btn btn-brown overflow-hidden update-cart" data-action="add" name="product" value="{{ $product }}">
+                                                <button class="btn btn-brown overflow-hidden update-cart" data-action="add" name="product_id" value="{{ $product->id }}">
                                                     <i class="bi bi-plus"></i>
                                                     <span
                                                     style="font-size: 14px; animation-timing-function: ease-in-out;">افزودن
                                                     به سبد خرید</span>
                                                 </button>
                                             </form>
-                                        </div> --}}
+                                        </div>
                                     </div>
                                     
                                     
