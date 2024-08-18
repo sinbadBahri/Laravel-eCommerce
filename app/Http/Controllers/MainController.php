@@ -41,7 +41,7 @@ class MainController extends Controller
             'cartItems'
         ];
 
-        return view('welcome', compact($content));
+        return view('index', compact($content));
         
     }
 
