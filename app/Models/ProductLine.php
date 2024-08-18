@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Images\ProductImage;
 use App\Models\Widgets\ProductWidget;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
