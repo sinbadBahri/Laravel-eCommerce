@@ -12,13 +12,13 @@ class Category extends Model
     use HasFactory;
 
 
-    public function __construct(string $name)
-    {
+    // public function __construct(string $name)
+    // {
 
-        $this->name = $name;
-        $this->generateSlug(); 
+    //     $this->name = $name;
+    //     $this->generateSlug(); 
     
-    }
+    // }
 
     public function children()
     {

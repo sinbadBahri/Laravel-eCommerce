@@ -1,0 +1,84 @@
+
+.login .submit{
+    background-color: #F5B412;
+    color: #fff; 
+    border-radius: 40px;
+    border: 2px solid #F5B412; 
+    width: 20%; 
+    margin: 30px auto;
+}
+.login .submit:hover{
+    background-color: rgb(214, 167, 46);
+    color: aliceblue;
+}
+.login .back-to-home div , .login-mob .back-to-home div{
+    text-align: center;
+}
+.login .back-to-home a , .login-mob .back-to-home a{
+    text-decoration: none;
+    color: #01582D;
+    font-weight: 500;
+}
+.bi-arrow-return-left{
+	color:#01582D;;
+}
+.login-mob{
+	border: 2px solid #e0e0e0; 
+	width: 350px; 
+	margin: 8% auto 15% auto;
+	background-color: #F8F8F8;
+}
+@media(max-width:350px){
+	.login-mob{
+		width:100%;
+	}
+}
+.login-mob .submit{
+    background-color: #F5B412;
+    color: #fff; 
+    border-radius: 40px;
+    border: 2px solid #F5B412; 
+    width: 40%; 
+    margin: 30px auto;
+}
+.login-mob .submit:hover{
+    background-color: rgb(214, 167, 46);
+    color: aliceblue;
+}
+
+@media(max-width:500px){
+    .mainfooter{
+        display: none;
+    }
+}
+@media(min-width:500px) and (max-width:992px) {
+    .secondaryfooter{
+        display: block;
+    }
+    .mainfooter{
+        display: none;
+    }
+}
+@media(min-width:993px){
+    .mainfooter{
+        display:block;
+    }
+    .secondaryfooter{
+        display: none;
+    }
+}
+@media(max-width:992px){
+    .login{
+        display: none;
+    }
+}
+@media(min-width:993px){
+    .login-mob{
+        display: none;
+    }
+}
+@media(min-width:992px) and (max-width:1127px){
+	.login .submit{
+		width:27%;
+	}
+}

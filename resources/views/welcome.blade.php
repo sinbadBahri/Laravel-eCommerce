@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
+    
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> --}}
+        <link rel="stylesheet" href="{{ asset('css/media.css') }}">
+        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="./cart.css">
+        <link rel="stylesheet" href="./media.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    
+    
+        <title>صفحه اصلی</title>
+        
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
@@ -55,21 +65,67 @@
                     </header>
 
                     <main class="mt-6">
-                        @if (! $product_widget == null)
-                            
-                            @if($product_widget->is_active)
-                            <div class="photo-slider">
-                                @foreach($product_widget->products as $product)
-                                @foreach($product->images as $image)
-                                <div class="slide">
-                                    <img src="data:{{ $image->mime_type }};base64,{{ base64_encode($image->image) }}" alt="{{ $image->alternative_text }}">
+                        <section class="hero">
+
+                            <div id="carouselExampleIndicators" class="carousel slide">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                                        aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                        aria-label="Slide 3"></button>
                                 </div>
-                                @endforeach
-                                @endforeach
+                                <div class="carousel-inner">
+                                    @if (! $product_widget_slider == null)
+                                    @if($product_widget_slider->is_active)
+                                    <div class="photo-slider">
+                                        @foreach($product_widget_slider->products as $product)
+                                        @foreach($product->images as $image)
+                                        <div class="carousel-item active">
+                                            <img src="data:{{ $image->mime_type }};base64,{{ base64_encode($image->image) }}" class="d-block w-100" alt="{{ $image->alternative_text }}">
+                                        </div>
+                                        @endforeach
+                                        @endforeach
+                                    </div>
+                                    @endif
+                                    @endif
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                            @endif
-                        @endif
+                        </section>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
                     </main>
+
+                    <section class="gradient-bg pt-4">
+
+                        @include('widgets.products')
+
+                    </section>
+                    <br>
+                    <br>
+                    <br>
+
+                    <section class="products-menu">
+
+                        @include('widgets.categories')
+                    
+                    </section>
 
                     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
                         @foreach ($footerCollection as $footerItems)
@@ -89,4 +145,65 @@
             </div>
         </div>
     </body>
+     <!-- Swiper JS -->
+     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+
+     <!-- Initialize Swiper -->
+     <script>
+         var swiper = new Swiper(".mySwiper", {
+             slidesPerView: 6,
+             spaceBetween: 30,
+             breakpoints: {
+                 0: { slidesPerView: 3 },
+                 700: { slidesPerView: 4 },
+                 1000: { slidesPerView: 6 }
+             },
+             slidesPerGroup: 3,
+             loop: true,
+             loopFillGroupWithBlank: true,
+             pagination: {
+                 el: ".swiper-pagination",
+                 clickable: true,
+             },
+             navigation: {
+                 nextEl: ".swiper-button-next",
+                 prevEl: ".swiper-button-prev",
+             },
+             autoplay:
+             {
+                 delay: 2700,
+             },
+         });
+ 
+ 
+         var swiper = new Swiper(".mySwiper0", {
+             slidesPerView: 3,
+             spaceBetween: 30,
+             breakpoints: {
+                 0: { slidesPerView: 1, spaceBetween: 90 },
+                 320: { slidesPerView: 1, spaceBetween: 90 },
+                 480: { slidesPerView: 1, spaceBetween: 150 },
+                 768: { slidesPerView: 1, spaceBetween: 30 },
+                 992: { slidesPerView: 2, spaceBetween: 0 },
+                 1200: { slidesPerView: 3, spaceBetween: 30 }
+             },
+             pagination: {
+                 el: ".swiper-pagination",
+                 clickable: false,
+             },
+             autoplay:
+             {
+                 delay: 3200,
+             },
+             loop: true,
+         });
+ 
+         
+ 
+     </script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+         </script>
+     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 </html>
