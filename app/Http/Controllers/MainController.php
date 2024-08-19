@@ -29,6 +29,12 @@ class MainController extends Controller
         ->where('title', 'slider')->first();
         $best_seller_widget = ProductWidget::with('products.images')->where('is_active', true)
         ->where('title', 'bestSeller')->first();
+        $special_offer_widget = ProductWidget::with('products.images')->where('is_active', true)
+        ->where('title', 'special-offer')->first();
+        $laptop_widget = ProductWidget::with('products.images')->where('is_active', true)
+        ->where('title', 'لپ تاپ ها')->first();
+        $mobile_widget = ProductWidget::with('products.images')->where('is_active', true)
+        ->where('title', 'موبایل ها')->first();
         $category_widget = CategoryWidget::with('categories.image')->where('is_active', true)->first();
 
         $cartItems = $this->getCartTotal();
@@ -38,7 +44,10 @@ class MainController extends Controller
             'footerCollection',
             'category_widget',
             'best_seller_widget',
-            'cartItems'
+            'cartItems',
+            'special_offer_widget',
+            'laptop_widget',
+            'mobile_widget',
         ];
 
         return view('index', compact($content));

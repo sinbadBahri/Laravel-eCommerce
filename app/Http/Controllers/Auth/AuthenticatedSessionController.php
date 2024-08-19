@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         // dd($this->respondWithToken($token));
 
         # Set the token as a cookie
-        return redirect()->intended(route('dashboard'))->cookie(
+        return redirect()->intended(route('mainPage'))->cookie(
         'token', # Cookie name
         $token,  # Token value
         auth('web')->factory()->getTTL() * 60, # Expiration in minutes

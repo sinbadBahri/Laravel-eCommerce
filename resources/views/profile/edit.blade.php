@@ -1,3 +1,10 @@
+
+<link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('css/owl.theme.default.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
