@@ -8,7 +8,7 @@
 
     <!-- Jumbotron -->
     <div id="intro" class="p-5 text-center bg-light">
-      <h2 class="mb-0 h4">This is a long title of the article</h2>
+      <h1 class="mb-0 h4">{{$singlePost->title}}</h1>
     </div>
   
       <!--Grid row-->
@@ -17,8 +17,8 @@
         <div class="col-md-8 mb-4">
           <!--Section: Post data-mdb-->
           <section class="border-bottom mb-4">
-            <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg"
-              class="img-fluid shadow-2-strong rounded mb-4" alt="" />
+            
+            <img src="data:{{ $singlePost->images[0]->mime_type }};base64,{{ base64_encode($singlePost->images[0]->image) }}" class="img-fluid shadow-2-strong rounded mb-4" alt="{{ $singlePost->images[0]->alternative_text }}">
 
             
           </section>
@@ -27,12 +27,7 @@
           <!--Section: Text-->
           <section>
             <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio sapiente molestias
-              consectetur. Fuga nulla officia error placeat veniam, officiis rerum laboriosam
-              ullam molestiae magni velit laborum itaque minima doloribus eligendi! Lorem ipsum,
-              dolor sit amet consectetur adipisicing elit. Optio sapiente molestias consectetur.
-              Fuga nulla officia error placeat veniam, officiis rerum laboriosam ullam molestiae
-              magni velit laborum itaque minima doloribus eligendi!
+              {{$singlePost->description}}
             </p>
 
           </section>

@@ -20,7 +20,7 @@
                </li>
                <li><i class="fa fa-calendar-o"></i>نوشته شده در : {{$post->created_at}}</li>
             </ul>
-            <a href="#" class="mybtn"><i class="fa fa-continuous"></i>ادامه مطلب&raquo;</a>	
+            <a href="/post/{{ $post->id }}" class="mybtn"><i class="fa fa-continuous"></i>ادامه مطلب&raquo;</a>	
          </div>
       </div>
       @endforeach

@@ -21,4 +21,18 @@ class PostWidget extends Model
         
     }
 
+    public function getSinglePost(string $id)
+    {
+
+        return $this->posts->where("id", $id)->first();
+        
+    }
+
+    public function getSomePosts(int $number)
+    {
+
+        return $this->posts()->inRandomOrder()->take($number)->get();
+        
+    }
+
 }

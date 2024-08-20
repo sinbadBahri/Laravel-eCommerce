@@ -48,7 +48,7 @@ class MainController extends Controller
         $mobile_widget = ProductWidget::with('products.images')->where('is_active', true)
         ->where('title', 'موبایل ها')->first();
         $category_widget = CategoryWidget::with('categories.image')->where('is_active', true)->first();
-        $posts = $this->showPostsFromWidget('main-page');
+        $posts = $this->showPostsFromWidget('main-page', 3);
         
         # Footer
         $footerCollection = $this->footer->getAllFooterItems();
@@ -142,7 +142,7 @@ class MainController extends Controller
 
     }
 
-    private function showPostsFromWidget($widgetTitle)
+    private function showPostsFromWidget(string $widgetTitle, int $number)
     {
 
         $widget = PostWidget::where('title', $widgetTitle)->first();
@@ -150,14 +150,11 @@ class MainController extends Controller
         if ($widget && $widget->is_active)
         {
 
-            $posts = $widget->posts()->inRandomOrder()->take(3)->get();
+            $posts = $widget->getSomePosts($number);
 
             return $posts;
 
         }
-
-        return null;
-
     }
 
 }
