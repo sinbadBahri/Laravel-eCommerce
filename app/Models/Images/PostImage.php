@@ -2,11 +2,11 @@
 
 namespace App\Models\Images;
 
-use App\Models\ProductLine;
+use App\Models\Blog\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductImage extends Model
+class PostImage extends Model
 {
 
     protected $fillable = [
@@ -22,7 +22,7 @@ class ProductImage extends Model
     public function product()
     {
 
-        return $this->belongsTo(related:ProductLine::class);
+        return $this->belongsTo(related:Post::class);
         
     }
 

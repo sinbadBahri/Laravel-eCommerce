@@ -2,6 +2,7 @@
 
 namespace App\Models\Blog;
 
+use App\Models\Images\PostImage;
 use App\Models\Widgets\PostWidget;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,22 +34,6 @@ class Post extends Model
         
     }
 
-    public function getGenre(): string
-    {
-
-        $genres = "";
-
-        foreach ($this->genres as $genre)
-        {
-
-            $genres .= ", {$genre->title}";
-
-        }
-
-        return $genres;
-        
-    }
-
     public function widgets()
     {
 
@@ -57,6 +42,13 @@ class Post extends Model
             related: PostWidget::class,
             table: "posts_widgets_relations",
         );
+        
+    }
+
+    public function images()
+    {
+
+        return $this->hasMany(related:PostImage::class);
         
     }
 

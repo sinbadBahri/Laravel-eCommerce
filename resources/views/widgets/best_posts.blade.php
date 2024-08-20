@@ -8,10 +8,10 @@
       <div class="col-md-4">
          <div class="blog-content">
             <figure>
-               <img src="{{ asset('img/off/watch/1.jpg') }}" class="w-100">
+               <img src="data:{{ $post->images[0]->mime_type }};base64,{{ base64_encode($post->images[0]->image) }}" class="w-100" alt="{{ $post->images[0]->alternative_text }}">
             </figure>
             <h5><i class="fa fa-title"></i>{{$post->title}}</h5>
-            <p>{{$post->description}}</p>
+            <p>{{substr($post->description, 0, 200)}} ...</p>
             <ul>
                <li><i class="fa fa-bars"></i>دسته بندی : 
                @foreach ($post->genres as $genre)
