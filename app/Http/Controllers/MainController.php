@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog\Genre;
 use App\Models\Blog\Post;
 use App\Models\Cart;
 use App\Models\ProductLine;
@@ -39,19 +40,26 @@ class MainController extends Controller
         ->where('title', 'موبایل ها')->first();
         $category_widget = CategoryWidget::with('categories.image')->where('is_active', true)->first();
         $posts = $this->showPostsFromWidget('main-page');
+        $genres = Genre::all();
 
         $cartItems = $this->getCartTotal();
         
         $content = [
+            # Navbar
+            'cartItems',
+            'genres',
+
+            # Body Widgets
             'product_widget_slider',
-            'footerCollection',
             'category_widget',
             'best_seller_widget',
-            'cartItems',
             'special_offer_widget',
             'laptop_widget',
             'mobile_widget',
             'posts',
+            
+            # Footer
+            'footerCollection',
         ];
 
         return view('index', compact($content));

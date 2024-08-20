@@ -30,10 +30,20 @@
                 <li><a href="#">اسباب بازی</a></li>
                 <li>
                 <a href="#">بلاگ</a>
+                {{-- @if (! $genres == null)
+                    
                 <ul>
-                    <li><a href="#">تکنولوژی</a></li>
-                    <li><a href="#">قاچاق گوشی</a></li>
+                    @foreach ($genres as $genre)
+                    
+                    <li><a href="#">{{$genre->title}}</a></li>
+                    @endforeach
                 </ul>
+                @else
+                <ul>
+                    متاسفانه دسته بندی وجود ندارد !
+                </ul>
+                    
+                @endif                     --}}
                 </li>
             </ul>
         </div>
