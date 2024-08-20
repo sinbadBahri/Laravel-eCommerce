@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog\Post;
 use App\Models\Cart;
 use App\Models\ProductLine;
 use App\Models\Widgets\CategoryWidget;
+use App\Models\Widgets\PostWidget;
 use App\Models\Widgets\ProductWidget;
 use App\Support\Footer;
 use Illuminate\Http\Request;
@@ -36,6 +38,7 @@ class MainController extends Controller
         $mobile_widget = ProductWidget::with('products.images')->where('is_active', true)
         ->where('title', 'موبایل ها')->first();
         $category_widget = CategoryWidget::with('categories.image')->where('is_active', true)->first();
+        $posts = $this->showPostsFromWidget('main-page');
 
         $cartItems = $this->getCartTotal();
         
@@ -48,6 +51,7 @@ class MainController extends Controller
             'special_offer_widget',
             'laptop_widget',
             'mobile_widget',
+            'posts',
         ];
 
         return view('index', compact($content));
@@ -136,6 +140,24 @@ class MainController extends Controller
         }
 
         return $cart;
+
+    }
+
+    private function showPostsFromWidget($widgetTitle)
+    {
+
+        $widget = PostWidget::where('title', $widgetTitle)->first();
+
+        if ($widget && $widget->is_active)
+        {
+
+            $posts = $widget->posts()->inRandomOrder()->take(3)->get();
+
+            return $posts;
+
+        }
+
+        return null;
 
     }
 
