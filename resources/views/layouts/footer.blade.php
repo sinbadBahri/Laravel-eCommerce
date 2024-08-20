@@ -1,4 +1,4 @@
-{{-- @if (! $footerCollection == null)
+@if (! $footerCollection == null)
     
 <div class="footer">
     <div class="container">
@@ -19,4 +19,4 @@
         </div>
     </div>
 </div>
-@endif --}}
+@endif

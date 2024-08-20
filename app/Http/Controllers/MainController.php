@@ -10,6 +10,7 @@ use App\Models\Widgets\CategoryWidget;
 use App\Models\Widgets\PostWidget;
 use App\Models\Widgets\ProductWidget;
 use App\Support\Footer;
+use App\Support\Navbar;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -17,17 +18,25 @@ class MainController extends Controller
 
     protected $footer;
 
+    protected $navbar;
 
-    public function __construct(Footer $footer) {
+
+    public function __construct(Footer $footer, Navbar $navbar)
+    {
         
         $this->footer = $footer;
+        $this->navbar = $navbar;
 
     }
 
     public function index()
     {
 
-        $footerCollection = $this->footer->getAllFooterItems();
+        # Navbar
+        $cartItems = $this->navbar->cartItems;
+        $genres = $this->navbar->genres;
+
+        # Body Widgets
         $product_widget_slider = ProductWidget::with('products.images')->where('is_active', true)
         ->where('title', 'slider')->first();
         $best_seller_widget = ProductWidget::with('products.images')->where('is_active', true)
@@ -40,9 +49,9 @@ class MainController extends Controller
         ->where('title', 'موبایل ها')->first();
         $category_widget = CategoryWidget::with('categories.image')->where('is_active', true)->first();
         $posts = $this->showPostsFromWidget('main-page');
-        $genres = Genre::all();
-
-        $cartItems = $this->getCartTotal();
+        
+        # Footer
+        $footerCollection = $this->footer->getAllFooterItems();
         
         $content = [
             # Navbar
@@ -72,24 +81,6 @@ class MainController extends Controller
         $this->createOrUpdateCart($request);
 
         return redirect()->back();
-
-    }
-
-    private function getCartTotal()
-    {
-
-        $cartItems = 0;
-
-        if (Cart::exists())
-        {
-
-            // $cart_id = TmpCart::where('user_id', auth()->id())->id;  # If we have already defined the authentication system.
-            $cart_id = Cart::first()->id;
-            $cartItems = Cart::getTotalQuantity(cart_id:$cart_id);
-
-        }
-
-        return $cartItems;
 
     }
 

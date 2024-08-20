@@ -11,10 +11,6 @@
       <h2 class="mb-0 h4">This is a long title of the article</h2>
     </div>
   
-
-  <!--Main layout-->
-  <main class="mt-4 mb-5">
-    <div class="container">
       <!--Grid row-->
       <div class="row">
         <!--Grid column-->
@@ -139,10 +135,6 @@
           </section>
           <!--Section: Reply-->
         </div>
-        <!--Grid column-->
 
  
-  <!--Main layout-->
-  <script type="text/javascript" src="js/mdb.umd.min.js"></script>
-
   @endsection

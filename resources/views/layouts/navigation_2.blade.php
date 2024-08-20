@@ -30,12 +30,14 @@
                 <li><a href="#">اسباب بازی</a></li>
                 <li>
                 <a href="#">بلاگ</a>
-                {{-- @if (! $genres == null)
+                @if (! $genres == null)
                     
                 <ul>
                     @foreach ($genres as $genre)
-                    
+                    @if ($genre->is_active)
+                        
                     <li><a href="#">{{$genre->title}}</a></li>
+                    @endif
                     @endforeach
                 </ul>
                 @else
@@ -43,7 +45,7 @@
                     متاسفانه دسته بندی وجود ندارد !
                 </ul>
                     
-                @endif                     --}}
+                @endif                    
                 </li>
             </ul>
         </div>
