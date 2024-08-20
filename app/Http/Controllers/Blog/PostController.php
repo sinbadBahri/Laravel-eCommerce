@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog\Comment;
+use App\Models\Widgets\CommentWidget;
 use App\Models\Widgets\PostWidget;
 use App\Support\Footer;
 use App\Support\Navbar;
@@ -33,6 +35,10 @@ class PostController extends Controller
 
         # Body Widgets
         $singlePost = $this->getPostWidget("single", $id);
+        $postComments = $this->getPostComments("main", $id);
+
+        # Necessary Data
+        $commentQuantity = $this->countTotalComments("main", $id);
 
         # Footer
         $footerCollection = $this->footer->getAllFooterItems();
@@ -44,6 +50,10 @@ class PostController extends Controller
 
             # Body Widgets
             'singlePost',
+            'postComments',
+
+            # Necessary Data
+            'commentQuantity',
 
             # Footer
             'footerCollection',
@@ -67,6 +77,36 @@ class PostController extends Controller
 
         }
 
+    }
+
+    private function getPostComments(string $title, string $id)
+    {
+
+        $widget = CommentWidget::where('title', $title)->first();
+        
+        if ($widget && $widget->is_active)
+        {
+
+            $postComments = $widget->getOrphanComments($id);
+
+            return $postComments;
+
+        }
+    }
+
+    private function countTotalComments(string $title, string $id)
+    {
+
+        $widget = CommentWidget::where('title', $title)->first();
+        
+        if ($widget && $widget->is_active)
+        {
+
+            $commentQuantity = $widget->getCommentsQuantity($id);
+
+            return $commentQuantity;
+
+        }
     }
 
 }

@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <ul>
+                <li><a href="/">خانه</a></li>
                 <li>
                 <a href="#">کالای دیجیتال</a>
                 <ul>

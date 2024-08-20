@@ -33,103 +33,142 @@
           </section>
           <!--Section: Text-->
 
-
+          <br>
+          <br>
+          <br>
           <!--Section: Comments-->
           <section class="border-bottom mb-3">
-            <p class="text-center"><strong>Comments: 3</strong></p>
+            <p class="text-center"><strong>{{$commentQuantity}} عدد کامنت</strong></p>
 
-            <!-- Comment -->
-            <div class="row mb-4">
-              <div class="col-2">
-                <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(24).jpg"
-                  class="img-fluid shadow-1-strong rounded" alt="" />
+            {{-- ------------------ --}}
+            @if (! $postComments == null)
+            <section style="background-color: #e7effd;">
+              <div class="container my-5 py-5 text-body">
+                <div class="row d-flex justify-content-center">
+                  <div class="col-md-11 col-lg-9 col-xl-7">
+                    
+                    @foreach ($postComments as $comment)
+                        
+                    
+                    <div class="d-flex flex-start">
+                      {{-- <img class="rounded-circle shadow-1-strong me-3"
+                        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp" alt="avatar" width="65"
+                        height="65" /> --}}
+                      <div class="card w-100">
+                        <div class="card-body p-4">
+                          <div class="">
+                            <h5>{{$comment->user->name}}</h5>
+                            <p class="small">5 hours ago</p>
+                            <p>
+                              {{$comment->content}}
+                            </p>
+            
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="d-flex align-items-center">
+                                <a href="#!" class="link-muted me-2"><i class="fas fa-thumbs-up me-1"></i></a>
+                                <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i></a>
+                              </div>
+                              <div class="form-outline" data-mdb-input-init>
+                                <form action="#" method="POST">
+                                  @csrf
+                                  <input type="text" id="typeText" placeholder="پاسخ" class="form-control form-control-sm" />
+                                </form>
+                                </div>
+                            </div>
+                          </div>
+
+                          @foreach ($comment->children as $reply)
+                              
+                          <div class="d-flex flex-start mt-4">
+                            
+                            <div class="flex-grow-1 flex-shrink-1">
+                              <div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                  <p class="mb-1">
+                                    {{$reply->user->name}} <span class="small">- 3 hours ago</span>
+                                  </p>
+                                </div>
+                                <p class="small mb-0">
+                                  {{$reply->content}}
+                                </p>
+                              </div>
+                              
+                            </div>
+                            <div class="form-outline" data-mdb-input-init>
+                              <form action="#" method="POST">
+                                @csrf
+                                <input type="text" id="typeText" placeholder="پاسخ" class="form-control form-control-sm" />
+                              </form>
+                              </div>
+                          </div>
+
+                          @endforeach
+
+
+                          
+                        </div>
+                      </div>
+                    </div>
+                    @endforeach
+                    <br>
+                    <br>
+                    <br>
+                    ارسال کامنت
+                    <br>
+                    <br>
+
+
+                    <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                      <div class="d-flex flex-start w-100">
+                        <div data-mdb-input-init class="form-outline w-100">
+                          <textarea class="form-control" id="textAreaExample" rows="4"
+                            style="background: #fff;"></textarea>
+                        </div>
+                      </div>
+                      <div class="float-end mt-2 pt-1">
+                        <form action="#" method="POST">
+                          @csrf
+
+                          <button type="submit" class="btn btn-outline-success">ارسال</button>
+                        </form>
+
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
               </div>
-
-              <div class="col-10">
-                <p class="mb-2"><strong>Marta Dolores</strong></p>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                  inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                  Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                </p>
+            </section>
+            @else    
+            
+            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+              <div class="d-flex flex-start w-100">
+                <img class="rounded-circle shadow-1-strong me-3"
+                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+                  height="40" />
+                <div data-mdb-input-init class="form-outline w-100">
+                  <textarea class="form-control" id="textAreaExample" rows="4"
+                    style="background: #fff;"></textarea>
+                  <label class="form-label" for="textAreaExample">Message</label>
+                </div>
+              </div>
+              <div class="float-end mt-2 pt-1">
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm">Post comment</button>
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm">Cancel</button>
               </div>
             </div>
-
-            <!-- Comment -->
-            <div class="row mb-4">
-              <div class="col-2">
-                <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(25).jpg"
-                  class="img-fluid shadow-1-strong rounded" alt="" />
-              </div>
-
-              <div class="col-10">
-                <p class="mb-2"><strong>Valeria Groove</strong></p>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                  inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                  Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                </p>
-              </div>
-            </div>
-
-            <!-- Comment -->
-            <div class="row mb-4">
-              <div class="col-2">
-                <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(26).jpg"
-                  class="img-fluid shadow-1-strong rounded" alt="" />
-              </div>
-
-              <div class="col-10">
-                <p class="mb-2"><strong>Antonia Velez</strong></p>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                  inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                  Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                </p>
-              </div>
-            </div>
-          </section>
-          <!--Section: Comments-->
-
-          <!--Section: Reply-->
-          <section>
-            <p class="text-center"><strong>Leave a reply</strong></p>
-
-            <form>
-              <!-- Name input -->
-              <div class="form-outline mb-4" data-mdb-input-init>
-                <input type="text" id="form4Example1" class="form-control" />
-                <label class="form-label" for="form4Example1">Name</label>
-              </div>
-
-              <!-- Email input -->
-              <div class="form-outline mb-4" data-mdb-input-init>
-                <input type="email" id="form4Example2" class="form-control" />
-                <label class="form-label" for="form4Example2">Email address</label>
-              </div>
-
-              <!-- Message input -->
-              <div class="form-outline mb-4" data-mdb-input-init>
-                <textarea class="form-control" id="form4Example3" rows="4"></textarea>
-                <label class="form-label" for="form4Example3">Text</label>
-              </div>
-
-              <!-- Checkbox -->
-              <div class="form-check d-flex justify-content-center mb-4">
-                <input class="form-check-input me-2" type="checkbox" value="" id="form4Example4" checked />
-                <label class="form-check-label" for="form4Example4">
-                  Send me a copy of this comment
-                </label>
-              </div>
-
-              <!-- Submit button -->
-              <button type="submit" class="btn btn-primary btn-block mb-4" data-mdb-ripple-init>
-                Publish
-              </button>
-            </form>
-          </section>
-          <!--Section: Reply-->
+            @endif
         </div>
 
+
+<script>
+  // Initialization for ES Users
+  import { Input, initMDB } from "mdb-ui-kit";
+
+  initMDB({ Input });
+</script>
  
-  @endsection
+<script src="{{ asset('js/comment.js') }}" type="text/javascript"></script>
+@endsection

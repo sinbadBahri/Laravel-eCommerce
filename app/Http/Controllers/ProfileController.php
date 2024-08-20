@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Support\Footer;
+use App\Support\Navbar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,14 +13,48 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
+    protected $footer;
+    protected $navbar;
+
+
+    public function __construct(Footer $footer, Navbar $navbar)
+    {
+        
+        $this->footer = $footer;
+        $this->navbar = $navbar;
+
+    }
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        
+        # Navbar
+        $cartItems = $this->navbar->cartItems;
+        $genres = $this->navbar->genres;
+        
+        # Body
+        $user = $request->user();
+
+        # Footer
+        $footerCollection = $this->footer->getAllFooterItems();
+
+        $content = [
+            # Navbar
+            'cartItems',
+            'genres',
+
+            # Body 
+            'user',
+
+            # Footer
+            'footerCollection',
+        ];
+        
+        return view('profile.edit', compact($content));
     }
 
     /**
