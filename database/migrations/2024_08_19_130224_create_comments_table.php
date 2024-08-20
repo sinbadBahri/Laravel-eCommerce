@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('content');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('post_id');
-            $table->unsignedBigInteger('parent_id');
+            $table->unsignedBigInteger('parent_id')->nullable(true);
             $table->timestamps();
             $table->softDeletes();
             
@@ -34,7 +34,6 @@ return new class extends Migration
                                 ->cascadeOnDelete();
 
             $table->foreign('parent_id')
-                                ->nullable()
                                 ->references('id')
                                 ->on('post_comments')
                                 ->cascadeOnDelete();

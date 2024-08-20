@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Genre extends Model
 {
     use HasFactory;
+
+    protected $fillable = [] ;
+
+
+    public function posts()
+    {
+
+        return $this->belongsToMany
+        (
+            related: Post::class,
+            table: "genre_post_relations",
+        );
+        
+    }
+
 }
