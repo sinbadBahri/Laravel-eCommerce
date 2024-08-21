@@ -30,14 +30,14 @@
                 <li><a href="#">ابزار اداری</a></li>
                 <li><a href="#">اسباب بازی</a></li>
                 <li>
-                <a href="#">بلاگ</a>
+                <a href="/post/all/allgenres">بلاگ</a>
                 @if (! $genres == null)
                     
                 <ul>
                     @foreach ($genres as $genre)
                     @if ($genre->is_active)
                         
-                    <li><a href="#">{{$genre->title}}</a></li>
+                    <li><a href="/post/all/{{$genre->title}}">{{$genre->title}}</a></li>
                     @endif
                     @endforeach
                 </ul>

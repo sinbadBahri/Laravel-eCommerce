@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('mainPage');
 Route::post('/update_item', [MainController::class,'updateItem']);
+Route::get('/post/all/{genre}', [PostController::class,'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 Route::post('/post/{id}/{comment_id}', [CommentController::class,'store']);
 
