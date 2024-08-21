@@ -13,7 +13,12 @@ class Comment extends Model
 
 
     protected $table = 'post_comments';
-    protected $fillable = [] ;
+    protected $fillable = [
+        'user_id',
+        'post_id',
+        'parent_id',
+        'content',
+    ] ;
 
 
     public function children()

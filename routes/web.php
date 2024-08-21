@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Blog\CommentController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [MainController::class, 'index'])->name('mainPage');
 Route::post('/update_item', [MainController::class,'updateItem']);
 Route::get('/post/{id}', [PostController::class, 'show']);
+Route::post('/post/{id}/{comment_id}', [CommentController::class,'store']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

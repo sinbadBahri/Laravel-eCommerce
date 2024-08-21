@@ -69,9 +69,9 @@
                                 <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i></a>
                               </div>
                               <div class="form-outline" data-mdb-input-init>
-                                <form action="#" method="POST">
+                                <form action="/post/{{$singlePost->id}}/{{$comment->id}}" method="POST">
                                   @csrf
-                                  <input type="text" id="typeText" placeholder="پاسخ" class="form-control form-control-sm" />
+                                  <input name="comment" type="text" id="typeText" placeholder="پاسخ" class="form-control form-control-sm" />
                                 </form>
                                 </div>
                             </div>
@@ -95,9 +95,9 @@
                               
                             </div>
                             <div class="form-outline" data-mdb-input-init>
-                              <form action="#" method="POST">
+                              <form action="/post/{{$singlePost->id}}/{{$reply->id}}" method="POST">
                                 @csrf
-                                <input type="text" id="typeText" placeholder="پاسخ" class="form-control form-control-sm" />
+                                <input name="comment" type="text" id="typeText" placeholder="پاسخ" class="form-control form-control-sm" />
                               </form>
                               </div>
                           </div>
@@ -118,18 +118,18 @@
                     <br>
 
 
-                    <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                      <div class="d-flex flex-start w-100">
-                        <div data-mdb-input-init class="form-outline w-100">
-                          <textarea class="form-control" id="textAreaExample" rows="4"
-                            style="background: #fff;"></textarea>
+                    <form action="/post/{{$singlePost->id}}/empty" method="POST">
+                      @csrf
+                      <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                        <div class="d-flex flex-start w-100">
+                          <div data-mdb-input-init class="form-outline w-100">
+                            <textarea class="form-control" name="comment" id="textAreaExample" rows="4"
+                              style="background: #fff;"></textarea>
+                          </div>
                         </div>
-                      </div>
-                      <div class="float-end mt-2 pt-1">
-                        <form action="#" method="POST">
-                          @csrf
-
+                        <div class="float-end mt-2 pt-1">
                           <button type="submit" class="btn btn-outline-success">ارسال</button>
+
                         </form>
 
                       </div>
@@ -143,20 +143,20 @@
             </section>
             @else    
             
+            <form action="/post/{{$singlePost->id}}/empty" method="POST">
+              @csrf
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <div class="d-flex flex-start w-100">
-                <img class="rounded-circle shadow-1-strong me-3"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
-                  height="40" />
                 <div data-mdb-input-init class="form-outline w-100">
-                  <textarea class="form-control" id="textAreaExample" rows="4"
+                  <textarea name="comment" placeholder="اولیت کامنت این پست را بنویسید..." class="form-control" id="textAreaExample" rows="4"
                     style="background: #fff;"></textarea>
-                  <label class="form-label" for="textAreaExample">Message</label>
                 </div>
               </div>
               <div class="float-end mt-2 pt-1">
-                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm">Post comment</button>
-                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm">Cancel</button>
+
+                  <button type="submit" class="btn btn-outline-success">ارسال</button>
+                </form>
+
               </div>
             </div>
             @endif
