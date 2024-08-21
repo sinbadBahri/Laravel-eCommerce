@@ -58,7 +58,7 @@
                         <div class="card-body p-4">
                           <div class="">
                             <h5>{{$comment->user->name}}</h5>
-                            <p class="small">5 hours ago</p>
+                            <p class="small">{{ Hekmatinasser\Verta\Verta::instance($comment->created_at)->formatWord('l dS F') }}</p>
                             <p>
                               {{$comment->content}}
                             </p>
@@ -85,7 +85,7 @@
                               <div>
                                 <div class="d-flex justify-content-between align-items-center">
                                   <p class="mb-1">
-                                    {{$reply->user->name}} <span class="small">- 3 hours ago</span>
+                                    {{$reply->user->name}} <span class="small">- {{ Hekmatinasser\Verta\Verta::instance($reply->created_at)->formatWord('l dS F') }}</span>
                                   </p>
                                 </div>
                                 <p class="small mb-0">
