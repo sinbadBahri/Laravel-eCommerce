@@ -11,6 +11,7 @@ use App\Models\Widgets\PostWidget;
 use App\Models\Widgets\ProductWidget;
 use App\Support\Footer;
 use App\Support\Navbar;
+use App\Support\Storage\Contracts\StorageInterface;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -72,6 +73,15 @@ class MainController extends Controller
         ];
 
         return view('index', compact($content));
+        
+    }
+
+    public function test()
+    {
+
+        $session = resolve(StorageInterface::class);
+        $session->set('mobile','iphone12');
+        dd(session()->all());
         
     }
 
