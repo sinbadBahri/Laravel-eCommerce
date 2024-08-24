@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Master;
 
 use App\Models\Footer\ContactUs;
 use App\Models\Footer\Rivas;

@@ -7,62 +7,77 @@ use App\Models\Blog\Comment;
 use App\Models\Blog\Genre;
 use App\Models\Widgets\CommentWidget;
 use App\Models\Widgets\PostWidget;
-use App\Support\Footer;
-use App\Support\Navbar;
+use App\Support\Master\Master;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
 
-    protected $footer;
-
-    protected $navbar;
+    protected $master;
 
 
-    public function __construct(Footer $footer, Navbar $navbar)
+    public function __construct(Master $master)
     {
     
-        $this->footer = $footer;
-        $this->navbar = $navbar;
+        $this->master = $master;
     
     }
 
     public function index(string $slug)
     {
-
-        # Navbar
-        $cartItems = $this->navbar->cartItems;
-        $genres = $this->navbar->genres;
-
-        # Body Widgets
+        
+        $navbar_footer_content = $this->master->setNavbarAndFooter();
+        
         $posts = $this->showPostsFromWidget(slug: $slug);
 
-        # Footer
-        $footerCollection = $this->footer->getAllFooterItems();
+        $content = array_merge(
 
-        $content = [
-            # Navbar
-            'cartItems',
-            'genres',
+            # Navbar & Footer
+            $navbar_footer_content,
 
             # Body Widgets
-            'posts',
+            ['posts' => $posts],
 
-            # Footer
-            'footerCollection',
-        ];
-
-        return view("post.all", compact($content));
+        );
         
+
+        return view('post.all', $content);
         
     }
 
     public function show(string $id)
     {
+        # Navbar & Footer
+        $navbar_footer_content = $this->master->setNavbarAndFooter();
 
-        # Navbar
-        $cartItems = $this->navbar->cartItems;
-        $genres = $this->navbar->genres;
+        # Body Widgets & Necessary Data
+        $widget_content = $this->getBodyWidgets($id);
+
+        $content = array_merge(
+
+            # Navbar & Footer
+            $navbar_footer_content,
+
+            # Body Widgets & Necessary Data
+            $widget_content
+
+        );
+        
+
+        return view('post.single', $content);
+        
+    }
+
+    /**
+     * Retrieves the necessary body widgets for a given post ID.
+     * 
+     * The returned array can be pushed to a blade view.
+     *
+     * @param string $id The ID of the post to retrieve widgets for.
+     * @return array An array containing a single post widget, widget of the post's comments, and total comment quantity.
+     */
+    private function getBodyWidgets(string $id)
+    {
 
         # Body Widgets
         $singlePost = $this->getPostWidget($id);
@@ -71,26 +86,17 @@ class PostController extends Controller
         # Necessary Data
         $commentQuantity = $this->countTotalComments($id);
 
-        # Footer
-        $footerCollection = $this->footer->getAllFooterItems();
-
-        $content = [
-            # Navbar
-            'cartItems',
-            'genres',
+        $widget_content = [
 
             # Body Widgets
-            'singlePost',
-            'postComments',
+            'singlePost' => $singlePost,
+            'postComments'=> $postComments,
 
             # Necessary Data
-            'commentQuantity',
-
-            # Footer
-            'footerCollection',
+            'commentQuantity'=> $commentQuantity,
         ];
 
-        return view("post.single", compact($content));
+        return $widget_content;
         
     }
 

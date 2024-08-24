@@ -37,7 +37,7 @@ class Basket
      */
     public function add(ProductLine $productLine, int $quantity)
     {
-        
+
         if ($this->exists($productLine)) 
         {
 
@@ -66,6 +66,16 @@ class Basket
     {
 
         return $this->storage->exists($productLine->id);
+        
+    }
+
+    /**
+     * Clears all product lines from the basket.
+     */
+    public function clear()
+    {
+
+        $this->storage->clear();
         
     }
 
