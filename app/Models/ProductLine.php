@@ -56,4 +56,11 @@ class ProductLine extends Model
         
     }
 
+    public function hasStock(int $quantity)
+    {
+
+        return $this->stock_qty >= $quantity;
+        
+    }
+
 }

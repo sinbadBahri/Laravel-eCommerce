@@ -2,14 +2,15 @@
 
 use App\Http\Controllers\Blog\CommentController;
 use App\Http\Controllers\Blog\PostController;
+use App\Http\Controllers\Finance\BasketController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Widgets\ProductWidget;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('mainPage');
-Route::get('test', [MainController::class, 'test']);
-Route::post('/update_item', [MainController::class,'updateItem']);
+Route::post('/basket/add', [BasketController::class, 'add']);
+// Route::post('/update_item', [MainController::class,'updateItem']);
 Route::get('/post/all/{genre}', [PostController::class,'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 Route::post('/post/{id}/{comment_id}', [CommentController::class,'store']);

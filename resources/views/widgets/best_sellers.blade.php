@@ -12,7 +12,14 @@
                      <a href=""><img src="data:{{ $product->images[0]->mime_type }};base64,{{ base64_encode($product->images[0]->image) }}" class="d-block w-100" alt="{{ $product->images[0]->alternative_text }}"></a>
                   </figure>
                   <h5>{{$product->product->name}}</h5>
-                  <span>{{$product->price}}</</span>
+                  <span>
+                     {{$product->price}}  
+                  </span>
+                  <br>
+                  <form action="/basket/add" method="POST">
+                     @csrf
+                     <button name="productLine" value="{{$product->id}}" type="submit" class="btn btn-secondary btn-sm">اضافه به سبدخرید</button>
+                  </form>
                </div>
                @endforeach
             </div>

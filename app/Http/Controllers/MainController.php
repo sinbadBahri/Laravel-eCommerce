@@ -76,15 +76,6 @@ class MainController extends Controller
         
     }
 
-    public function test()
-    {
-
-        $session = resolve(StorageInterface::class);
-        $session->set('mobile','iphone12');
-        dd(session()->all());
-        
-    }
-
     public function updateItem(Request $request)
     {
 

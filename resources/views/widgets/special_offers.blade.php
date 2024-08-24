@@ -23,7 +23,7 @@
                    <h3>{{$product->product->name}}</h3>
                    <ul>
                       {{-- <li>حافظه داخلی 32 گیگابایت</li> --}}
-                      <li>درصد استوک : {{$product->stock_qty}}</li>
+                      <li>تعداد موجود در انبار  : {{$product->stock_qty}}</li>
                    </ul>
                    <hr>
                    <span>زمان باقیمانده تا پایان سفارش</span> 
