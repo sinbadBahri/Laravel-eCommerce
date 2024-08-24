@@ -79,6 +79,20 @@ class Basket
         
     }
 
+    /**
+     * Returns the total count of items in the basket.
+     * 
+     * Warning: This method does not return quantities of items.
+     * 
+     * @return int
+     */
+    public function itemCount(): int
+    {
+
+        return $this->storage->count();
+        
+    }
+
 
     /**
      * Updates the quantity of a product line in the basket.

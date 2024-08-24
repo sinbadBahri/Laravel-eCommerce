@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog\Genre;
-use App\Models\Blog\Post;
-use App\Models\Cart;
-use App\Models\ProductLine;
+
 use App\Models\Widgets\CategoryWidget;
 use App\Models\Widgets\PostWidget;
 use App\Models\Widgets\ProductWidget;
 use App\Support\Master\Master;
-use App\Support\Storage\Contracts\StorageInterface;
-use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
@@ -47,73 +42,6 @@ class MainController extends Controller
 
         return view('index', $content);
         
-    }
-
-    public function updateItem(Request $request)
-    {
-
-        $this->createOrUpdateCart($request);
-
-        return redirect()->back();
-
-    }
-
-    private function getTotalPrice()
-    {
-
-        $totalPrice = 0;
-
-        if (Cart::exists())
-        {
-
-            // $cart_id = TmpCart::where('user_id', auth()->id())->id;  # If we have already defined the authentication system.
-            $cart_id = Cart::first()->id;
-            $totalPrice = Cart::totalPrice(cart_id:$cart_id);
-
-        }
-
-        return $totalPrice;
-
-    }
-
-    private function createOrUpdateCart(Request $request): Cart
-    {
-
-        $product = ProductLine::findOrFail($request->product_id);
-
-        if (! $quantity = $request->quantity)
-        {
-
-            $quantity = 1;
-
-        }
-
-        $cart = Cart::firstOrCreate(
-            // [
-            //     'user_id' => auth()->id(),
-            // ]
-        );
-
-        $cartProduct = $cart->products()->where('product_line_id', $request->product_id)->first();
-
-        if ($cartProduct)
-        {
-
-            # If the product is already in the cart, increment the quantity
-            $cartProduct->pivot->quantity += $quantity;
-            $cartProduct->pivot->save();
-        
-        }
-        else
-        {
-            
-            # If the product is not in the cart, add it with a quantity of 1
-            $cart->products()->attach($request->product_id, ['quantity' => $quantity]);
-        
-        }
-
-        return $cart;
-
     }
 
     private function getBodyWidgets()

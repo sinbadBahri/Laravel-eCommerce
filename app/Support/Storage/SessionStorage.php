@@ -102,13 +102,20 @@ class SessionStorage implements StorageInterface, Countable
     /**
      * Returns the count of all items stored in the session storage bucket.
      *
+     * If the storage is empty, it returns 0.
+     * 
      * @return int The count of items in the session storage bucket.
      */
     public function count(): int
     {
+        if (!$this->all() == null)
+        {
 
-        return session()->count($this->all());
-    
+            return count($this->all());
+            
+        }
+
+        return 0;
     }
 
 }

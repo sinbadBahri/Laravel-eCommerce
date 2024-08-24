@@ -3,38 +3,28 @@
 namespace App\Support\Master;
 
 use App\Models\Blog\Genre;
-use App\Models\Cart;
+use App\Support\Basket\Basket;
 
 class Navbar
 {
 
-    public $cartItems;
-
     public $genres;
+    private $basket;
+    
 
-    public function __construct()
+    public function __construct(Basket $basket)
     {
 
-        $this->cartItems = $this->getCartTotal();;
         $this->genres = Genre::all();
+        $this->basket = $basket;
+
     }
 
-    private function getCartTotal()
+    public function getCartTotal()
     {
 
-        $cartItems = 0;
-
-        if (Cart::exists())
-        {
-
-            // $cart_id = TmpCart::where('user_id', auth()->id())->id;  # If we have already defined the authentication system.
-            $cart_id = Cart::first()->id;
-            $cartItems = Cart::getTotalQuantity(cart_id:$cart_id);
-
-        }
-
-        return $cartItems;
-
+        return $this->basket->itemCount();
+     
     }
     
 }
