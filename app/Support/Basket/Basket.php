@@ -93,6 +93,22 @@ class Basket
         
     }
 
+    public function allProducts()
+    {
+        if($product_line_ids = $this->storage->all())
+        {
+
+            $products = ProductLine::find(array_keys($product_line_ids));
+            
+            foreach ($products as $product)
+            {
+                $product->quantity = $this->get($product)['quantity'];
+            }
+    
+            return $products;
+        }
+    }
+
 
     /**
      * Updates the quantity of a product line in the basket.

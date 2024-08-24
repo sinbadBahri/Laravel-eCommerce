@@ -31,12 +31,15 @@ class BasketController extends Controller
         $navbar_footer_content = $this->master->setNavbarAndFooter();
 
         # Body Widgets
+        $productCollection = $this->basket->allProducts();
+        
         
         $content = array_merge(
             # Navbar & Footer
             $navbar_footer_content,
-
+            
             # Body Widgets
+            ['productCollection' => $productCollection],
         );
         
         return view("finance.basket", $content);

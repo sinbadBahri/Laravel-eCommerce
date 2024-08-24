@@ -6,6 +6,11 @@ use App\Models\Footer\ContactUs;
 use App\Models\Footer\Rivas;
 use App\Models\Footer\SocialMedia;
 
+/**
+ * Class representing the Footer of the website.
+ * 
+ * This class manages the footer items such as Contact Us, Social Media etc.
+ */
 class Footer
 {
     protected $contactUsItems;
