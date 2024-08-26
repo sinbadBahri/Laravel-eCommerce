@@ -23,7 +23,8 @@ class Discount extends Model
     public function users()
     {
 
-        return $this->belongsToMany(
+        return $this->belongsToMany
+        (
             related: User::class,
             table: "discount_user_relations",
         );
@@ -39,6 +40,25 @@ class Discount extends Model
         $user_id = JWTAuth::user()->id;
 
         return $this->users()->where("user_id", $user_id)->exists();
+        
+    }
+
+    /**
+     * Returns the discount amount based on the given price.
+     * 
+     * Calculates the discounted price based on the discount percentage and maximum amount.
+     *
+     * @param int $price The original price before discount.
+     * @return float The calculated discount amount.
+     */
+    public function getDiscountAmount(int $price): float
+    {
+
+        $discountAmount = ($price <= $this->max_amount)
+        ? ($price * $this->percentage) / 100
+        : ($this->max_amount * $this->percentage) / 100;
+
+        return $discountAmount;
         
     }
 }

@@ -87,7 +87,7 @@ class ProductLine extends Model
      * @param string|null $discount_code The discount code to apply (optional)
      * @return float The final price of the product line after applying discounts
      */
-    public function getFinalPrice(string $discount_code = null)
+    public function getFinalPrice(string $discount_code = null): float
     {
         
         if (! $discount = $this->addDiscountFromCode($discount_code))
@@ -135,7 +135,7 @@ class ProductLine extends Model
      * @param Discount $discount The discount to apply.
      * @return float The final price considering the discount.
      */
-    private function calculateDiscountedPrice(Discount $discount)
+    private function calculateDiscountedPrice(Discount $discount): float
     {
 
         $price = $this->price;
@@ -143,11 +143,7 @@ class ProductLine extends Model
         if ($discount && $discount->valid_until > now())
         {
 
-            $discountAmount = ($price <= $discount->max_amount)
-            ? ($price * $discount->percentage) / 100
-            : ($discount->max_amount * $discount->percentage) / 100;
-
-            return $price - $discountAmount;
+            return $price - $discount->getDiscountAmount(price: $price);
 
         }
 

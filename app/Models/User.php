@@ -95,7 +95,8 @@ class User extends Authenticatable implements JWTSubject
     public function discounts()
     {
 
-        return $this->belongsToMany(
+        return $this->belongsToMany
+        (
             related: Discount::class,
             table: 'discount_user_relations',
         );
