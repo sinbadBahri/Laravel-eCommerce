@@ -122,8 +122,11 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
 
         <div class="text-center mt-3">
             <div class="btn-group">
-                <button class="arrow-btn"><i class="bi bi-arrow-left"></i></button>
-                <button class="submit-btn">ادامه ثبت سفارش</button>
+                <a href="/checkout">
+                    <button class="arrow-btn"><i class="bi bi-arrow-left"></i></button>
+
+                    <button class="submit-btn">ادامه ثبت سفارش</button>
+                </a>
 
             </div>
         </div>

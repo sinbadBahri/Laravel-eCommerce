@@ -44,6 +44,14 @@ class MainController extends Controller
         
     }
 
+    /**
+     * Retrieves various widgets including product sliders, best sellers, special offers, laptops, mobiles, categories, and posts.
+     * 
+     * These widgets return as a key-value array, so that can be pushed as a content data to
+     * the Blade files.
+     *
+     * @return array Contains the retrieved widgets for display on the main page.
+     */
     private function getBodyWidgets()
     {
         
@@ -58,7 +66,7 @@ class MainController extends Controller
         $mobile_widget = ProductWidget::with('products.images')->where('is_active', true)
         ->where('title', 'موبایل ها')->first();
         $category_widget = CategoryWidget::with('categories.image')->where('is_active', true)->first();
-        $posts = $this->showPostsFromWidget('main-page', 3);
+        $posts = $this->showPostsFromWidget(3);
         
         $widget_content = [
 
@@ -76,7 +84,17 @@ class MainController extends Controller
 
     }
 
-    private function showPostsFromWidget(string $widgetTitle, int $number)
+    /**
+     * Retrieves posts from a specific widget based on the widget title and the number of posts to fetch.
+     * 
+     * By default the name of widget defined as "main-page".
+     * Do not change the default value if it's not necessary.
+     * 
+     * @param int $number The number of posts to fetch.
+     * @param string $widgetTitle The title of the widget to retrieve posts from. Default is 'main-page'.
+     * @return array|null The array of posts if the widget is active and posts are retrieved, otherwise null.
+     */
+    private function showPostsFromWidget(int $number, string $widgetTitle = 'main-page')
     {
 
         $widget = PostWidget::where('title', $widgetTitle)->first();

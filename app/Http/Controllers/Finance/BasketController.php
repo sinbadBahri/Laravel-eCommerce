@@ -9,13 +9,24 @@ use App\Support\Basket\Basket;
 use App\Support\Master\Master;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class BasketController extends Controller
+class BasketController extends Controller implements HasMiddleware
 {
     
     private $basket;
     private $master;
     
+
+    public static function middleware()
+    {
+
+        return [
+            new Middleware(middleware: 'auth', only: ['index']),
+        ];
+        
+    }
     
     public function __construct(Basket $basket, Master $master)
     {
