@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Finance\Discount;
 use App\Models\Finance\Wallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,11 +79,27 @@ class User extends Authenticatable implements JWTSubject
         
     }
 
+    /**
+     * Automatically creates a Wallet instance for the user whenever a User Model creates.
+     */
     protected static function booted()
     {
         static::created(function ($user) {
             $user->wallet()->create();
         });
+    }
+
+    /**
+     * Define a many-to-many relationship with the Discount model 
+     */
+    public function discounts()
+    {
+
+        return $this->belongsToMany(
+            related: Discount::class,
+            table: 'discount_user_relations',
+        );
+        
     }
 
 }
