@@ -34,7 +34,7 @@
                    @endauth 
                    
                 @endif
-                <li><a href="#" class="mybtn"><i class="fa fa-cart-arrow-down"></i>سبد : {{$cartItems}}</a></li>
+                <li><a href="/basket" class="mybtn"><i class="fa fa-cart-arrow-down"></i>سبد : {{$cartItems}}</a></li>
              </ul>
           </div>
        </div>

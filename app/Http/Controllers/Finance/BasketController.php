@@ -32,6 +32,7 @@ class BasketController extends Controller
 
         # Body Widgets
         $productCollection = $this->basket->allProducts();
+        $totalPrice = $this->basket->subTotal();
         
         
         $content = array_merge(
@@ -39,7 +40,10 @@ class BasketController extends Controller
             $navbar_footer_content,
             
             # Body Widgets
-            ['productCollection' => $productCollection],
+            [
+                'productCollection' => $productCollection,
+                'totalPrice'=> $totalPrice,
+            ],
         );
         
         return view("finance.basket", $content);
@@ -66,13 +70,22 @@ class BasketController extends Controller
         
     }
 
-    public function delete()
+    public function clearAll(): RedirectResponse
     {
 
         $this->basket->clear();
 
         return redirect()->back()->with("success", __("Basket Cleared"));
         
+    }
+
+    public function remove(Request $request): RedirectResponse
+    {
+
+        $this->basket->remove($request->productLineId);
+
+        return redirect()->back()->with("success", __("Item Removed Successfully"));
+    
     }
 
     /**

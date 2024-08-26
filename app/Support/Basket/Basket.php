@@ -70,6 +70,16 @@ class Basket
     }
 
     /**
+     * Removes a specific product line from the basket.
+     */
+    public function remove(int $id)
+    {
+
+        $this->storage->unset($id);
+        
+    }
+
+    /**
      * Clears all product lines from the basket.
      */
     public function clear()
@@ -93,6 +103,14 @@ class Basket
         
     }
 
+    /**
+     * Retrieves all product lines from the basket.
+     * 
+     * If there are product line IDs in the storage, retrieves the corresponding products
+     * and sets the quantity for each product based on the stored quantity in the basket.
+     * 
+     * @return array|null The array of products with updated quantities, or null if no products are found.
+     */
     public function allProducts()
     {
         if($product_line_ids = $this->storage->all())
@@ -107,6 +125,28 @@ class Basket
     
             return $products;
         }
+    }
+
+    /**
+     * Calculates the subtotal of all products in the basket.
+     */
+    public function subTotal(): float
+    {
+
+        $total = 0;
+
+        if ($products = $this->allProducts())
+        {
+
+            foreach ($products as $product)
+            {
+                $total += $product->price * $product->quantity;
+            }
+        
+        }
+
+        return $total;
+        
     }
 
 

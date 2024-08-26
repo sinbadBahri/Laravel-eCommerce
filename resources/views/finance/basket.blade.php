@@ -52,16 +52,22 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
             <div class="col-sm-12 col-md-8 col-xl-3 col-xxl-3 text-center text-md-start text-xl-center">
                 
                 <div class="btn-group">
-                    <button class="add-btn"><i class="bi bi-plus"></i></button>
+                    <form action="/basket/add" method="POST">
+                        @csrf
+                        <button name="productLine" value="{{$product->id}}" type="submit" class="add-btn"><i class="bi bi-plus"></i></button>
+                    </form>
                     <button class="numb-btn">{{$product->quantity}}</button>
-                    <button class="trash-btn"><i class="bi bi-trash"></i></button>
+                    <form action="/basket/remove-product" method="POST">
+                    @csrf
+                    <button name="productLineId" value="{{$product->id}}" type="submit" class="trash-btn"><i class="bi bi-trash"></i></button>
+                    </form>
                     <button class="count-btn">تعداد</button>
                 </div>
                 
                 
             </div>
             <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-3 text-center text-xl-center">
-                <p>قیمت : {{$product->price}} تومان</p>
+                <p>قیمت : {{$product->price * $product->quantity}} تومان</p>
             </div>
         </div>
         @endforeach
@@ -81,7 +87,7 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
                 مبلغ کل
             </div>
             <div class="col-md-6">
-                777 تومان
+                {{$totalPrice}} تومان
             </div>
         </div>
 

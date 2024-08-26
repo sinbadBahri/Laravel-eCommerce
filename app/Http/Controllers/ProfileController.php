@@ -33,7 +33,7 @@ class ProfileController extends Controller
     {
         
         # Navbar
-        $cartItems = $this->navbar->cartItems;
+        $cartItems = $this->navbar->getCartTotal();
         $genres = $this->navbar->genres;
         
         # Body

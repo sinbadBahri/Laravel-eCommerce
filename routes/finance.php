@@ -5,4 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/basket', [BasketController::class,'index'])->name('basket');
 Route::post('/basket/add', [BasketController::class, 'add']);
-Route::get('/basket/clear-all', [BasketController::class,'delete']);
+Route::get('/basket/clear-all', [BasketController::class,'clearAll']);
+Route::post('/basket/remove-product', [BasketController::class,'remove']);
