@@ -15,4 +15,5 @@ Route::post('/basket/remove-product', [BasketController::class,'remove']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class,'index']);
+    Route::post('/checkout', [CheckoutController::class,'checkout']);
 });

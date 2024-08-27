@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Finance\Discount;
+use App\Models\Finance\Order;
 use App\Models\Finance\Tax;
 use App\Models\Images\ProductImage;
 use App\Models\Widgets\ProductWidget;
@@ -43,6 +44,17 @@ class ProductLine extends Model
     {
 
         return $this->hasMany(related:ProductImage::class);
+        
+    }
+
+    public function orders()
+    {
+
+        return $this->belongsToMany
+        (
+            related: Order::class,
+            table: 'order_items',
+        );
         
     }
 

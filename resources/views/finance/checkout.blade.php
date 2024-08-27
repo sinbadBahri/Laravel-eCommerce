@@ -64,11 +64,12 @@
                 <p>
                   کاربران گرامی جهت پرداخت میتوانند از به واسطه درگاه پرداخت آنلاین یا از طریق کیف پول اقدام نمایند.
                 </p>
-                <form class="pb-3">
+                <form action="/checkout" method="POST" class="pb-3">
+                  @csrf
                   <div class="d-flex flex-row pb-3">
                     <div class="d-flex align-items-center pe-2">
-                      <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel1"
-                        value="" aria-label="..." checked />
+                      <input class="form-check-input" type="radio" name="method" id="radioNoLabel1"
+                        value="wallet" aria-label="..." checked />
                     </div>
                     <div class="rounded border d-flex w-100 p-3 align-items-center">
                       <p class="mb-0">
@@ -80,8 +81,8 @@
   
                   <div class="d-flex flex-row">
                     <div class="d-flex align-items-center pe-2">
-                      <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel2"
-                        value="" aria-label="..." />
+                      <input class="form-check-input" type="radio" name="method" id="radioNoLabel2"
+                        value="bank" aria-label="..." />
                     </div>
                     <div class="rounded border d-flex w-100 p-3 align-items-center">
                       <p class="mb-0">
