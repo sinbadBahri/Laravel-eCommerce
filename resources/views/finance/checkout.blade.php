@@ -23,10 +23,34 @@
               <p>
                 اطلاعات خود را چک کنید. اگر حتی یک مورد نادرست درج شده و یا هدم تطابق با اطلاعات شخصی شما دارد ، حتما قبل از پرداخت با پشتیبانی هماهنگ کنید.
               </p>
+              @if (JWTAuth::user()->userInformation)
               <div class="rounded d-flex bg-body-tertiary">
-                <div class="p-2">Aetna-Open Access</div>
-                <div class="ms-auto p-2">OAP</div>
+                    
+                <div class="p-2">نام</div>
+                <div class="ms-auto p-2">{{JWTAuth::user()->name}}</div>
               </div>
+              <div class="rounded d-flex bg-body-tertiary">
+                <div class="p-2">نام خانوادگی</div>
+                <div class="ms-auto p-2">{{JWTAuth::user()->userInformation->lastName}}</div>
+              </div>
+              <div class="rounded d-flex bg-body-tertiary">
+
+                <div class="p-2">شماره</div>
+                <div class="ms-auto p-2">{{JWTAuth::user()->userInformation->countryId}}-{{JWTAuth::user()->userInformation->number}}+</div>
+              </div>
+              <div class="rounded d-flex bg-body-tertiary">
+
+                <div class="p-2">آدرس</div>
+                <div class="ms-auto p-2">{{JWTAuth::user()->userInformation->address}}</div>
+              </div>
+              <div class="rounded d-flex bg-body-tertiary">
+
+                <div class="p-2">کد پستی</div>
+                <div class="ms-auto p-2">{{JWTAuth::user()->userInformation->zipCode}}</div>
+              </div>
+              @else
+              <h5>پروفایل خود را تکمیل کنید.</h5>
+              @endif
               <hr />
               <div class="pt-2">
                   <h4>انتخاب روش پرداخت</h4>

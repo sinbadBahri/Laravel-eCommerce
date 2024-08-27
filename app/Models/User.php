@@ -90,7 +90,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Define a many-to-many relationship with the Discount model 
+     * Define a many-to-many relationship with the Discount model.
      */
     public function discounts()
     {
@@ -100,6 +100,16 @@ class User extends Authenticatable implements JWTSubject
             related: Discount::class,
             table: 'discount_user_relations',
         );
+        
+    }
+
+    /**
+     * Defines a one-to-one relationship with the UserInformation model.
+     */
+    public function userInformation()
+    {
+
+        return $this->hasOne(UserInformation::class);
         
     }
 
