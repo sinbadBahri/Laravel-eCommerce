@@ -149,6 +149,25 @@ class Basket
         
     }
 
+    public function getTotalWithDiscount(string $code = null)
+    {
+
+        $totalWithDiscount = 0;
+        
+        if ($products = $this->allProducts())
+        {
+
+            foreach ($products as $product)
+            {
+                $totalWithDiscount += $product->getFinalPrice($code) * $product->quantity;
+            }
+        
+        }
+
+        return $totalWithDiscount;
+        
+    }
+
 
     /**
      * Updates the quantity of a product line in the basket.

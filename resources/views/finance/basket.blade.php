@@ -44,10 +44,14 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
             <div class="col-md-9 col-xl-3 col-xxl-3 text-center p-4">
                 <h4>{{$product->title}}</h4>
                 <p style="color: #6A6A6A; font-size: 14px; padding-top: 10px;">قیمت محصول:</p>
+                @if ($product->price == $product->getFinalPrice())
+                <p style="font-size: 18px ;">{{$product->getFinalPrice()}} تومان</p>
+                @else   
                 <span
-                style="text-decoration: line-through; font-size: 13px; text-decoration-color: #c412f5;">145,000
+                style="text-decoration: line-through; font-size: 13px; text-decoration-color: #c412f5;">{{$product->price}}
                 تومان</span>
-                <p style="font-size: 18px ;">{{$product->price}} تومان</p>
+                <p style="font-size: 18px ;">{{$product->getFinalPrice()}} تومان</p>
+                @endif
             </div>
             <div class="col-sm-12 col-md-8 col-xl-3 col-xxl-3 text-center text-md-start text-xl-center">
                 
@@ -67,7 +71,7 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
                 
             </div>
             <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-3 text-center text-xl-center">
-                <p>قیمت : {{$product->price * $product->quantity}} تومان</p>
+                <p>قیمت : {{$product->getFinalPrice() * $product->quantity}} تومان</p>
             </div>
         </div>
         @endforeach
@@ -96,7 +100,7 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
                 تخفیف
             </div>
             <div class="col-md-6 text-primary" style="font-family: myvazir;">
-                777 تومان
+                {{$totalPrice - $finalPriceWithDiscount}} تومان
             </div>
         </div>
 
@@ -115,7 +119,7 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
             </div>
             <div class="pt-3">
                 <h5 class="text-warning">
-                    777 <span style="font-size: 16px;">تومان</span>
+                    {{$finalPriceWithDiscount}} <span style="font-size: 16px;">تومان</span>
                 </h5>
             </div>
         </div>

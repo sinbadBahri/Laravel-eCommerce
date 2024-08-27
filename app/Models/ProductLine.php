@@ -108,7 +108,7 @@ class ProductLine extends Model
      * @param string $code The discount code to search for.
      * @return Discount|null The discount if found and valid; otherwise, null.
      */
-    private function addDiscountFromCode(string $code)
+    private function addDiscountFromCode(string $code = null)
     {
 
         $discount = Discount::where('code', $code)->first();
@@ -135,7 +135,7 @@ class ProductLine extends Model
      * @param Discount $discount The discount to apply.
      * @return float The final price considering the discount.
      */
-    private function calculateDiscountedPrice(Discount $discount): float
+    private function calculateDiscountedPrice(Discount $discount = null): float
     {
 
         $price = $this->price;

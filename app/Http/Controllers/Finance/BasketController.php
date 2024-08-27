@@ -44,6 +44,7 @@ class BasketController extends Controller implements HasMiddleware
         # Body Widgets
         $productCollection = $this->basket->allProducts();
         $totalPrice = $this->basket->subTotal();
+        $finalPriceWithDiscount = $this->basket->getTotalWithDiscount();
         
         
         $content = array_merge(
@@ -53,7 +54,8 @@ class BasketController extends Controller implements HasMiddleware
             # Body Widgets
             [
                 'productCollection' => $productCollection,
-                'totalPrice'=> $totalPrice,
+                'totalPrice' => $totalPrice,
+                'finalPriceWithDiscount' => $finalPriceWithDiscount,
             ],
         );
         
