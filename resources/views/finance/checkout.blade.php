@@ -12,7 +12,7 @@
                 <h5><span class="far fa-check-square pe-2"></span><b> پرداخت</b> |</h5>
                 <span class="ps-2">ریواس</span>
               </div>
-              <h4 class="text-success">$85.00</h4>
+              <h4 class="text-success">{{$totalWithTax}} تومان</h4>
               <h4>اطلاعات شخصی</h4>
               <div class="d-flex pt-2">
                 <div class="ms-auto">
@@ -106,47 +106,33 @@
                   <h4>فاکتور خرید</h4>
                 </div>
                 <div class="p-2 d-flex">
-                  <div class="col-8">Contracted Price</div>
-                  <div class="ms-auto">$186.76</div>
+                  <div class="col-8">قیمت کالا(ها)</div>
+                  <div class="ms-auto">{{$totalPrice}}</div>
                 </div>
                 <div class="p-2 d-flex">
-                  <div class="col-8">Amount toward deductible</div>
-                  <div class="ms-auto">$0.00</div>
+                  <div class="col-8">میزان تخفیف اعمال شده</div>
+                  <div class="ms-auto">{{$totalPrice - $finalPriceWithDiscount}} -</div>
                 </div>
                 <div class="p-2 d-flex">
-                  <div class="col-8">Coinsurance( 0% )</div>
-                  <div class="ms-auto">+ $0.00</div>
-                </div>
-                <div class="p-2 d-flex">
-                  <div class="col-8">Copayment</div>
-                  <div class="ms-auto">+ $40.00</div>
+                  <div class="col-8">ملبغ کل بعد از تخفیف</div>
+                  <div class="ms-auto">{{$finalPriceWithDiscount}}</div>
                 </div>
                 <div class="border-top px-2 mx-2"></div>
                 <div class="p-2 d-flex pt-3">
-                  <div class="col-8">Total Deductible, Coinsurance, and Copay</div>
-                  <div class="ms-auto">$40.00</div>
+                  <div class="col-8">درصد مالیات</div>
+                  <div class="ms-auto">{{$taxPercentage}} % </div>
                 </div>
                 <div class="p-2 d-flex">
                   <div class="col-8">
-                    Maximum out-of-pocket on Insurance Policy (not reached)
+                    مبلغ مالیت اضافه شده
                   </div>
-                  <div class="ms-auto">$6500.00</div>
+                  <div class="ms-auto">{{$totalWithTax - $finalPriceWithDiscount}} +</div>
                 </div>
                 <div class="border-top px-2 mx-2"></div>
-                <div class="p-2 d-flex pt-3">
-                  <div class="col-8">Insurance Responsibility</div>
-                  <div class="ms-auto"><b>$71.76</b></div>
-                </div>
-                <div class="p-2 d-flex">
-                  <div class="col-8">
-                    Patient Balance <span class="fa fa-question-circle text-dark"></span>
-                  </div>
-                  <div class="ms-auto"><b>$71.76</b></div>
-                </div>
                 <div class="border-top px-2 mx-2"></div>
                 <div class="p-2 d-flex pt-3">
-                  <div class="col-8"><b>Total</b></div>
-                  <div class="ms-auto"><b class="text-success">$85.00</b></div>
+                  <div class="col-8"><b>مبلغ نهایی</b></div>
+                  <div class="ms-auto"><b class="text-success">{{$totalWithTax}} تومان</b></div>
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Support\Basket;
 
 use App\Exceptions\QuantityExceededException;
+use App\Models\Finance\Tax;
 use App\Models\ProductLine;
 use App\Support\Storage\Contracts\StorageInterface;
 
@@ -128,9 +129,9 @@ class Basket
     }
 
     /**
-     * Calculates the subtotal of all products in the basket.
+     * Calculates the tax-free total price of all products in the basket.
      */
-    public function subTotal(): float
+    public function getTaxFreeTotal(): float
     {
 
         $total = 0;
@@ -149,7 +150,16 @@ class Basket
         
     }
 
-    public function getTotalWithDiscount(string $code = null)
+    /**
+     * Calculates the total price with discount applied.
+     *
+     * This method iterates over all products in the basket, calculates the final price of each product
+     * with the provided discount code, and accumulates the total price with discount.
+     *
+     * @param string|null $code The discount code to apply (optional).
+     * @return float The total price with discount applied.
+     */
+    public function getTotalWithDiscount(string $code = null): float
     {
 
         $totalWithDiscount = 0;
@@ -165,6 +175,22 @@ class Basket
         }
 
         return $totalWithDiscount;
+        
+    }
+
+    /**
+     * Returns the total amount with tax included.
+     *
+     * This method calculates the total amount with tax by adding the total amount with discount to the tax amount.
+     *
+     * @return float The total amount with tax included.
+     */
+    public function getTotalWithTax(): float
+    {
+
+        $totalWithDiscount = $this->getTotalWithDiscount();
+
+        return $totalWithDiscount + Tax::calculateTax($totalWithDiscount);
         
     }
 

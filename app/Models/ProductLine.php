@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Finance\Discount;
+use App\Models\Finance\Tax;
 use App\Models\Images\ProductImage;
 use App\Models\Widgets\ProductWidget;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -149,6 +150,29 @@ class ProductLine extends Model
 
         return $price;
         
+    }
+
+    public function tax()
+    {
+
+        return $this->belongsTo(Tax::class);
+        
+    }
+
+    
+    /**
+     * Boot method for the ProductLine model.
+     * 
+     * Sets up a creating event listener to automatically assign a Tax to each ProductLine instance.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $tax = Tax::first();
+            $model->tax()->associate($tax);
+        });
     }
 
 }

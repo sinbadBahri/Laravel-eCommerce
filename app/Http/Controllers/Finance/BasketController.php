@@ -43,7 +43,7 @@ class BasketController extends Controller implements HasMiddleware
 
         # Body Widgets
         $productCollection = $this->basket->allProducts();
-        $totalPrice = $this->basket->subTotal();
+        $totalPrice = $this->basket->getTaxFreeTotal();
         $finalPriceWithDiscount = $this->basket->getTotalWithDiscount();
         
         
