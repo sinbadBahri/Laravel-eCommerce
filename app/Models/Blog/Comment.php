@@ -4,6 +4,7 @@ namespace App\Models\Blog;
 
 use App\Models\User;
 use App\Models\Widgets\CommentWidget;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +36,11 @@ class Comment extends Model
     
     }
 
+    /**
+     * Returns all the parents of of the parent.
+     * 
+     * @return Collection Comment Collection which includes all the parents of the Comment instance.
+     */
     public function nestedParents()
     {
     
@@ -44,7 +50,6 @@ class Comment extends Model
         $nestedParents = $parents->flatMap(function ($parent) {
 
             $ancestors = collect();
-            echo $ancestors;
 
             while ($parent) {
                 $ancestors->push($parent);
@@ -59,7 +64,12 @@ class Comment extends Model
         
     }
 
-    public function nestedChildren()
+    /**
+     * Returns all the children of the children.
+     * 
+     * @return Collection Comment Collection which includes all the children of the Comment instance.
+     */
+    public function nestedChildren(): Collection
     {
         $children = $this->children()->get();
     
@@ -76,7 +86,6 @@ class Comment extends Model
             return $descendants;
         });
     
-        # Ensure all comments are unique by ID
         return $nestedChildren->unique('id');
     }
 
@@ -103,21 +112,6 @@ class Comment extends Model
             table: 'comments_widgets_relations',
         );
         
-    }
-
-    private function getCategoryWithAncestors(Comment $comment)
-    {
-
-        $ancestors = collect();
-
-        // Recursively gather parent categories
-        while ($comment) {
-            $ancestors->push($comment);
-            $comment = $comment->parent;
-        }
-
-        return $ancestors;
-    
     }
 
 }

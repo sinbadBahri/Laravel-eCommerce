@@ -64,7 +64,7 @@ class CommentController extends Controller
      * Do not change the default value if it's not necessary.
      * 
      * @param string $widget_title
-     * @param \App\Models\Blog\Comment $comment
+     * @param Comment $comment
      * @return void
      */
     private function addCommentToWidget(Comment $comment, string $widget_title = "main")
