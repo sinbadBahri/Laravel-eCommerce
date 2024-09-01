@@ -16,9 +16,10 @@
                      {{$product->price}}  
                   </span>
                   <br>
-                  <form action="/basket/add" method="POST">
+                  <form id="product-form-{{ $product->id }}" class="product-form" action="/basket/add" method="POST">
                      @csrf
-                     <button name="productLine" value="{{$product->id}}" type="submit" class="btn btn-secondary btn-sm">اضافه به سبدخرید</button>
+                     <input type="hidden" name="productLine" value="{{ $product->id }}">
+                     <button type="submit" class="btn btn-secondary btn-sm" data-product-id="{{ $product->id }}">اضافه به سبدخرید</button>
                   </form>
                </div>
                @endforeach
@@ -29,3 +30,8 @@
 </div>
 @endif
 @endif
+
+
+<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/toaster.js') }}"></script>

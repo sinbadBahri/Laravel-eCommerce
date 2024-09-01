@@ -63,7 +63,7 @@ class BasketController extends Controller implements HasMiddleware
         
     }
 
-    public function add(Request $request): RedirectResponse
+    public function add(Request $request)
     {
 
         try
@@ -71,13 +71,13 @@ class BasketController extends Controller implements HasMiddleware
         
             $this->updateBasket($request);
     
-            return redirect()->back()->with("success", __("Product Added"));
+            return response()->json(['success' => true, 'message' => __("Product Added")]);
         
         }
         catch (QuantityExceededException $exception)
         {
 
-            return redirect()->back()->with("error", __("No More Product Left"));
+            return response()->json(['success' => false, 'message' => __("No More Product Left")], 400);
         
         }
         

@@ -109,4 +109,12 @@ class MainController extends Controller
         }
     }
 
+    public function reloadCartItems()
+    {
+        $masterContent = $this->master->setNavbarAndFooter();
+        $cartItems = $masterContent['cartItems'];
+        return response()->json(['cartItems' => $cartItems]);
+        
+    }
+
 }
