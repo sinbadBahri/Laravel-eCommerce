@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance;
 
+use App\Exceptions\EmptyBasketException;
 use App\Http\Controllers\Controller;
 use App\Models\Finance\Tax;
 use App\Support\Basket\Basket;
@@ -19,9 +20,11 @@ class CheckoutController extends Controller
 
     public function __construct(Basket $basket, Master $master, Transaction $transaction)
     {
+
         $this->basket = $basket;
         $this->master = $master;
         $this->transaction = $transaction;
+
     }
 
     public function index()
@@ -46,7 +49,19 @@ class CheckoutController extends Controller
 
     public function checkout(Request $request)
     {
-        return $this->transaction->checkout();
+        try
+        {
+
+            return $this->transaction->checkout();
+        
+        }
+        catch (EmptyBasketException $exception)
+        {
+
+            return redirect('/basket')->with("error", __("Your Basket is Empty"));
+
+        }
+
     }
 
     private function getBodyContent()
@@ -71,4 +86,5 @@ class CheckoutController extends Controller
         return $content;
 
     }
+
 }

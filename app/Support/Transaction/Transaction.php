@@ -2,6 +2,7 @@
 
 namespace App\Support\Transaction;
 
+use App\Exceptions\EmptyBasketException;
 use App\Models\Finance\Order;
 use App\Models\Finance\Payment;
 use App\Support\Basket\Basket;
@@ -33,6 +34,9 @@ class Transaction
      */
     public function checkout()
     {
+
+        $this->ensureBasketNotEmpty();
+        
         $order = $this->makeOrder();
         $payment = $this->makePayment($order);
 
@@ -113,6 +117,16 @@ class Transaction
     private function gateway($payment)
     {
         dd('This Part is not Ready');
+    }
+
+    private function ensureBasketNotEmpty()
+    {
+
+        if ($this->basket->itemCount() == 0)
+        {
+            throw new EmptyBasketException();
+        }
+        
     }
     
 }
