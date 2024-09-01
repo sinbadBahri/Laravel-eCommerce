@@ -19,7 +19,9 @@ class Order extends Model
         (
             related: ProductLine::class,
             table: 'order_items',
-        );
+        )
+        ->withPivot('quantity')
+        ->withTimestamps();
         
     }
 }

@@ -116,5 +116,5 @@ class MainController extends Controller
         return response()->json(['cartItems' => $cartItems]);
         
     }
-
+    
 }

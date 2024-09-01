@@ -4,6 +4,7 @@ namespace App\Support\Wallet;
 
 use App\Models\Finance\Payment;
 use App\Models\Finance\WalletHistory;
+use App\Models\ProductLine;
 use App\Support\Basket\Basket;
 use Illuminate\Http\RedirectResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -54,8 +55,9 @@ class Wallet
                 $this->updateUserPayment($payment);
                 
                 $this->basket->clear();
+                ProductLine::updateStock($payment);
                 
-                return redirect('/basket')->with('success', '200');
+                return redirect('/basket')->with('success', 'Your Payment has been completed!');
                 
             }
             return redirect('/basket')->with("error","Your Balance is not enough");

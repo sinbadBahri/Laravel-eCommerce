@@ -4,7 +4,7 @@ namespace App\Models\Blog;
 
 use App\Models\User;
 use App\Models\Widgets\CommentWidget;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

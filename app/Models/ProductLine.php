@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Finance\Discount;
 use App\Models\Finance\Order;
+use App\Models\Finance\Payment;
 use App\Models\Finance\Tax;
 use App\Models\Images\ProductImage;
 use App\Models\Widgets\ProductWidget;
@@ -54,7 +55,9 @@ class ProductLine extends Model
         (
             related: Order::class,
             table: 'order_items',
-        );
+        )
+        ->withPivot('quantity')
+        ->withTimestamps();
         
     }
 
@@ -185,6 +188,29 @@ class ProductLine extends Model
             $tax = Tax::first();
             $model->tax()->associate($tax);
         });
+    }
+
+    /**
+     * This Static method is responsible for updating the stock-quantity of product lines
+     * after each payment transaction.
+     * 
+     * @param Payment $payment finds which products to update regarding this payment. 
+     * @return void
+     */
+    public static function updateStock(Payment $payment)
+    {
+
+        $product_lines = $payment->order->products;
+
+
+        foreach ($product_lines as $product_line)
+        {
+
+            $product_line->stock_qty -= $product_line->pivot->quantity;
+            $product_line->save();
+
+        }
+        
     }
 
 }

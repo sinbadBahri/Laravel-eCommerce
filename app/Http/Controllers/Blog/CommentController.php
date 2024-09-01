@@ -34,7 +34,7 @@ class CommentController extends Controller
 
         $this->addCommentToWidget(comment: $comment);
 
-        return redirect()->back()->with('success','201');
+        return redirect()->back()->with('success','Comment Sent !');
         
     }
 

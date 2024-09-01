@@ -92,6 +92,9 @@ class Transaction
         
     }
 
+    /**
+     * Refers to other methods of the same class for continuing the purchase process.
+     */
     private function checkoutMethod(Payment $payment)
     {
 
