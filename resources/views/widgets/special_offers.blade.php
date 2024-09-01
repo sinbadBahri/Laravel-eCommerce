@@ -19,15 +19,16 @@
              <div class="col-md-6">
                 <div class="vizheh-content">
                    <div><del>{{$product->price}}</del></div>
-                   <h4>685,000 تومان</h4>
+                   <h4>{{$product->getFinalPrice()}} تومان</h4>
                    <h3>{{$product->product->name}}</h3>
                    <ul>
                       {{-- <li>حافظه داخلی 32 گیگابایت</li> --}}
                       <li>تعداد موجود در انبار  : {{$product->stock_qty}}</li>
                    </ul>
                    <hr>
-                   <span>زمان باقیمانده تا پایان سفارش</span> 
-                   <div class="counter" data-minutes-left="1000"></div>
+                   <span>زمان باقیمانده تا پایان سفارش</span>
+                  
+                   <div class="counter" data-minutes-left="{{$product->discount->getHoursRemaining()}}"></div>
                 </div>
              </div>
              <div class="vizheh-tag">

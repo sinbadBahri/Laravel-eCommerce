@@ -78,7 +78,7 @@ class Product extends Model
         public function productLines()
         {
     
-            return $this->hasMany
+            return $this->hasMany 
             (
                 related: ProductLine::class,
                 foreignKey: 'product_id',

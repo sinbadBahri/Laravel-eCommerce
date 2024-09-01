@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
         auth('web')->factory()->getTTL() * 60, # Expiration in minutes
         '/',    # Path
         null,   # Domain (null for default)
-        true,   # Secure (true for HTTPS)
+        false,   # Secure (true for HTTPS)
         true    # HttpOnly
         );
     }

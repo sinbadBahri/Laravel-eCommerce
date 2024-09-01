@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Carbon\Carbon;
 
 class Discount extends Model
 {
@@ -34,12 +35,15 @@ class Discount extends Model
     /**
      * Checks if the discount is valid for the currently authenticated user.
      */
-    public function isValidForUser(): bool
+    public function isValidForUser()
     {
 
-        $user_id = JWTAuth::user()->id;
-
-        return $this->users()->where("user_id", $user_id)->exists();
+        try {
+            $user_id = JWTAuth::user()->id;
+    
+            return $this->users()->where("user_id", $user_id)->exists();
+        } catch (\Throwable $th) {
+        }
         
     }
 
@@ -59,6 +63,18 @@ class Discount extends Model
         : ($this->max_amount * $this->percentage) / 100;
 
         return $discountAmount;
+        
+    }
+    
+    public function getHoursRemaining()
+    {
+
+        $futureDate = Carbon::parse($this->valid_until);
+
+        $now = Carbon::now();
+
+        # Calculate the difference in hours
+        return $now->diffInHours($futureDate);
         
     }
 }
