@@ -35,6 +35,51 @@ class Comment extends Model
     
     }
 
+    public function nestedParents()
+    {
+    
+        $parents = $this->parent()->get();
+        
+
+        $nestedParents = $parents->flatMap(function ($parent) {
+
+            $ancestors = collect();
+            echo $ancestors;
+
+            while ($parent) {
+                $ancestors->push($parent);
+                $parent = $parent->parent;
+            }
+    
+            return $ancestors;
+        
+        });
+
+        return $nestedParents->unique('id');
+        
+    }
+
+    public function nestedChildren()
+    {
+        $children = $this->children()->get();
+    
+        $nestedChildren = $children->flatMap(function ($child) {
+    
+            # Create a collection to hold the current child and its descendants
+            $descendants = collect([$child]);
+    
+            # Recursively add all the child's children to the collection
+            if ($child->children()->exists()) {
+                $descendants = $descendants->merge($child->nestedChildren());
+            }
+    
+            return $descendants;
+        });
+    
+        # Ensure all comments are unique by ID
+        return $nestedChildren->unique('id');
+    }
+
     public function user()
     {
 
@@ -58,6 +103,21 @@ class Comment extends Model
             table: 'comments_widgets_relations',
         );
         
+    }
+
+    private function getCategoryWithAncestors(Comment $comment)
+    {
+
+        $ancestors = collect();
+
+        // Recursively gather parent categories
+        while ($comment) {
+            $ancestors->push($comment);
+            $comment = $comment->parent;
+        }
+
+        return $ancestors;
+    
     }
 
 }

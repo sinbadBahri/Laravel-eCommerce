@@ -53,7 +53,7 @@ class CommentWidget extends Model
     }
 
     /**
-     * Returns the number of total comments relatde to a specific post.
+     * Returns the number of total comments related to a specific post.
      * Includes both main comments and replies.
      *  
      * @param string $post_id

@@ -74,7 +74,7 @@
                             </div>
                           </div>
 
-                          @foreach ($comment->children as $reply)
+                          @foreach ($comment->nestedChildren() as $reply)
                               
                           <div class="d-flex flex-start mt-4">
                             
