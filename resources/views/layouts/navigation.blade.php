@@ -10,7 +10,7 @@
                       <a href="/profile">{{ Auth::user()->name }}</a>
                       <ul>
                          <li><a href="/profile">پروفایل</a></li>
-                         <li><a href="#">پنل ادمین</a></li>
+                         <li><a href="/admin-panel">پنل ادمین</a></li>
                          <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <li><x-dropdown-link :href="route('logout')"
