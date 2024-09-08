@@ -10,7 +10,7 @@ class AdminController extends Controller
     
     public function index()
     {
-        return response()->json(["test", "Testing the URL."]);
+        return view(view: "admin.dashboard");
     }
 
 }
