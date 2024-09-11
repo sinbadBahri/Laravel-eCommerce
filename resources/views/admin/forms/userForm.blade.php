@@ -12,7 +12,7 @@
                     
                     <!-- Blog Post Form -->
                     <div class="form-group">
-                        <form method="POST" action="#" enctype="multipart/form-data">
+                        <form method="POST" action="/admin-panel/users/create-user" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -33,7 +33,7 @@
                             <div class="form-group">
                                 <label class="form-check-label">Is Admin</label>
                                 <label class="switch">
-                                    <input type="checkbox" name="publish" id="publish" defaultchecked>
+                                    <input type="checkbox" name="is_admin" id="is_admin" defaultchecked>
                                     <span class="slider"></span>
                                 </label>
                             </div>

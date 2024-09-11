@@ -38,8 +38,9 @@ Route::middleware('admin')->group(function ()
                 Route::prefix('users')->group(function ()
                     {
 
-                        Route::get( "/", [UsersController::class,"index"],);
+                        Route::get( "/", [UsersController::class,"index"],)->name("users");
                         Route::get( "/create-user", [UsersController::class,"create"], );
+                        Route::post( "/create-user", [UsersController::class,"store"], );
 
                     }
                 );
