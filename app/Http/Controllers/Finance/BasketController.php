@@ -71,13 +71,13 @@ class BasketController extends Controller implements HasMiddleware
         
             $this->updateBasket($request);
     
-            return response()->json(['success' => true, 'message' => __("Product Added")]);
+            return redirect()->back()->with('success', __("Product Added"));
         
         }
         catch (QuantityExceededException $exception)
         {
 
-            return response()->json(['success' => false, 'message' => __("No More Product Left")], 400);
+            return redirect()->back()->with('success', __("No More Product Left"));
         
         }
         

@@ -8,49 +8,35 @@
                     <li class="active">
                         <a class="has-arrow" href="index.html">
                                 <i class="icon nalika-home icon-wrap"></i>
-                                <span class="mini-click-non">Ecommerce</span>
+                                <span class="mini-click-non">Management</span>
                             </a>
                         <ul class="submenu-angle" aria-expanded="true">
-                            <li><a title="Dashboard v.1" href="/admin-panel"><span class="mini-sub-pro">Dashboard</span></a></li>
+                            <li><a title="Dashboard" href="/admin-panel"><span class="mini-sub-pro">Dashboard</span></a></li>
+                            <li><a title="All Users" href="/admin-panel/users"><span class="mini-sub-pro">All Users</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Ecommerce</span></a>
+                        <ul class="submenu-angle" aria-expanded="false">
+                            <li><a title="Product Cart" href="/admin-panel/products/all-categories"><span class="mini-sub-pro">All Categories</span></a></li>
                             <li><a title="Product List" href="/admin-panel/products"><span class="mini-sub-pro">Product List</span></a></li>
                             <li><a title="Product Edit" href="/admin-panel/product-edit"><span class="mini-sub-pro">Product Edit</span></a></li>
                             <li><a title="Product Detail" href="/admin-panel/product-detail"><span class="mini-sub-pro">Product Detail</span></a></li>
-                            <li><a title="Product Cart" href="/admin-panel/product-cart"><span class="mini-sub-pro">Product Cart</span></a></li>
-                            <li><a title="Product Payment" href="/admin-panel/product-payment"><span class="mini-sub-pro">Product Payment</span></a></li>
-                            <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytics</span></a></li>
-                            <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                            <li><a title="Product Payment" href="/admin-panel/products/attributes"><span class="mini-sub-pro">Product Attributes</span></a></li>
                         </ul>
                     </li>
                     <li>
-                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Products</span></a>
+                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Blog</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="Product List" href="/admin-panel/products"><span class="mini-sub-pro">Product List</span></a></li>
-                            <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
-                            <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>
-                            <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>
+                            <li><a title="Product List" href="/admin-panel/blog/posts-list"><span class="mini-sub-pro">Posts List</span></a></li>
                         </ul>
                     </li>
                     <li>
-                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Interface</span></a>
+                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i> <span class="mini-click-non">Finace & Payment</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="Google Map" href="google-map.html"><span class="mini-sub-pro">Google Map</span></a></li>
-                            <li><a title="Data Maps" href="data-maps.html"><span class="mini-sub-pro">Data Maps</span></a></li>
-                            <li><a title="Pdf Viewer" href="pdf-viewer.html"><span class="mini-sub-pro">Pdf Viewer</span></a></li>
-                            <li><a title="X-Editable" href="x-editable.html"><span class="mini-sub-pro">X-Editable</span></a></li>
-                            <li><a title="Code Editor" href="code-editor.html"><span class="mini-sub-pro">Code Editor</span></a></li>
-                            <li><a title="Tree View" href="tree-view.html"><span class="mini-sub-pro">Tree View</span></a></li>
-                            <li><a title="Preloader" href="preloader.html"><span class="mini-sub-pro">Preloader</span></a></li>
-                            <li><a title="Images Cropper" href="images-cropper.html"><span class="mini-sub-pro">Images Cropper</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i> <span class="mini-click-non">Miscellaneous</span></a>
-                        <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="File Manager" href="file-manager.html"><span class="mini-sub-pro">File Manager</span></a></li>
-                            <li><a title="Blog" href="blog.html"><span class="mini-sub-pro">Blog</span></a></li>
-                            <li><a title="Blog Details" href="blog-details.html"><span class="mini-sub-pro">Blog Details</span></a></li>
-                            <li><a title="404 Page" href="404.html"><span class="mini-sub-pro">404 Page</span></a></li>
-                            <li><a title="500 Page" href="500.html"><span class="mini-sub-pro">500 Page</span></a></li>
+                            <li><a title="All Wallets" href="/admin-panel/finance-payment/users-wallets"><span class="mini-sub-pro">All Wallets</span></a></li>
+                            <li><a title="All Orders" href="/admin-panel/finance-payment/users-orders"><span class="mini-sub-pro">All Orders</span></a></li>
+                            <li><a title="All Payments" href="/admin-panel/finance-payment/users-payments"><span class="mini-sub-pro">All Payments</span></a></li>
                         </ul>
                     </li>
                     <li>

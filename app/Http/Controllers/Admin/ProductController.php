@@ -12,6 +12,23 @@ class ProductController extends Controller
     public function index()
     {
         $content = ['productCollection' => ProductLine::all()];
-        return view(view: "admin.productList", data: $content);
+        return view(view: "admin.product.productList", data: $content);
+    }
+
+    public function addProduct()
+    {
+
+        return view(view: 'admin.forms.addProduct');
+        
+    }
+
+    public function categoriesView()
+    {
+        return view(view: 'admin.product.allCategories');
+    }
+
+    public function attributesView()
+    {
+        return view(view: 'admin.product.attributes');
     }
 }
