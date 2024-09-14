@@ -47,15 +47,15 @@
                             </td>
                             <td>{{ $post->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <form action="" method="post">
+                                <form action="edit-post" method="post">
                                     @csrf
-                                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="edit_post_id" value="{{$post->id}}">
+                                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="post_id" value="{{$post->id}}">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                     </button>
                                 </form>
                                 <form action="delete-post" method="POST">
                                     @csrf
-                                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" name="trash_post_id" value="{{$post->id}}">
+                                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" name="post_id" value="{{$post->id}}">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </button>
                                 </form>

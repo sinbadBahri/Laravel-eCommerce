@@ -33,6 +33,9 @@ Route::middleware('admin')->group(function ()
                         Route::get( "/create-post", [BlogController::class,"create"], );
                         Route::post( "/create-post", [BlogController::class,"store"], );
                         Route::post( "/delete-post", [BlogController::class,"delete"], );
+                        Route::post( "/edit-post", [BlogController::class,"edit"], );
+                        Route::patch( "/update-post/{post_id}", [BlogController::class,"update"], )
+                        ->name("posts.update");
 
                     }
                 );

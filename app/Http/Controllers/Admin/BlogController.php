@@ -8,11 +8,12 @@ use App\Models\Blog\Post;
 use App\Models\Images\PostImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
 class BlogController extends Controller
 {
     
-    public function postsList()
+    public function postsList(): View
     {
 
         $blogPosts = Post::all();
@@ -20,19 +21,30 @@ class BlogController extends Controller
         
     }
 
+    /**
+     * Deletes a Post based on the provided Post ID.
+     *
+     * @param Request $request The request containing the post ID to be deleted.
+     * @return RedirectResponse A redirect response indicating the success message after deleting the post.
+     */
     public function delete(Request $request): RedirectResponse
     {
 
-        Post::find($request->trash_post_id)->delete();
+        Post::find($request->post_id)->delete();
         return redirect()->back()->with('success','Post has been Deleted');
         
     }
 
-    public function create()
+    /**
+     * Retrieve a Post Create Form. 
+     * 
+     * @return View The view for creating a new Post.
+     */
+    public function create(): View
     {
 
         $allGenres = Genre::all();
-        return view(view: 'admin.forms.postForm', data: compact('allGenres'));
+        return view(view: 'admin.forms.postCreateForm', data: compact('allGenres'));
 
     }
 
@@ -45,7 +57,7 @@ class BlogController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-        $newPost = $this->makePost(request: $request);
+        $newPost = $this->makeOrUpdatePost(request: $request);
         $this->addGenre(request: $request, post: $newPost);
         $this->attachImage(request: $request, post: $newPost);
 
@@ -54,12 +66,54 @@ class BlogController extends Controller
     }
 
     /**
-     * Validates the request data and creates a new Post.
+     * An Edit Form of a specific blog Post.
+     * 
+     * @param Request $request The HTTP request containing the post ID.
+     * @return View The view for editing a blog post.
+     */
+    public function edit(Request $request): View
+    {
+
+        $post = Post::find($request->post_id);
+        $allGenres = Genre::all();
+
+        return view(
+            view: 'admin.forms.postEditForm',
+            data: compact(['post', 'allGenres'])
+        );
+    
+    }
+
+    /**
+     * Updates a Post regarding the provided request data and Post ID.
      *
+     * @param Request $request The request containing the updated post data.
+     * @param int $post_id The ID of the post to be updated.
+     * @return RedirectResponse Redirects to the posts list page with a success message.
+     */
+    public function update(Request $request, int $post_id): RedirectResponse
+    {
+        
+        $post = $this->makeOrUpdatePost(request: $request, post_id: $post_id);
+        $this->addGenre(request: $request, post: $post);
+        $this->attachImage(request: $request, post: $post);
+
+        return redirect('/admin-panel/blog/posts-list')
+        ->with('success','Post Updated');
+
+    }
+
+    /**
+     * Validates the request data and creates or updates a new Post.
+     *
+     * Note that this method could be called when either a Post is getting created or updated,
+     * therefore when the $post_id is null probably the update method is calling this method.
+     *   
      * @param Request $request The request object containing the post data.
+     * @param int|null $post_id The ID of the post to update, or null if creating a new post.
      * @return Post The newly created post object.
      */  
-    private function makePost(Request $request)
+    private function makeOrUpdatePost(Request $request, int $post_id = null)
     {
         # Validate the request data
         $request->validate([
@@ -70,21 +124,24 @@ class BlogController extends Controller
         
         ]);
 
-        $newPost = Post::create([
+        # Credentials to create or update a Post
+        $credentials = [
 
             'title'        => $request->title,
             'slug'         => $request->slug,
             'description'  => $request->description,
             'status'       => $request->publish == "on" ? true : false,
         
-        ]);
+        ];
 
-        return $newPost;
+        $post = Post::updateOrCreate(['id' => $post_id], $credentials);
+
+        return $post;
         
     }
 
     /**
-     * Attach Genres to a Post if Genres are provided in the request.
+     * Syncs Genres to a Post if Genres are provided in the request.
      *
      * @param Request $request The HTTP request containing genres data.
      * @param Post $post The post to attach genres to.
@@ -98,7 +155,7 @@ class BlogController extends Controller
             foreach ($request->genres as $genre_id)
             {
     
-                $post->genres()->attach($genre_id);
+                $post->genres()->sync($genre_id);
     
             }
             
