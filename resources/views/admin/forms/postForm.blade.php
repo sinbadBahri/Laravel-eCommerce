@@ -36,7 +36,7 @@
                     
                     <!-- Blog Post Form -->
                     <div class="form-group">
-                        <form method="POST" action="#" enctype="multipart/form-data">
+                        <form method="POST" action="" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="title">Title</label>
@@ -58,13 +58,13 @@
                                 <input type="file" class="form-control" id="image" name="image">
                             </div>
 
+                            
                             <div class="form-group custom-select-container">
-                                <label for="product">Select Your Product</label>
-                                <select id="product" class="custom-select">
-                                    <option value="" disabled selected>Select Your Product</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <label for="genres">Select Your Genre(s)</label>
+                                <select id="genres" name="genres[]" class="custom-select" multiple>
+                                    @foreach ($allGenres as $genre)
+                                    <option value="{{$genre->id}}">{{$genre->title}}</option>
+                                    @endforeach
                                 </select>
                                 
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
