@@ -9,6 +9,30 @@
                 <div class="product-status-wrap">
                     <h4>Create Blog Post</h4>
                     <br>
+                    <br>
+                    <link rel="stylesheet" href="{{ asset('css/modal-for-product-list.css') }}">
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="loginModalLabel">Add Category</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="modalForm">
+                                        <div class="form-group">
+                                            <label for="category-name">Category Name</label>
+                                            <input type="text" class="form-control" id="category-name" placeholder="Category Name">
+                                        </div>
+                                        <div id="errorMessages" class="error-message"></div>
+                                        <button type="submit" class="btn btn-primary btn-block">Create Category</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- Blog Post Form -->
                     <div class="form-group">
@@ -34,6 +58,20 @@
                                 <input type="file" class="form-control" id="image" name="image">
                             </div>
 
+                            <div class="form-group custom-select-container">
+                                <label for="product">Select Your Product</label>
+                                <select id="product" class="custom-select">
+                                    <option value="" disabled selected>Select Your Product</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                                
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+                                    Add Blog Post Category
+                                </button>
+                            </div>
+
                             <!-- Switches for additional options -->
                             <div class="form-group">
                                 <label class="form-check-label">Status</label>
@@ -52,6 +90,33 @@
         </div>
     </div>
 </div>
+
+<!-- Include jQuery -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#modalForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var errors = [];
+            var categoryName = $('#category-name').val().trim();
+
+            // Basic validation
+            if (categoryName === '') {
+                errors.push('Category name is required.');
+            }
+
+            // Display errors or success message
+            if (errors.length > 0) {
+                $('#errorMessages').html(errors.join('<br>'));
+            } else {
+                $('#errorMessages').html('');
+                alert('Category created successfully!');
+            }
+        });
+    });
+</script>
 @endsection
 
 

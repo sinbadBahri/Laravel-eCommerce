@@ -9,6 +9,7 @@
                 <div class="product-status-wrap">
                     <h4>Create New User</h4>
                     <br>
+                    <link rel="stylesheet" href="{{ asset('css/modal-for-product-list.css') }}">
                     
                     <!-- Blog Post Form -->
                     <div class="form-group">

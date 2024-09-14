@@ -13,51 +13,33 @@
                         <a href="/admin-panel/blog/create-post">Create New Post</a>
                     </div>
                     <br>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
-                        Add Blog Post Category
-                    </button>
                     <br>
-                    <br>
-                    <br>
-                    <link rel="stylesheet" href="{{ asset('css/modal-for-product-list.css') }}">
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="loginModalLabel">Add Category</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="modalForm">
-                                        <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name" placeholder="Category Name">
-                                        </div>
-                                        <div id="errorMessages" class="error-message"></div>
-                                        <button type="submit" class="btn btn-primary btn-block">Create Category</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <table>
                         <tr>
                             <th>Title</th>
-                            <th>Category</th>
+                            <th>Genres</th>
                             <th>Description(Body)</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Setting</th>
                         </tr>
-                        {{-- @foreach ($blogPosts as $post)
+                        @foreach ($blogPosts as $post)
                         <tr>
                             <td>{{ $post->title }}</td>
-                            <td>{{ $post->category->name ?? 'Uncategorized' }}</td>
+                            @if ($post->genres !== null)
                             <td>
-                                @if ($post->is_published)
+                            @foreach ($post->genres as $genre)
+                                {{$genre->title}} , 
+                            @endforeach    
+                            </td>    
+                            @else
+                            <td>Uncategorized</td>
+                            
+                            @endif
+                            <td>{{substr($post->description, 0, 100)}} ...</td>
+                            <td>
+                                @if ($post->status)
                                     <button class="pd-setting">Published</button>
                                 @else
                                     <button class="ds-setting">Draft</button>
@@ -73,7 +55,7 @@
                                 </button>
                             </td>
                         </tr>
-                        @endforeach --}}
+                        @endforeach
                     </table>
 
                     <div class="custom-pagination">
@@ -90,32 +72,5 @@
         </div>
     </div>
 </div>
-
-<!-- Include jQuery -->
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-
-<script>
-    $(document).ready(function() {
-        $('#modalForm').on('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            var errors = [];
-            var categoryName = $('#category-name').val().trim();
-
-            // Basic validation
-            if (categoryName === '') {
-                errors.push('Category name is required.');
-            }
-
-            // Display errors or success message
-            if (errors.length > 0) {
-                $('#errorMessages').html(errors.join('<br>'));
-            } else {
-                $('#errorMessages').html('');
-                alert('Category created successfully!');
-            }
-        });
-    });
-</script>
 
 @endsection
