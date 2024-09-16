@@ -101,6 +101,66 @@
     </div>
 </div>
 
+
+
+<!-- Comments Section -->
+<section class="border-bottom mb-3">
+    <p class="text-center"><strong>Comments</strong></p>
+    
+    @if(count($comments) > 0)
+        
+    <form id="deleteSelectedCommentsForm" action="{{ route('comments.bulkDelete', $post->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+
+        <section style="background-color: #e7effd;">
+            <div class="container my-5 py-5 text-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-11 col-lg-9 col-xl-7">
+
+                        @foreach ($comments as $comment)
+                        <div class="d-flex flex-start">
+                            <div class="card w-100">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Checkbox for selecting comment -->
+                                        <input type="checkbox" class="comment-checkbox" name="selected_comments[]" value="{{ $comment->id }}" onchange="updateDeleteButton()">
+                                        
+                                        <div>
+                                            <h5>{{ $comment->user->name }}</h5>
+                                            <p class="small">{{ Hekmatinasser\Verta\Verta::instance($comment->created_at)->formatWord('l dS F') }}</p>
+                                            <p>{{ $comment->content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+
+                        <!-- Delete selected comments button -->
+                        <div class="text-center mt-3">
+                            <button type="submit" id="deleteSelectedButton" class="btn btn-danger btn-lg" disabled>
+                                Delete 0 comments
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+    @endif
+    <p class="text-center"><strong>Post Has No Comments</strong></p>
+</section>
+
+
+
+
+
+
+
+
+
 <!-- Include jQuery -->
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 
@@ -126,5 +186,23 @@
             }
         });
     });
+
+    function updateDeleteButton() {
+        const checkboxes = document.querySelectorAll('.comment-checkbox');
+        const deleteButton = document.getElementById('deleteSelectedButton');
+        let selectedCount = 0;
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedCount++;
+            }
+        });
+
+        // Update the button text with the number of selected comments
+        deleteButton.textContent = `Delete ${selectedCount} comments`;
+
+        // Enable or disable the button based on selection
+        deleteButton.disabled = selectedCount === 0;
+    }
 </script>
 @endsection

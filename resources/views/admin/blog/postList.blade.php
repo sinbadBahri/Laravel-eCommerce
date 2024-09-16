@@ -47,7 +47,7 @@
                             </td>
                             <td>{{ $post->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <form action="edit-post" method="post">
+                                <form action="{{ route('post.edit', $post->id) }}" method="GET">
                                     @csrf
                                     <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="post_id" value="{{$post->id}}">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

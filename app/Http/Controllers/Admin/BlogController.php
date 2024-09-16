@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog\Comment;
 use App\Models\Blog\Genre;
 use App\Models\Blog\Post;
 use App\Models\Images\PostImage;
@@ -71,15 +72,17 @@ class BlogController extends Controller
      * @param Request $request The HTTP request containing the post ID.
      * @return View The view for editing a blog post.
      */
-    public function edit(Request $request): View
+    public function edit(int $post_id): View
     {
-
-        $post = Post::find($request->post_id);
+        
+        $post = Post::find($post_id);
         $allGenres = Genre::all();
-
+        $comments = $post->comments;
+        
+        // dd(count($comments));
         return view(
             view: 'admin.forms.postEditForm',
-            data: compact(['post', 'allGenres'])
+            data: compact(['post', 'allGenres', 'comments'])
         );
     
     }
@@ -202,5 +205,33 @@ class BlogController extends Controller
 
             };            
         }
+    }
+
+    /**
+     * Bulk delete comments for a specific post.
+     *
+     * This method deletes multiple comments associated with a post based on the
+     * selected comment IDs provided in the request.
+     *
+     * @param Request $request The request object containing the selected comment IDs.
+     * @param int $post_id The ID of the post for which comments are being deleted.
+     * @return RedirectResponse A redirect response to the post edit page with a success
+     * message if comments are deleted successfully, or with an error message if no comments are selected.
+     */
+    public function bulkDeleteComments(Request $request, int $post_id): RedirectResponse
+    {
+
+        if ($commentIds = $request->selected_comments)
+        {
+            
+            Comment::whereIn('id', $commentIds)->delete();
+            return redirect()->route('post.edit', $post_id)
+            ->with('success', count($commentIds)." comments deleted successfully.");
+       
+        }
+    
+        return redirect()->route('post.edit', $post_id)
+        ->with('error', 'No comments selected.');
+        
     }
 }

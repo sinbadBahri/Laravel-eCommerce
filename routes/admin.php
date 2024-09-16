@@ -33,9 +33,12 @@ Route::middleware('admin')->group(function ()
                         Route::get( "/create-post", [BlogController::class,"create"], );
                         Route::post( "/create-post", [BlogController::class,"store"], );
                         Route::post( "/delete-post", [BlogController::class,"delete"], );
-                        Route::post( "/edit-post", [BlogController::class,"edit"], );
+                        Route::get( "/edit-post/{post_id}", [BlogController::class,"edit"], )
+                        ->name('post.edit');
                         Route::patch( "/update-post/{post_id}", [BlogController::class,"update"], )
                         ->name("posts.update");
+                        Route::delete('/comments/bulk-delete/{post_id}', [BlogController::class, 'bulkDeleteComments'])
+                        ->name('comments.bulkDelete');
 
                     }
                 );
