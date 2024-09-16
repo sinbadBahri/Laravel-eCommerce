@@ -33,6 +33,8 @@ Route::middleware('admin')->group(function ()
                         Route::get( "/create-post", [BlogController::class,"create"], );
                         Route::post( "/create-post", [BlogController::class,"store"], );
                         Route::post( "/delete-post", [BlogController::class,"delete"], );
+                        Route::post('categories/store', [BlogController::class, 'createNewGenre'])
+                        ->name('genre.create');
                         Route::get( "/edit-post/{post_id}", [BlogController::class,"edit"], )
                         ->name('post.edit');
                         Route::patch( "/update-post/{post_id}", [BlogController::class,"update"], )

@@ -21,13 +21,14 @@
                                     <h4 class="modal-title" id="loginModalLabel">Add Category</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="modalForm">
+                                    <form id="modalForm" method="POST" action="{{ route('genre.create') }}">
+                                        @csrf
                                         <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name" placeholder="Category Name">
+                                            <label for="genre-name">Genre Name</label>
+                                            <input type="text" class="form-control" id="genre-name" name="title" placeholder="like: Science" required>
                                         </div>
                                         <div id="errorMessages" class="error-message"></div>
-                                        <button type="submit" class="btn btn-primary btn-block">Create Category</button>
+                                        <button type="submit" class="btn btn-primary btn-block">Create</button>
                                     </form>
                                 </div>
                             </div>
@@ -68,7 +69,7 @@
                                 </select>
                                 
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
-                                    Add Blog Post Category
+                                    Add New Genre
                                 </button>
                             </div>
 
@@ -96,24 +97,38 @@
 
 <script>
     $(document).ready(function() {
+        // Handle the form submission
         $('#modalForm').on('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault(); // Prevent default form submission
 
-            var errors = [];
-            var categoryName = $('#category-name').val().trim();
+            var form = $(this);
+            var formData = form.serialize(); // Serialize the form data
 
-            // Basic validation
-            if (categoryName === '') {
-                errors.push('Category name is required.');
-            }
+            $.ajax({
+                url: form.attr('action'), // The URL where the form will be submitted
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Assuming the response contains the new category details
+                    if (response.success) {
+                        // Update the genres dropdown list
+                        $('#genres').append(new Option(response.category.title, response.category.id));
+                        
+                        // Close the modal
+                        $('#loginModal').modal('hide');
 
-            // Display errors or success message
-            if (errors.length > 0) {
-                $('#errorMessages').html(errors.join('<br>'));
-            } else {
-                $('#errorMessages').html('');
-                alert('Category created successfully!');
-            }
+                        // Optionally, you can show a success message
+                        alert('Genre added successfully.');
+                    } else {
+                        // Handle errors
+                        $('#errorMessages').html(response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle AJAX errors
+                    $('#errorMessages').html('An error occurred. Please try again.');
+                }
+            });
         });
     });
 </script>

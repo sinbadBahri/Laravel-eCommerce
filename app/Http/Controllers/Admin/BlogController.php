@@ -10,6 +10,7 @@ use App\Models\Images\PostImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 
 class BlogController extends Controller
 {
@@ -63,6 +64,23 @@ class BlogController extends Controller
         $this->attachImage(request: $request, post: $newPost);
 
         return redirect()->back()->with('success','Post Created');
+        
+    }
+
+    public function createNewGenre(Request $request): JsonResponse
+    {
+        $request->validate([
+            'title' => 'required|string|max:100',
+        ]);
+    
+        // Create the new category
+        $category = Genre::create(['title' => $request->title]);
+    
+        // Return a JSON response
+        return response()->json([
+            'success' => true,
+            'category' => $category
+        ]);
         
     }
 

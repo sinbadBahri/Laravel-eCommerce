@@ -25,7 +25,6 @@
                             <th>Email Verified At</th>
                             <th>Created At</th>
                             <th>Is Admin</th>
-                            <th>Setting</th>
                         </tr>
                         @foreach ($users as $user)
                         <tr>
@@ -39,14 +38,6 @@
                                 @else
                                     <button class="ds-setting">Not Admin</button>
                                 @endif
-                            </td>
-                            <td>
-                                <button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </button>
-                                <button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                </button>
                             </td>
                         </tr>
                         @endforeach
