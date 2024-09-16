@@ -13,15 +13,15 @@ Route::middleware('admin')->group(function ()
         Route::prefix('admin-panel')->group(function ()
             {
 
-                Route::get( "/", [AdminController::class,"index"],);
+                Route::get( "/", [AdminController::class,"index"]);
 
                 Route::prefix('products')->group(function ()
                     {
 
-                        Route::get( "/", [ProductController::class,"index"],);
-                        Route::get("/add-product", [ProductController::class,"addProduct"], );
-                        Route::get("/all-categories", [ProductController::class,"categoriesView"], );
-                        Route::get("/attributes", [ProductController::class,"attributesView"], );
+                        Route::get( "/", [ProductController::class,"index"]);
+                        Route::get("/add-product", [ProductController::class,"addProduct"]);
+                        Route::get("/all-categories", [ProductController::class,"categoriesView"]);
+                        Route::get("/attributes", [ProductController::class,"attributesView"]);
 
                     }
                 );
@@ -29,15 +29,15 @@ Route::middleware('admin')->group(function ()
                 Route::prefix('blog')->group(function ()
                     {
 
-                        Route::get( "/posts-list", [BlogController::class,"postsList"],);
-                        Route::get( "/create-post", [BlogController::class,"create"], );
-                        Route::post( "/create-post", [BlogController::class,"store"], );
-                        Route::post( "/delete-post", [BlogController::class,"delete"], );
+                        Route::get( "/posts-list", [BlogController::class,"postsList"]);
+                        Route::get( "/create-post", [BlogController::class,"create"]);
+                        Route::post( "/create-post", [BlogController::class,"store"]);
+                        Route::post( "/delete-post", [BlogController::class,"delete"]);
                         Route::post('categories/store', [BlogController::class, 'createNewGenre'])
                         ->name('genre.create');
-                        Route::get( "/edit-post/{post_id}", [BlogController::class,"edit"], )
+                        Route::get( "/edit-post/{post_id}", [BlogController::class,"edit"])
                         ->name('post.edit');
-                        Route::patch( "/update-post/{post_id}", [BlogController::class,"update"], )
+                        Route::patch( "/update-post/{post_id}", [BlogController::class,"update"])
                         ->name("posts.update");
                         Route::delete('/comments/bulk-delete/{post_id}', [BlogController::class, 'bulkDeleteComments'])
                         ->name('comments.bulkDelete');
@@ -49,8 +49,8 @@ Route::middleware('admin')->group(function ()
                     {
 
                         Route::get( "/", [UsersController::class,"index"],)->name("users");
-                        Route::get( "/create-user", [UsersController::class,"create"], );
-                        Route::post( "/create-user", [UsersController::class,"store"], );
+                        Route::get( "/create-user", [UsersController::class,"create"]);
+                        Route::post( "/create-user", [UsersController::class,"store"]);
 
                     }
                 );
@@ -58,9 +58,15 @@ Route::middleware('admin')->group(function ()
                 Route::prefix('finance-payment')->group(function ()
                     {
 
-                        Route::get( "/users-wallets", [FinanceAndPaymentController::class,"walletsView"],);
-                        Route::get( "/users-orders", [FinanceAndPaymentController::class,"ordersView"],);
-                        Route::get( "/users-payments", [FinanceAndPaymentController::class,"paymentsView"],);
+                        Route::get( "/users-wallets", [FinanceAndPaymentController::class,"walletsView"]);
+                        Route::get("/users-wallets/{wallet_id}", [FinanceAndPaymentController::class, "walletHistoryView"])
+                        ->name("wallet.history");
+                        Route::patch('/wallet/{wallet_id}/toggle-status', [FinanceAndPaymentController::class, 'toggleStatus'])
+                        ->name('wallet.toggle.status');
+                        Route::patch('/users-wallets/{wallet_id}/add-history', [FinanceAndPaymentController::class, 'addHistory'])
+                        ->name('wallet.add.history');
+                        Route::get( "/users-orders", [FinanceAndPaymentController::class,"ordersView"]);
+                        Route::get( "/users-payments", [FinanceAndPaymentController::class,"paymentsView"]);
 
                     }
                 );
