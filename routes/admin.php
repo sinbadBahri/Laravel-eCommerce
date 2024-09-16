@@ -57,7 +57,7 @@ Route::middleware('admin')->group(function ()
 
                 Route::prefix('finance-payment')->group(function ()
                     {
-
+                        # Wallet
                         Route::get( "/users-wallets", [FinanceAndPaymentController::class,"walletsView"]);
                         Route::get("/users-wallets/{wallet_id}", [FinanceAndPaymentController::class, "walletHistoryView"])
                         ->name("wallet.history");
@@ -65,7 +65,11 @@ Route::middleware('admin')->group(function ()
                         ->name('wallet.toggle.status');
                         Route::patch('/users-wallets/{wallet_id}/add-history', [FinanceAndPaymentController::class, 'addHistory'])
                         ->name('wallet.add.history');
+
+                        # Orders
                         Route::get( "/users-orders", [FinanceAndPaymentController::class,"ordersView"]);
+
+                        # Payments
                         Route::get( "/users-payments", [FinanceAndPaymentController::class,"paymentsView"]);
 
                     }

@@ -9,40 +9,9 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="product-status-wrap">
                     <h4>Purchase Orders</h4>
-                    <div class="add-product">
-                        <a href="/admin-panel/users/create-user">Add New User</a>
-                    </div>
-                    <br>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
-                        Add Blog Post Category
-                    </button>
                     <br>
                     <br>
                     <br>
-                    <link rel="stylesheet" href="{{ asset('css/modal-for-product-list.css') }}">
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="loginModalLabel">Add Category</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="modalForm">
-                                        <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name" placeholder="Category Name">
-                                        </div>
-                                        <div id="errorMessages" class="error-message"></div>
-                                        <button type="submit" class="btn btn-primary btn-block">Create Category</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <table>
                         <tr>
                             <th>User</th>
@@ -50,28 +19,14 @@
                             <th>Total</th>
                             <th>Created At</th>
                         </tr>
-                        {{-- @foreach ($blogPosts as $post)
+                        @foreach ($orders as $order)
                         <tr>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ $post->category->name ?? 'Uncategorized' }}</td>
-                            <td>
-                                @if ($post->is_published)
-                                    <button class="pd-setting">Published</button>
-                                @else
-                                    <button class="ds-setting">Draft</button>
-                                @endif
-                            </td>
-                            <td>{{ $post->created_at->format('Y-m-d') }}</td>
-                            <td>
-                                <button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </button>
-                                <button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                </button>
-                            </td>
+                            <td>{{ $order->user->name }}</td>
+                            <td>{{ $order->code }}</td>
+                            <td>{{ $order->total }}</td>
+                            <td>{{ $order->created_at->format('Y-m-d') }}</td>
                         </tr>
-                        @endforeach --}}
+                        @endforeach
                     </table>
 
                     <div class="custom-pagination">

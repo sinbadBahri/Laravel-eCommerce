@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Finance\Order;
+use App\Models\Finance\Payment;
 use App\Models\Finance\Wallet;
 use App\Models\Finance\WalletHistory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FinanceAndPaymentController extends Controller
 {
     
-    public function walletsView()
+    public function walletsView(): View
     {
 
         $wallets = Wallet::all();
@@ -19,7 +22,7 @@ class FinanceAndPaymentController extends Controller
         
     }
 
-    public function walletHistoryView(int $wallet_id)
+    public function walletHistoryView(int $wallet_id): View
     {
 
         $wallet = Wallet::find($wallet_id);
@@ -28,17 +31,19 @@ class FinanceAndPaymentController extends Controller
     }
 
     public function toggleStatus(Request $request, int $wallet_id): JsonResponse
-{
-    $request->validate([
-        'is_active' => 'required|boolean',
-    ]);
+    {
 
-    $wallet = Wallet::findOrFail($wallet_id);
-    $wallet->is_active = $request->input('is_active');
-    $wallet->save();
+        $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
 
-    return response()->json(['message' => 'Wallet status updated successfully.']);
-}
+        $wallet = Wallet::findOrFail($wallet_id);
+        $wallet->is_active = $request->input('is_active');
+        $wallet->save();
+
+        return response()->json(['message' => 'Wallet status updated successfully.']);
+    
+    }
 
     public function addHistory(Request $request, int $wallet_id): JsonResponse
     {
@@ -58,17 +63,19 @@ class FinanceAndPaymentController extends Controller
 
     }
 
-    public function ordersView()
+    public function ordersView(): View
     {
 
-        return view(view: 'admin.finance.allOrders');
+        $orders = Order::all();
+        return view(view: 'admin.finance.allOrders', data: compact('orders'));
 
     }
 
-    public function paymentsView()
+    public function paymentsView(): View
     {
 
-        return view(view: 'admin.finance.allPayments');  
+        $payments = Payment::all();
+        return view(view: 'admin.finance.allPayments', data: compact('payments'));  
 
     }
 

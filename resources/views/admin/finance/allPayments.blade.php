@@ -9,40 +9,9 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="product-status-wrap">
                     <h4>Payments Records</h4>
-                    <div class="add-product">
-                        <a href="/admin-panel/users/create-user">Add New User</a>
-                    </div>
-                    <br>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
-                        Add Blog Post Category
-                    </button>
                     <br>
                     <br>
                     <br>
-                    <link rel="stylesheet" href="{{ asset('css/modal-for-product-list.css') }}">
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="loginModalLabel">Add Category</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="modalForm">
-                                        <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name" placeholder="Category Name">
-                                        </div>
-                                        <div id="errorMessages" class="error-message"></div>
-                                        <button type="submit" class="btn btn-primary btn-block">Create Category</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <table>
                         <tr>
                             <th>Order Id</th>
@@ -51,29 +20,25 @@
                             <th>Method</th>
                             <th>Refrence Number</th>
                             <th>Gateway</th>
+                            <th>Created At</th>
                         </tr>
-                        {{-- @foreach ($blogPosts as $post)
+                        @foreach ($payments as $payment)
                         <tr>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ $post->category->name ?? 'Uncategorized' }}</td>
+                            <td>{{ $payment->order_id }}</td>
                             <td>
-                                @if ($post->is_published)
-                                    <button class="pd-setting">Published</button>
+                                @if ($payment->status)
+                                    <button class="pd-setting">Complete</button>
                                 @else
-                                    <button class="ds-setting">Draft</button>
+                                    <button class="ds-setting">Incomplete</button>
                                 @endif
                             </td>
-                            <td>{{ $post->created_at->format('Y-m-d') }}</td>
-                            <td>
-                                <button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </button>
-                                <button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                </button>
-                            </td>
+                            <td>{{ $payment->amount }}</td>
+                            <td>{{ $payment->method }}</td>
+                            <td>{{ $payment->ref_num }}</td>
+                            <td>{{ $payment->gateway ?? 'No Gateway Defined' }}</td>
+                            <td>{{ $payment->created_at->format('Y-m-d') }}</td>
                         </tr>
-                        @endforeach --}}
+                        @endforeach
                     </table>
 
                     <div class="custom-pagination">
