@@ -67,6 +67,15 @@ class BlogController extends Controller
         
     }
 
+    /**
+     * Create a new genre based on the provided request data.
+     *
+     * Validates the 'title' field from the request.
+     * Creates a new genre with the validated title.
+     *
+     * @param Request $request The request containing the title of the new genre.
+     * @return JsonResponse A JSON response indicating the success of the operation and the created category.
+     */
     public function createNewGenre(Request $request): JsonResponse
     {
         $request->validate([

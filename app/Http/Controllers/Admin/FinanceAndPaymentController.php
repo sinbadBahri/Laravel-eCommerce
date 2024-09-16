@@ -30,6 +30,18 @@ class FinanceAndPaymentController extends Controller
         
     }
 
+    /**
+     * Toggles the status of a wallet.
+     *
+     * Validates the 'is_active' field in the request.
+     * Updates the status of the wallet with the provided ID(Weather the wallet is 
+     * active or deactive).
+     * Returns a JSON response indicating the success of the status update.
+     *
+     * @param Request $request The request object containing the wallet status.
+     * @param int $wallet_id The ID of the wallet to update.
+     * @return JsonResponse JSON response with a success message.
+     */
     public function toggleStatus(Request $request, int $wallet_id): JsonResponse
     {
 
@@ -45,6 +57,16 @@ class FinanceAndPaymentController extends Controller
     
     }
 
+    /**
+     * Creates a new instance of WalletHistory Class.
+     * 
+     * This Method updates the balance amount of a specific Wallet by creating
+     * a new WalletHistory instance.
+     *
+     * @param Request $request The request object containing the amount to add to the wallet history.
+     * @param int $wallet_id The ID of the wallet to add the history entry to.
+     * @return JsonResponse A JSON response indicating the success of adding the wallet history.
+     */
     public function addHistory(Request $request, int $wallet_id): JsonResponse
     {
         // dd("karim");
