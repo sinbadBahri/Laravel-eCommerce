@@ -30,30 +30,37 @@
                                       <h4 class="modal-title" id="loginModalLabel">Form with Switches</h4>
                                     </div>
                                     <div class="modal-body">
-                                      <form id="modalForm">
+                                      <form id="modalForm" action="{{route('product_line.create')}}"  method="POST">
+                                        @csrf
                                         <!-- Custom Select Dropdown -->
                                         <div class="form-group custom-select">
-                                            <div class="select-selected">Select Your  Product</div>
-                                            <div class="select-items select-hide">
-                                            <div>One</div>
-                                            <div>Two</div>
-                                            <div>Three</div>
-                                            </div>
-                                            <select class="form-control">
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                            </select>
+                                          <!-- Custom Select Display -->
+                                          <div class="select-selected">Select Your Product</div>
+                                          <div class="select-items select-hide">
+                                            @foreach ($products as $product)
+                                                
+                                            <div data-value="{{$product->id}}">{{$product->name}}</div>
+                                            @endforeach
+                                          </div>
+                                      
+                                          <!-- Actual Select Element -->
+                                          <select class="form-control" name="product" id="product-select">
+                                              <option value="" selected disabled>Select a product</option>
+                                              @foreach ($products as $product)
+                                                  
+                                              <option value="{{$product->id}}">{{$product->name}}</option>
+                                              @endforeach
+                                          </select>
                                         </div>
 
                                             
                                         <div class="form-group">
                                           <label for="price">Price</label>
-                                          <input type="text" class="form-control" id="price" placeholder="$ 170">
+                                          <input type="text" class="form-control" id="price" name="price" placeholder="$ 170">
                                         </div>
                                         <div class="form-group">
                                           <label for="sku">sku</label>
-                                          <input type="text" class="form-control" id="sku" placeholder="smth like : 5df55g6f6g4f6g4f6h4f6hf4h4f5">
+                                          <input type="text" class="form-control" id="sku" name="sku" placeholder="smth like : 5df55g6f6g4f6g4f6h4f6hf4h4f5">
                                         </div>
                                         {{-- <div class="form-group">
                                           <label for="disabled">Disabled</label>
@@ -61,7 +68,7 @@
                                         </div> --}}
                                         <div class="form-group">
                                             <label for="stock_qty">Stock Quantity</label>
-                                            <input type="text" class="form-control" id="stock_qty" placeholder="2">
+                                            <input type="text" class="form-control" id="stock_qty" name="stock_qty" placeholder="2">
                                           </div>
 
                                           <div class="form-group">
@@ -73,7 +80,7 @@
                                         <div class="form-group">
                                           <label class="form-check-label">is active</label>
                                           <label class="switch">
-                                            <input type="checkbox" id="flexSwitchCheckChecked" checked>
+                                            <input type="checkbox" id="flexSwitchCheckChecked" name="is_available" checked>
                                             <span class="slider"></span>
                                           </label>
                                         </div>
@@ -113,6 +120,7 @@
                                     <th>Stock</th>
                                     <th>Setting</th>
                                 </tr>
+                                <tbody id="productTableBody">
                                 @foreach ($productCollection as $item)
                                     
                                 <tr>
@@ -136,11 +144,22 @@
                                     </td>
                                     <td>{{$item->stock_qty}}</td>
                                     <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                      <form action="{{ route('post.edit', $item->id) }}" method="GET">
+                                          @csrf
+                                          <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="product_line_id" value="{{$item->id}}">
+                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                          </button>
+                                      </form>
+                                      <form action="{{route('product_line.delete')}}" method="POST">
+                                          @csrf
+                                          <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" name="product_line_id" value="{{$item->id}}">
+                                              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                          </button>
+                                      </form>
                                     </td>
                                 </tr>
                                 @endforeach
+                              </tbody>
                             </table>
                             <div class="custom-pagination">
 								<ul class="pagination">
@@ -161,56 +180,113 @@
 
     <!-- Include jQuery -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    
+    <!-- Script to sync custom select with actual select -->
     <script>
       $(document).ready(function() {
-          $(".custom-select").click(function() {
-              $(this).find(".select-items").toggleClass("select-hide");
-              $(this).toggleClass("select-arrow-active");
-          });
+        // Handle the form submission via AJAX
+          $('#modalForm').on('submit', function(e) {
+              e.preventDefault(); // Prevent the default form submission
 
-          $(".select-items div").click(function() {
-              var value = $(this).text();
-              $(this).closest(".custom-select").find(".select-selected").text(value);
-              $(this).closest(".custom-select").find("select").val(value);
-              $(this).closest(".select-items").addClass("select-hide");
-          });
+              let formData = $(this).serialize(); // Serialize the form data
 
-          $(document).click(function(e) {
-              if (!$(e.target).closest(".custom-select").length) {
-              $(".select-items").addClass("select-hide");
-              $(".custom-select").removeClass("select-arrow-active");
-              }
+              $.ajax({
+                  type: 'POST',
+                  url: $(this).attr('action'), // Use the form's action attribute as the AJAX URL
+                  data: formData,
+                  success: function(response) {
+                      // Assuming the server returns the newly created product line's ID and name
+                      let newProductLine = response.product_line;
+
+                      // Close the modal
+                      $('#loginModal').modal('hide');
+
+                      // Optionally, reset the form fields
+                      $('#modalForm')[0].reset();
+
+                      // Dynamically add the new product line to the table
+                      let newTableRow = `
+                          <tr>
+                              <td>${newProductLine.name}</td>
+                              <td>${newProductLine.sku}</td>
+                              <td>
+                                  <button class="pd-setting">Active</button>
+                              </td>
+                              <td>${newProductLine.price}</td>
+                              <td>No Discount</td>
+                              <td>${newProductLine.stock_qty}</td>
+                              <td>
+                                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
+                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                  </button>
+                                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                  </button>
+                              </td>
+                          </tr>
+                      `;
+                      
+                      $('#productTableBody').append(newTableRow);
+
+
+                      // Show a success message (optional)
+                      alert('Product Line added successfully!');
+                  },
+                  error: function(xhr, status, error) {
+                      // Handle errors (optional)
+                      console.error('Error creating product line:', error);
+                      alert('Failed to add Product Line. Please try again.');
+                  }
+              });
           });
-          
-        $('#modalForm').on('submit', function(event) {
-          event.preventDefault(); // Prevent the default form submission
-          
-          var errors = [];
-          var stock_qty = $('#stock_qty').val().trim();
-          var price = $('#price').val().trim();
-          var sku = $('#sku').val().trim();
-  
-          // Basic validation
-          if (stock_qty === '') {
-            errors.push('Item cannot be Out of Stock');
-          }
-          if (price === '') {
-            errors.push('Price is required.');
-          }
-          if (sku === '') {
-            errors.push('sku is required.');
-          }
-  
-          // Display errors or success message
-          if (errors.length > 0) {
-            $('#errorMessages').html(errors.join('<br>'));
-          } else {
-            $('#errorMessages').html('');
-            alert('Form submitted successfully!');
-          }
-        });
       });
+      document.addEventListener("DOMContentLoaded", function() {
+          const selectedDiv = document.querySelector(".select-selected");
+          const customItems = document.querySelectorAll(".select-items div");
+          const actualSelect = document.getElementById("product-select");
+
+          // Show selected value in the custom dropdown
+          customItems.forEach(item => {
+              item.addEventListener("click", function() {
+                  const selectedValue = this.getAttribute("data-value");
+                  selectedDiv.textContent = this.textContent;
+
+                  // Update the actual select element's value
+                  actualSelect.value = selectedValue;
+              });
+          });
+      });
+
     </script>
+
+    <style>
+    /* Your custom select styles */
+    .select-selected {
+      padding: 10px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+
+    .select-items {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .select-items div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .select-items div:hover {
+      background-color: #ddd;
+    }
+
+    /* Add custom styles */
+    .custom-select:hover .select-items {
+      display: block;
+    }
+    </style>
 
 @endsection

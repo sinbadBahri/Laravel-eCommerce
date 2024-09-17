@@ -17,15 +17,21 @@ Route::middleware('admin')->group(function ()
 
                 Route::prefix('products')->group(function ()
                     {
-
+                        # Product & ProductLine
                         Route::get( "/", [ProductController::class,"index"]);
-                        Route::get("/all-categories", [ProductController::class,"categoriesView"]);
+                        Route::post("/add-product-line", [ProductController::class, "storeProductLine"])
+                        ->name('product_line.create');
+                        Route::post('delete-product-line', [ProductController::class, "removeProductLine"])
+                        ->name('product_line.delete');
                         Route::get("/add-product", [ProductController::class,"addProductForm"]);
                         Route::post("/add-product", [ProductController::class,"storeProduct"]);
                         Route::post('/add-brand', [ProductController::class, 'createNewBrand'])
                         ->name('brand.create');
                         Route::post('/add-product-type', [ProductController::class, 'createNewProductType'])
                         ->name('product_type.create');
+
+                        # Category
+                        Route::get("/all-categories", [ProductController::class,"categoriesView"]);
                         Route::get("/attributes", [ProductController::class,"attributesView"]);
 
                     }

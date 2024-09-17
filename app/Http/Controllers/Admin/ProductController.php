@@ -15,11 +15,52 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    
+
     public function index(): View
     {
-        $content = ['productCollection' => ProductLine::all()];
+        $content = [
+            'productCollection' => ProductLine::all(),
+            'products' => Product::all(),
+        ];
+
         return view(view: "admin.product.productList", data: $content);
+    }
+
+    public function removeProductLine(Request $request): RedirectResponse
+    {
+        ProductLine::find($request->product_line_id)->delete();
+
+        return redirect()->back()->with('success', 'Product Line has been Deleted');
+    }
+
+    public function storeProductLine(Request $request): JsonResponse
+    {
+        $productLine = $this->makeProductLine($request);
+
+        return response()->json(['product_line' => $productLine]);
+    }
+
+    private function makeProductLine(Request $request)
+    {
+        # Validate the request data
+        $request->validate([
+
+            'product'   => ['required'],
+            'price'     => ['required', 'string'],
+            'stock_qty' => ['required', 'string'],
+            'sku'       => ['required', 'string', 'max:255', 'lowercase', 'unique:product_lines'],
+
+        ]);
+
+        return ProductLine::create([
+
+            'product_id'   => $request->product,
+            'price'        => $request->price,
+            'stock_qty'    => $request->stock_qty,
+            'sku'          => $request->sku,
+            'is_available' => $request->is_available == "on" ? true : false,
+
+        ]);
     }
 
     /**
@@ -39,9 +80,8 @@ class ProductController extends Controller
             'product_types',
             'categories',
         ];
-        
+
         return view(view: 'admin.forms.addProductForm', data: compact($data));
-        
     }
 
     /**
@@ -57,7 +97,6 @@ class ProductController extends Controller
         $brand = Brand::create(['title' => $request->title]);
 
         return response()->json(['brand' => $brand]);
-    
     }
 
     /**
@@ -73,7 +112,6 @@ class ProductController extends Controller
         $productType = ProductType::create(['title' => $request->title]);
 
         return response()->json(['product_type' => $productType]);
-        
     }
 
     /**
@@ -91,8 +129,7 @@ class ProductController extends Controller
         $newProduct = $this->makeProduct(request: $request);
         $this->addCategory(request: $request, product: $newProduct);
 
-        return redirect()->back()->with('success','New Base Product Created');
-        
+        return redirect()->back()->with('success', 'New Base Product Created');
     }
 
     /**
@@ -105,13 +142,13 @@ class ProductController extends Controller
     {
         # Validate the request data
         $request->validate([
-            
+
             'name'         => ['required', 'string', 'max:255', 'unique:products'],
             'slug'         => ['required', 'string', 'max:255', 'lowercase'],
             'description'  => ['required', 'string', 'max:3000'],
             'brand'        => ['required'],
             'product_type' => ['required'],
-        
+
         ]);
 
         return Product::create([
@@ -121,9 +158,8 @@ class ProductController extends Controller
             'description'     => $request->description,
             'brand_id'        => $request->brand,
             'product_type_id' => $request->product_type,
-       
+
         ]);
-        
     }
 
     /**
@@ -136,17 +172,14 @@ class ProductController extends Controller
     private function addCategory(Request $request, Product $product): Void
     {
 
-        if ($request->categories !== null)
-        {
-            foreach ($request->categories as $category_id)
-            {
-    
+        if ($request->categories !== null) {
+            foreach ($request->categories as $category_id) {
+
                 $product->categories()->attach($category_id);
-    
             }
-            
+
             $product->save();
-        } 
+        }
     }
 
     public function categoriesView()
