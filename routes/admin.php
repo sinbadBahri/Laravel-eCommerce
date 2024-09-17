@@ -19,8 +19,13 @@ Route::middleware('admin')->group(function ()
                     {
 
                         Route::get( "/", [ProductController::class,"index"]);
-                        Route::get("/add-product", [ProductController::class,"addProduct"]);
                         Route::get("/all-categories", [ProductController::class,"categoriesView"]);
+                        Route::get("/add-product", [ProductController::class,"addProductForm"]);
+                        Route::post("/add-product", [ProductController::class,"storeProduct"]);
+                        Route::post('/add-brand', [ProductController::class, 'createNewBrand'])
+                        ->name('brand.create');
+                        Route::post('/add-product-type', [ProductController::class, 'createNewProductType'])
+                        ->name('product_type.create');
                         Route::get("/attributes", [ProductController::class,"attributesView"]);
 
                     }

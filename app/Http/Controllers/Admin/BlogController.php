@@ -38,7 +38,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Retrieve a Post Create Form. 
+     * Retrieves a Post Create Form. 
      * 
      * @return View The view for creating a new Post.
      */

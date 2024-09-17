@@ -10,6 +10,9 @@ class Brand extends Model
     use HasFactory;
 
 
+    protected $fillable = ['title'];
+    
+
     /**
      * Returns all the products related to the brand.
      * 
