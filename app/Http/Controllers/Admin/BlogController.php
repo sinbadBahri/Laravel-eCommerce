@@ -7,6 +7,7 @@ use App\Models\Blog\Comment;
 use App\Models\Blog\Genre;
 use App\Models\Blog\Post;
 use App\Models\Images\PostImage;
+use App\Support\ImageUpload\ImageUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
@@ -14,6 +15,12 @@ use Illuminate\Http\JsonResponse;
 
 class BlogController extends Controller
 {
+    protected $imageUploadService;
+
+    public function __construct(ImageUploadService $imageUploadService)
+    {
+        $this->imageUploadService = $imageUploadService;
+    }
     
     public function postsList(): View
     {
@@ -194,7 +201,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Attach an image to a post if a file is present in the request.
+     * Attaches an image to a post if a file is present in the request.
      * 
      * If the request contains an image file, the function validates the image, converts it to binary, 
      * retrieves the MIME type, and creates a new PostImage entry with the image details linked to the post.
@@ -203,34 +210,21 @@ class BlogController extends Controller
      * @param Post $post The post to which the image will be attached.
      * @return void
      */
-    private function attachImage(Request $request, Post $post)
+    private function attachImage(Request $request, Post $post): void
     {
-        
         if ($request->hasFile('image'))
         {
-
             $imageFile = $request->file('image');
 
-            if (PostImage::validateImage($imageFile) == true)
+            # Validate the image using the ImageUploadService
+            if ($this->imageUploadService->isValid($imageFile))
             {
-                # Convert the Image to binary
-                $imageBlob = file_get_contents($imageFile);
-    
-                # Get MIME type
-                $imageType = $imageFile->getMimeType();
-    
-                PostImage::create([
-    
-                    'alternative_text' => "Image of {$request->title}",
-                    'mime_type'        => $imageType,
-                    'image'            => $imageBlob,
-                    'post_id'          => $post->id,
-                
-                ]);
-    
-                $post->save();
-
-            };            
+                # Upload the image
+                $this->imageUploadService->uploadImageForPost(
+                    file: $imageFile,
+                    post: $post,
+                );
+            }
         }
     }
 

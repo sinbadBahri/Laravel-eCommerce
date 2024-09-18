@@ -180,83 +180,50 @@
 
     <!-- Include jQuery -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <!-- Script to sync custom select with actual select -->
+    <!-- Include JS to sync custom select with actual select -->
+    <script src="{{ asset('js/select.js') }}"></script>
     <script>
       $(document).ready(function() {
-        // Handle the form submission via AJAX
-          $('#modalForm').on('submit', function(e) {
-              e.preventDefault(); // Prevent the default form submission
-
-              let formData = $(this).serialize(); // Serialize the form data
-
+          // Set up CSRF token for AJAX requests
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+  
+          // Handle form submission
+          $('#modalForm').on('submit', function(event) {
+              event.preventDefault(); // Prevent the default form submission
+  
+              // Create a FormData object to handle file uploads and form data
+              var formData = new FormData(this);
+  
               $.ajax({
-                  type: 'POST',
-                  url: $(this).attr('action'), // Use the form's action attribute as the AJAX URL
+                  url: $(this).attr('action'), // The URL of your POST request
+                  method: 'POST',
                   data: formData,
+                  processData: false, // Do not process the data
+                  contentType: false, // Do not set contentType
                   success: function(response) {
-                      // Assuming the server returns the newly created product line's ID and name
-                      let newProductLine = response.product_line;
-
-                      // Close the modal
-                      $('#loginModal').modal('hide');
-
-                      // Optionally, reset the form fields
-                      $('#modalForm')[0].reset();
-
-                      // Dynamically add the new product line to the table
-                      let newTableRow = `
-                          <tr>
-                              <td>${newProductLine.name}</td>
-                              <td>${newProductLine.sku}</td>
-                              <td>
-                                  <button class="pd-setting">Active</button>
-                              </td>
-                              <td>${newProductLine.price}</td>
-                              <td>No Discount</td>
-                              <td>${newProductLine.stock_qty}</td>
-                              <td>
-                                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
-                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                  </button>
-                                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                  </button>
-                              </td>
-                          </tr>
-                      `;
-                      
-                      $('#productTableBody').append(newTableRow);
-
-
-                      // Show a success message (optional)
-                      alert('Product Line added successfully!');
+                      if (response.success) {
+                          // Show success message
+                          alert('Product Line created successfully!');
+                          
+                          // Reload the page to show the new records
+                          window.location.reload();
+                      } else {
+                          // Handle failure case (if needed)
+                          alert('Failed to create Product Line.');
+                      }
                   },
                   error: function(xhr, status, error) {
-                      // Handle errors (optional)
-                      console.error('Error creating product line:', error);
-                      alert('Failed to add Product Line. Please try again.');
+                      // Handle errors
+                      alert('An error occurred: ' + xhr.responseText);
                   }
               });
           });
       });
-      document.addEventListener("DOMContentLoaded", function() {
-          const selectedDiv = document.querySelector(".select-selected");
-          const customItems = document.querySelectorAll(".select-items div");
-          const actualSelect = document.getElementById("product-select");
-
-          // Show selected value in the custom dropdown
-          customItems.forEach(item => {
-              item.addEventListener("click", function() {
-                  const selectedValue = this.getAttribute("data-value");
-                  selectedDiv.textContent = this.textContent;
-
-                  // Update the actual select element's value
-                  actualSelect.value = selectedValue;
-              });
-          });
-      });
-
-    </script>
+  </script>
 
     <style>
     /* Your custom select styles */
