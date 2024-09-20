@@ -30,49 +30,60 @@
                                       <h4 class="modal-title" id="loginModalLabel">Form with Switches</h4>
                                     </div>
                                     <div class="modal-body">
-                                      <form id="modalForm">
+                                      <form id="modalForm" action="{{route('category.create')}}" method="POST">
 
-                                            
+                                        @csrf
                                         <div class="form-group">
                                           <label for="name">name</label>
-                                          <input type="text" class="form-control" id="name" placeholder="Category Name">
+                                          <input type="text" class="form-control" id="name" name="name" placeholder="Category Name">
                                         </div>
                                         <div class="form-group">
                                           <label for="slug">slug</label>
-                                          <input type="text" class="form-control" id="slug" placeholder="category-name">
+                                          <input type="text" class="form-control" id="slug" name="slug" placeholder="category-name">
                                         </div>
 
                                         <!-- Custom Select Dropdown -->
                                         <div class="form-group custom-select">
-                                            <div class="select-selected">Select Parent Category</div>
-                                            <div class="select-items select-hide">
-                                            <div>One</div>
-                                            <div>Two</div>
-                                            <div>Three</div>
-                                            </div>
-                                            <select class="form-control">
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                            </select>
+                                          <!-- Custom Select Display -->
+                                          <div class="select-selected">Select The Parent Category (Optional)</div>
+                                          <div class="select-items select-hide">
+                                            @foreach ($categories as $category)
+
+                                            <div data-value="{{$category->id}}">{{$category->name}}</div>
+                                            @endforeach
+                                          </div>
+
+                                          <!-- Actual Select Element -->
+                                          <select class="form-control" name="parent" id="product-select">
+                                              <option value="" selected disabled>Select The Parent Category (Optional)</option>
+                                              @foreach ($categories as $category)
+
+                                              <option value="{{$category->id}}">{{$category->name}}</option>
+                                              @endforeach
+                                          </select>
                                         </div>
-                                        
+
+                                        <div class="form-group">
+                                            <label for="image">Image</label>
+                                            <input type="file" class="form-control" id="image" name="image">
+                                        </div>
+
                                         <!-- Switches -->
                                         <div class="form-group">
                                           <label class="form-check-label">status</label>
                                           <label class="switch">
-                                            <input type="checkbox" id="flexSwitchCheckChecked" checked>
+                                            <input type="checkbox" id="flexSwitchCheckChecked" name="status" checked>
                                             <span class="slider"></span>
                                           </label>
                                         </div>
                                         <div class="form-group">
                                           <label class="form-check-label">is feutured</label>
                                           <label class="switch">
-                                            <input type="checkbox" id="flexSwitchCheckDefault" defaultchecked>
+                                            <input type="checkbox" id="flexSwitchCheckDefault" name="is_feutured" defaultchecked>
                                             <span class="slider"></span>
                                           </label>
                                         </div>
-                                        
+
                                         <div id="errorMessages" class="error-message"></div>
                                         <button type="submit" class="btn btn-primary btn-block">Create</button>
                                       </form>
@@ -80,46 +91,61 @@
                                   </div>
                                 </div>
                               </div>
-                            
+
 
                             <table>
                                 <tr>
-                                    <th>Product Title</th>
-                                    <th>sku</th>
+                                    <th>Name</th>
+                                    <th>Slug</th>
                                     <th>Status</th>
-                                    <th>Price</th>
-                                    <th>Has Discount</th>
-                                    <th>Stock</th>
+                                    <th>Parent Category</th>
+                                    <th>Is Feutured</th>
                                     <th>Setting</th>
                                 </tr>
-                                {{-- @foreach ($productCollection as $item)
-                                    
+                                @foreach ($categories as $category)
+
                                 <tr>
-                                    <td>{{$item->product->name}}</td>
-                                    <td>{{$item->sku}}</td>
+                                    <td>{{$category->name}}</td>
+                                    <td>{{$category->slug}}</td>
                                     <td>
-                                        @if ($item->is_available)
-                                            
+                                        @if ($category->status)
+
                                         <button class="pd-setting">Active</button>
                                         @else
                                         <button class="ds-setting">Disabled</button>
                                         @endif
                                     </td>
-                                    <td>{{$item->price}}</td>
                                     <td>
-                                        @if ($item->discount !== null)
-                                        {{$item->discount->percentage}}%
+                                      @if ($category->parent)
+                                      {{$category->parent->name}}
+                                      @else
+                                          --No Parent--
+                                      @endif
+                                    </td>
+                                    <td>
+                                        @if ($category->is_feutured)
+
+                                        <button class="pd-setting">Feutured</button>
                                         @else
-                                        No Discount
+                                        <button class="ds-setting">Not Feutured</button>
                                         @endif
                                     </td>
-                                    <td>{{$item->stock_qty}}</td>
                                     <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                      <form action="" method="GET">
+                                          @csrf
+                                          <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="category_id" value="{{$category->id}}">
+                                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                          </button>
+                                      </form>
+                                      <form action="{{route('category.delete')}}" method="POST">
+                                          @csrf
+                                          <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" name="category_id" value="{{$category->id}}">
+                                              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                          </button>
+                                      </form>
                                     </td>
                                 </tr>
-                                @endforeach --}}
+                                @endforeach
                             </table>
                             <div class="custom-pagination">
 								<ul class="pagination">
@@ -140,52 +166,80 @@
 
     <!-- Include jQuery -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    
+    <!-- Include JS to sync custom select with actual select -->
+    <script src="{{ asset('js/select.js') }}"></script>
     <script>
-      $(document).ready(function() {
-          $(".custom-select").click(function() {
-              $(this).find(".select-items").toggleClass("select-hide");
-              $(this).toggleClass("select-arrow-active");
-          });
+        $(document).ready(function() {
+            // Set up CSRF token for AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-          $(".select-items div").click(function() {
-              var value = $(this).text();
-              $(this).closest(".custom-select").find(".select-selected").text(value);
-              $(this).closest(".custom-select").find("select").val(value);
-              $(this).closest(".select-items").addClass("select-hide");
-          });
+            // Handle form submission
+            $('#modalForm').on('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
 
-          $(document).click(function(e) {
-              if (!$(e.target).closest(".custom-select").length) {
-              $(".select-items").addClass("select-hide");
-              $(".custom-select").removeClass("select-arrow-active");
-              }
-          });
-          
-        $('#modalForm').on('submit', function(event) {
-          event.preventDefault(); // Prevent the default form submission
-          
-          var errors = [];
-          var name = $('#name').val().trim();
-          var slug = $('#slug').val().trim();
-  
-          // Basic validation
-          if (name === '') {
-            errors.push('Name is required.');
-          }
-          if (slug === '') {
-            errors.push('Slug is required.');
-          }
-  
-          // Display errors or success message
-          if (errors.length > 0) {
-            $('#errorMessages').html(errors.join('<br>'));
-          } else {
-            $('#errorMessages').html('');
-            alert('Form submitted successfully!');
-          }
+                // Create a FormData object to handle file uploads and form data
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: $(this).attr('action'), // The URL of your POST request
+                    method: 'POST',
+                    data: formData,
+                    processData: false, // Do not process the data
+                    contentType: false, // Do not set contentType
+                    success: function(response) {
+                        if (response.success) {
+                            // Show success message
+                            alert('Category created successfully!');
+
+                            // Reload the page to show the new records
+                            window.location.reload();
+                        } else {
+                            // Handle failure case (if needed)
+                            alert('Failed to create Category.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        alert('An error occurred: ' + xhr.responseText);
+                    }
+                });
+            });
         });
-      });
     </script>
+
+    <style>
+      /* Your custom select styles */
+      .select-selected {
+        padding: 10px;
+        background-color: #f1f1f1;
+        cursor: pointer;
+      }
+
+      .select-items {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        z-index: 1;
+        width: 100%;
+      }
+
+      .select-items div {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .select-items div:hover {
+        background-color: #ddd;
+      }
+
+      /* Add custom styles */
+      .custom-select:hover .select-items {
+        display: block;
+      }
+      </style>
 
 @endsection

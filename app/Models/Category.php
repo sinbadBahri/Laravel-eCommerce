@@ -12,26 +12,28 @@ class Category extends Model
     use HasFactory;
 
 
+    protected $fillable = ['name', 'slug', 'status', 'is_feutured', 'parent_id'];
+
     // public function __construct(string $name)
     // {
 
     //     $this->name = $name;
-    //     $this->generateSlug(); 
-    
+    //     $this->generateSlug();
+
     // }
 
     public function children()
     {
-    
+
         return $this->hasMany(Category::class, 'parent_id');
-    
+
     }
 
     public function parent()
     {
-    
+
         return $this->belongsTo(Category::class, 'parent_id');
-    
+
     }
 
     public function products()
@@ -42,14 +44,14 @@ class Category extends Model
             related:Product::class,
             table:'category_product_relations'
         );
-        
+
     }
 
     public function image()
     {
 
         return $this->hasOne(related:CategoryImage::class);
-        
+
     }
 
     public function widgets()
@@ -69,7 +71,7 @@ class Category extends Model
 
         $slug = str_replace(" ", "-", $this->name);
         $this->slug = $slug;
-        
+
     }
 
 }

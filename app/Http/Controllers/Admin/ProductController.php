@@ -241,11 +241,6 @@ class ProductController extends Controller
         }
     }
 
-    public function categoriesView()
-    {
-        return view(view: 'admin.product.allCategories');
-    }
-
     public function attributesView()
     {
         return view(view: 'admin.product.attributes');

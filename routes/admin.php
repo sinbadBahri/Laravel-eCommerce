@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FinanceAndPaymentController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UsersController;
@@ -31,7 +32,14 @@ Route::middleware('admin')->group(function ()
                         ->name('product_type.create');
 
                         # Category
-                        Route::get("/all-categories", [ProductController::class,"categoriesView"]);
+                        Route::get("/all-categories", [CategoryController::class,"index"]);
+                        Route::post("/all-categories/create-new-category", [CategoryController::class,"store"])
+                        ->name('category.create');
+                        Route::post('/all-categories/delete-category', [CategoryController::class, "delete"])
+                        ->name('category.delete');
+                        // Route
+
+                        # Attribute
                         Route::get("/attributes", [ProductController::class,"attributesView"]);
 
                     }
@@ -88,5 +96,5 @@ Route::middleware('admin')->group(function ()
             }
         );
 
-    }  
+    }
 );

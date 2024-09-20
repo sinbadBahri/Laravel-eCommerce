@@ -3,6 +3,8 @@
 namespace App\Support\ImageUpload;
 
 use App\Models\Blog\Post;
+use App\Models\Category;
+use App\Models\Images\CategoryImage;
 use App\Models\Images\PostImage;
 use App\Models\Images\ProductImage;
 use App\Models\ProductLine;
@@ -107,6 +109,29 @@ class ImageUploadService
             'mime_type'        => $mimeType,
             'image'            => $imageBlob,
             'post_id'          => $post->id,
+        ]);
+    }
+
+    /**
+     * Uploads an image for a Category.
+     *
+     * Retrieves the image content from the provided UploadedFile, along with the MIME type.
+     * Creates a new CategoryImage instance with the proper credentials.
+     *
+     * @param UploadedFile $file The file to upload as an image.
+     * @param Category $category The Category associated with the image.
+     * @return CategoryImage The created CategoryImage instance.
+     */
+    public function uploadImageForCategory(UploadedFile $file, Category $category): CategoryImage
+    {
+        $imageBlob = file_get_contents($file);
+        $mimeType = $file->getMimeType();
+
+        return CategoryImage::create([
+            'alternative_text' => "Image of {$category->name}",
+            'mime_type'        => $mimeType,
+            'image'            => $imageBlob,
+            'category_id'      => $category->id,
         ]);
     }
 }
