@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Finance\Discount;
 use App\Models\Product;
 use App\Models\ProductLine;
 use App\Models\ProductType;
@@ -72,6 +73,7 @@ class ProductController extends Controller
     public function editProductLine(int $product_line_id): View
     {
         $content = [
+            'discounts'   => Discount::all(),
             'products'    => Product::all(),
             'productLine' => ProductLine::find($product_line_id),
         ];
@@ -92,6 +94,11 @@ class ProductController extends Controller
         $productLine = $this->makeOrUpdateProductLine(
             request: $request,
             product_line_id: $product_line_id,
+        );
+
+        $this->updateDiscount(
+            request: $request,
+            productLine: $productLine,
         );
 
         $this->attachImage(
@@ -171,6 +178,41 @@ class ProductController extends Controller
             }
         }
     }
+
+    /**
+     * Updates the discount associated with the given ProductLine.
+     *
+     * This method retrieves the discount ID from the request and
+     * delegates the task of updating the ProductLine's discount to
+     * the setProductLineDiscount method.
+     *
+     * @param Request $request The incoming request containing the discount data.
+     * @param ProductLine $productLine The ProductLine instance to be updated.
+     * @return void
+     */
+    private function updateDiscount(Request $request, ProductLine $productLine): void
+    {
+        $discountId = $request->discount;
+
+        $this->setProductLineDiscount($productLine, $discountId);
+    }
+
+    /**
+     * Sets the discount for the provided ProductLine instance and persists it.
+     *
+     * This method assigns the provided discount ID (or null) to the ProductLine's
+     * discount_id field and saves the change to the database.
+     *
+     * @param ProductLine $productLine The ProductLine instance to update.
+     * @param int|null $discountId The discount ID to associate with the ProductLine, or null to remove the discount.
+     * @return void
+     */
+    private function setProductLineDiscount(ProductLine $productLine, ?int $discountId): void
+    {
+        $productLine->discount_id = $discountId;
+        $productLine->save();
+    }
+
 
     /**
      * Retrieves a Product create Form.

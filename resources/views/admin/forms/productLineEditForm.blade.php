@@ -25,7 +25,7 @@
                             @method('PUT')
 
                             <!-- Custom Select Dropdown -->
-                            <div class="form-group custom-select">
+                            <div class="form-group custom-select product-select">
 
                                 <!-- Custom Select Display -->
                                 <div class="select-selected">
@@ -82,7 +82,43 @@
                                 @endforeach
                                 @endif
                             </div>
-                            
+
+                            <!-- Custom Select Dropdown for Discounts -->
+                            <div class="form-group custom-select discount-select">
+                                <!-- Custom Select Display -->
+                                <div class="select-selected">
+                                    {{ $productLine->discount_id ? $productLine->discount->title : 'No Discount' }} <!-- Show current Discount or 'No Discount' -->
+                                </div>
+
+                                <div class="select-items select-hide">
+                                    <!-- Option to remove Discount (set to null) -->
+                                    <div data-value="">No Discount</div>
+
+                                    <!-- List of all possible Discounts except the current one -->
+                                    @foreach ($discounts as $discount)
+                                        @if ($discount->id != $productLine->discount_id) <!-- Prevent selecting the current Discount-->
+                                            <div data-value="{{ $discount->id }}">{{ $discount->title }}</div>
+                                        @endif
+                                    @endforeach
+                                </div>
+
+                                <!-- Hidden select element to store the actual Discount value -->
+                                <select class="form-control" name="discount" id="discount-select">
+                                    <!-- 'No Discount' option, selected if rather to have no Discount -->
+                                    <option value="" {{ is_null($productLine->discount_id) ? 'selected' : '' }}>No Discount</option>
+
+                                    <!-- Loop through all Discounts to populate the dropdown -->
+                                    @foreach ($discounts as $discount)
+                                        @if ($discount->id != $productLine->discount_id)
+                                            <option value="{{ $discount->id }}"
+                                                    {{ $productLine->discount_id == $discount->id ? 'selected' : '' }}>
+                                                {{ $discount->title }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <!-- Switches -->
                             <div class="form-group">
                                 <label class="form-check-label">Is Active</label>
