@@ -16,6 +16,57 @@
                     <br>
                     <link rel="stylesheet" href="{{ asset('css/modal-for-product-list.css') }}">
 
+                    <!-- Modal for adding new Discounts to the Database -->
+                    <div class="modal fade" id="discountModal" tabindex="-1" role="dialog" aria-labelledby="discountModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="discountModalLabel">Add Discount</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="modalForm" action="{{ route('discount.create') }}" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="discount-name">Discount Title</label>
+                                            <input type="text" class="form-control" id="discount-name" name="title" placeholder="The name of your Discount" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Enter a description"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="percentage">Percentage</label>
+                                            <input type="number" class="form-control" id="percentage" name="percentage" placeholder="Enter percentage" min="0" max="100" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="valid-until">Valid Until</label>
+                                            <input type="datetime-local" class="form-control" id="valid-until" name="valid_until">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="max-amount">Max Amount</label>
+                                            <input type="number" class="form-control" id="max-amount" name="max_amount">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-check-label">Have Code</label>
+                                            <label class="switch">
+                                                <input type="checkbox" id="have-code">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group" id="code-container" style="display: none;">
+                                            <label for="code">Code</label>
+                                            <input type="text" class="form-control" id="code" name="code" placeholder="Enter discount code">
+                                        </div>
+                                        <div id="errorMessages" class="error-message"></div>
+                                        <button type="submit" class="btn btn-primary btn-block">Define Discount</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- Form for Editing Product Line -->
 
                     <div class="form-group">
@@ -82,9 +133,17 @@
                                 @endforeach
                                 @endif
                             </div>
+                            <br>
+                            <br>
 
                             <!-- Custom Select Dropdown for Discounts -->
                             <div class="form-group custom-select discount-select">
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#discountModal">
+                                    Define Discount
+                                </button>
+                                <br>
+
                                 <!-- Custom Select Display -->
                                 <div class="select-selected">
                                     {{ $productLine->discount_id ? $productLine->discount->title : 'No Discount' }} <!-- Show current Discount or 'No Discount' -->
@@ -102,6 +161,8 @@
                                     @endforeach
                                 </div>
 
+                                <br>
+                                <br>
                                 <!-- Hidden select element to store the actual Discount value -->
                                 <select class="form-control" name="discount" id="discount-select">
                                     <!-- 'No Discount' option, selected if rather to have no Discount -->
@@ -151,6 +212,8 @@
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <!-- Include JS to sync custom select with actual select -->
 <script src="{{ asset('js/select.js') }}"></script>
+<!-- Include JS to add action to custom discount modal -->
+<script src="{{ asset('js/discount-modal.js') }}"></script>
 
 <style>
     /* Your custom select styles */

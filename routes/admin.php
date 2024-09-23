@@ -99,6 +99,10 @@ Route::middleware('admin')->group(function ()
                         # Payments
                         Route::get( "/users-payments", [FinanceAndPaymentController::class,"paymentsView"]);
 
+                        # Discounts
+                        Route::post("/create-new-discount", [FinanceAndPaymentController::class, "storeDiscount"])
+                        ->name('discount.create');
+
                     }
                 );
             }
