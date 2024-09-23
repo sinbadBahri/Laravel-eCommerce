@@ -16,11 +16,13 @@ use Illuminate\Http\UploadedFile;
  * @property array $allowedMimeTypes List of allowed image MIME types.
  * @property int $maxFileSize Maximum file size allowed for image uploads (5MB limit).
  *
- * @method bool isValid(UploadedFile $file) Check if the uploaded file is valid based on size and MIME type.
- * @method bool isValidSize(UploadedFile $file) Check if the file size is within the allowed limit.
- * @method bool isValidMimeType(UploadedFile $file) Check if the file MIME type is allowed.
- * @method ProductImage uploadImageForProduct(UploadedFile $file, ProductLine $productLine) Upload an image for a product.
- * @method PostImage uploadImageForPost(UploadedFile $file, Post $post) Upload an image for a post.
+ * @method bool isValid(UploadedFile $file) Checks if the uploaded file is valid based on size and MIME type.
+ * @method bool isValidSize(UploadedFile $file) Checks if the file size is within the allowed limit.
+ * @method bool isValidMimeType(UploadedFile $file) Checks if the file MIME type is allowed.
+ * @method ProductImage uploadImageForProduct(UploadedFile $file, ProductLine $productLine) Uploads an image for a product.
+ * @method PostImage uploadImageForPost(UploadedFile $file, Post $post) Uploads an image for a post.
+ * @method CategoryImage uploadImageForCategory() Uploads an image for a category.
+ * @method void deleteCategoryImageBeforeUpload() Removes the image related to a category.
  */
 class ImageUploadService
 {
@@ -133,5 +135,27 @@ class ImageUploadService
             'image'            => $imageBlob,
             'category_id'      => $category->id,
         ]);
+    }
+
+    /**
+     * Removes the previous CategoryImage instance related to the Category object.
+     *
+     * Since CategoryImage & Category classes have a one to one relationship, a Category instance
+     * can only have one Image; This method removes the previous CategoryImage instance related
+     * to the Category, to make sure there is room for the new Image.
+     *
+     * Use this method before using @method uploadImageForCategory, to ensure a Category is only
+     * connected to one CategoryImage instance.
+     *
+     * @param Category $category The Category object which its Image would be removed.
+     * @return void
+     */
+    public function deleteCategoryImageBeforeUpload(Category $category): void
+    {
+        $image = CategoryImage::where('category_id', $category->id)->first();
+
+        if ($image) {
+            $image->delete();
+        }
     }
 }

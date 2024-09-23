@@ -131,7 +131,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                      <form action="" method="GET">
+                                      <form action="{{route('category.edit', $category->id)}}" method="GET">
                                           @csrf
                                           <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="category_id" value="{{$category->id}}">
                                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

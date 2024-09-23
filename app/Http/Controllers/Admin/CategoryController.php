@@ -47,7 +47,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $newCategory = $this->makeCategory(request: $request);
+        $newCategory = $this->makeOrUpdateCategory(request: $request);
         $this->attachImage(request: $request, category: $newCategory);
 
         return response()->json([
@@ -57,22 +57,69 @@ class CategoryController extends Controller
     }
 
     /**
-     * Validates the request data for creating a new Category instance.
+     * An Edit Form of a specific Category.
+     *
+     * @param Request $request The HTTP request containing the category ID.
+     * @return View The view for editing a Category instance.
+     */
+    public function edit(int $category_id): View
+    {
+
+        $category = Category::find($category_id);
+        $allCategories = Category::all();
+
+        return view(
+            view: 'admin.forms.categoryEditForm',
+            data: compact(['category', 'allCategories'])
+        );
+
+    }
+
+    /**
+     * Updates a Category regarding the provided request data and Category ID.
+     *
+     * @param Request $request The request containing the updated category data.
+     * @param int $category_id The ID of the category to be updated.
+     * @return RedirectResponse Redirects to the all categories list page with a success message.
+     */
+    public function update(Request $request, int $category_id): RedirectResponse
+    {
+        $category = $this->makeOrUpdateCategory(
+            request: $request,
+            category_id: $category_id,
+        );
+
+        $this->attachImage(
+            request: $request,
+            category: $category,
+        );
+
+        return redirect('/admin-panel/products/all-categories')
+        ->with('success', 'Category Updated.');
+    }
+
+    /**
+     * Validates the request data for creates or updates a Category instance.
+     *
+     * Note that this method could be called when either a Category instance is getting created or updated,
+     * therefore when the $category_id is null probably the update method is calling this method.
      *
      * @param Request $request The request object containing the category data.
+     * @param int|null $category_id The ID of the Category to update, or null if creating a new Category.
      * @return Category The newly created Category instance.
      */
-    private function makeCategory(Request $request): Category
+    private function makeOrUpdateCategory(Request $request, int $category_id = null): Category
     {
         # Validate the request data
         $request->validate([
 
-            'name'  => ['required', 'string', 'max:255', 'unique:categories'],
-            'slug'  => ['required', 'string', 'max:255', 'lowercase'],
+            'name'  => ['required', 'string', 'max:255'],
+            'slug'  => ['required', 'string', 'max:255'],
 
         ]);
 
-        return Category::create([
+        # Credentials to create or update a Category
+        $credentials = [
 
             'name'        => $request->name,
             'slug'        => $request->slug,
@@ -80,7 +127,11 @@ class CategoryController extends Controller
             'status'      => $request->status      == "on" ? true : false,
             'is_feutured' => $request->is_feutured == "on" ? true : false,
 
-        ]);
+        ];
+
+        $category = Category::updateOrCreate(['id' => $category_id], $credentials);
+
+        return $category;
     }
 
     /**
@@ -103,6 +154,11 @@ class CategoryController extends Controller
             # Validate the image using the ImageUploadService
             if ($this->imageUploadService->isValid($imageFile))
             {
+                # Removes previous image (if there was)
+                $this->imageUploadService->deleteCategoryImageBeforeUpload(
+                    category: $category
+                );
+
                 # Upload the image
                 $this->imageUploadService->uploadImageForCategory(
                     file: $imageFile,

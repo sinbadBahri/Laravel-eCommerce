@@ -37,6 +37,10 @@ Route::middleware('admin')->group(function ()
                         ->name('category.create');
                         Route::post('/all-categories/delete-category', [CategoryController::class, "delete"])
                         ->name('category.delete');
+                        Route::get( "/edit-category/{category_id}", [CategoryController::class,"edit"])
+                        ->name('category.edit');
+                        Route::put( "/update-category/{category_id}", [CategoryController::class,"update"])
+                        ->name("category.update");
                         // Route
 
                         # Attribute
