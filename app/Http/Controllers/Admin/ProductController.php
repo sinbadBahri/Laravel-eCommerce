@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Images\ProductImage;
 use App\Models\Product;
 use App\Models\ProductLine;
 use App\Models\ProductType;
@@ -27,8 +26,8 @@ class ProductController extends Controller
     public function index(): View
     {
         $content = [
+            'products'          => Product::all(),
             'productCollection' => ProductLine::all(),
-            'products' => Product::all(),
         ];
 
         return view(view: "admin.product.productList", data: $content);
@@ -55,22 +54,67 @@ class ProductController extends Controller
      */
     public function storeProductLine(Request $request): JsonResponse
     {
-        $productLine = $this->makeProductLine($request);
-        $this->attachImage($request, $productLine);
+        $productLine = $this->makeOrUpdateProductLine(request: $request);
+        $this->attachImage(request: $request, productLine: $productLine);
 
         return response()->json([
-            'success' => true,
+            'success'      => true,
             'product_line' => $productLine
         ]);
     }
 
     /**
-     * Validates the request data for creating a new product line.
+     * An Edit Form of a specific Product Line.
      *
-     * @param Request $request The request object containing the product line data.
-     * @return ProductLine The newly created product line.
+     * @param int $product_line_id The ID of the ProductLine instance to be edited.
+     * @return View The view for editing a ProductLine instance.
      */
-    private function makeProductLine(Request $request): ProductLine
+    public function editProductLine(int $product_line_id): View
+    {
+        $content = [
+            'products'    => Product::all(),
+            'productLine' => ProductLine::find($product_line_id),
+        ];
+
+        return view(view: 'admin.forms.productLineEditForm', data: $content);
+
+    }
+
+    /**
+     * Updates a ProductLine instance based on the provided request data and ProductLine ID.
+     *
+     * @param Request $request The request containing the updated product line data.
+     * @param int $product_line_id The ID of the product line to be updated.
+     * @return RedirectResponse Redirects to the product lines list page with a success message.
+     */
+    public function updateProductLine(Request $request, int $product_line_id): RedirectResponse
+    {
+        $productLine = $this->makeOrUpdateProductLine(
+            request: $request,
+            product_line_id: $product_line_id,
+        );
+
+        $this->attachImage(
+            request: $request,
+            productLine: $productLine,
+        );
+
+        return redirect('/admin-panel/products')
+        ->with('success', 'Product Line Updated.');
+    }
+
+    /**
+     * Validates the request data for creating or updating a ProductLine instance.
+     *
+     * Note that this method could be called when either a ProductLine instance is getting created or updated,
+     * therefore when the $product_line_id is null probably the updateProductLine method is calling this method.
+     *
+     * @param Request $request The request object containing the Product Line data.
+     * @param int|null $product_line_id The ID of the ProductLine to update, or null if creating a new ProductLine.
+     * @return ProductLine The updated or newly created ProductLine instance.
+     */
+    private function makeOrUpdateProductLine(Request $request,
+    int $product_line_id = null): ProductLine
     {
         # Validate the request data
         $request->validate([
@@ -78,11 +122,11 @@ class ProductController extends Controller
             'product'   => ['required'],
             'price'     => ['required', 'string'],
             'stock_qty' => ['required', 'string'],
-            'sku'       => ['required', 'string', 'max:255', 'lowercase', 'unique:product_lines'],
+            'sku'       => ['required', 'string', 'max:255', 'lowercase'],
 
         ]);
 
-        return ProductLine::create([
+        $credentials = [
 
             'product_id'   => $request->product,
             'price'        => $request->price,
@@ -90,16 +134,22 @@ class ProductController extends Controller
             'sku'          => $request->sku,
             'is_available' => $request->is_available == "on" ? true : false,
 
-        ]);
+        ];
+
+        $productLine = ProductLine::updateOrCreate(
+            ['id' => $product_line_id], $credentials
+        );
+
+        return $productLine;
     }
 
     /**
      * Attaches an image to a Product Line if a file is present in the request.
-     * 
+     *
      * If the request contains an image file, the function validates the image,
      * converts it to binary, retrieves the MIME type, and creates a new ProductImage
      * entry with the image details linked to the Product Line.
-     * 
+     *
      * @param Request $request The HTTP request containing the image file.
      * @param ProductLine $productLine The ProductLine instance to which the image will be attached.
      * @return void
@@ -124,7 +174,7 @@ class ProductController extends Controller
 
     /**
      * Retrieves a Product create Form.
-     * 
+     *
      * @return View The view for creating a new Product.
      */
     public function addProductForm(): View
@@ -175,9 +225,9 @@ class ProductController extends Controller
 
     /**
      * Stores a new Product based on the provided request data.
-     * 
+     *
      * After validating the request data, creates a new instance of Product Class.
-     * Then if the request included Categories, attaches them to the new Product. 
+     * Then if the request included Categories, attaches them to the new Product.
      *
      * @param Request $request The request containing the product data.
      * @return RedirectResponse A redirect response indicating the success of creating a new base product.

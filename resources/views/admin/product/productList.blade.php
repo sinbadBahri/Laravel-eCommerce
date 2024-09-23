@@ -38,22 +38,22 @@
                                           <div class="select-selected">Select Your Product</div>
                                           <div class="select-items select-hide">
                                             @foreach ($products as $product)
-                                                
+
                                             <div data-value="{{$product->id}}">{{$product->name}}</div>
                                             @endforeach
                                           </div>
-                                      
+
                                           <!-- Actual Select Element -->
                                           <select class="form-control" name="product" id="product-select">
                                               <option value="" selected disabled>Select a product</option>
                                               @foreach ($products as $product)
-                                                  
+
                                               <option value="{{$product->id}}">{{$product->name}}</option>
                                               @endforeach
                                           </select>
                                         </div>
 
-                                            
+
                                         <div class="form-group">
                                           <label for="price">Price</label>
                                           <input type="text" class="form-control" id="price" name="price" placeholder="$ 170">
@@ -75,7 +75,7 @@
                                               <label for="image">Image</label>
                                               <input type="file" class="form-control" id="image" name="image">
                                           </div>
-                                        
+
                                         <!-- Switches -->
                                         <div class="form-group">
                                           <label class="form-check-label">is active</label>
@@ -84,7 +84,7 @@
                                             <span class="slider"></span>
                                           </label>
                                         </div>
-                            
+
                                         <div class="form-group">
                                           <label class="form-check-label">has discount</label>
                                           <label class="switch">
@@ -92,7 +92,7 @@
                                             <span class="slider"></span>
                                           </label>
                                         </div>
-                            
+
                                         <div class="form-group">
                                           <label class="form-check-label">has tax</label>
                                           <label class="switch">
@@ -100,7 +100,7 @@
                                             <span class="slider"></span>
                                           </label>
                                         </div>
-                                        
+
                                         <div id="errorMessages" class="error-message"></div>
                                         <button type="submit" class="btn btn-primary btn-block">Create</button>
                                       </form>
@@ -108,7 +108,7 @@
                                   </div>
                                 </div>
                               </div>
-                            
+
 
                             <table>
                                 <tr>
@@ -122,13 +122,13 @@
                                 </tr>
                                 <tbody id="productTableBody">
                                 @foreach ($productCollection as $item)
-                                    
+
                                 <tr>
                                     <td>{{$item->product->name}}</td>
                                     <td>{{$item->sku}}</td>
                                     <td>
                                         @if ($item->is_available)
-                                            
+
                                         <button class="pd-setting">Active</button>
                                         @else
                                         <button class="ds-setting">Disabled</button>
@@ -144,7 +144,7 @@
                                     </td>
                                     <td>{{$item->stock_qty}}</td>
                                     <td>
-                                      <form action="{{ route('post.edit', $item->id) }}" method="GET">
+                                      <form action="{{ route('product_line.edit', $item->id) }}" method="GET">
                                           @csrf
                                           <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="product_line_id" value="{{$item->id}}">
                                               <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -190,14 +190,14 @@
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               }
           });
-  
+
           // Handle form submission
           $('#modalForm').on('submit', function(event) {
               event.preventDefault(); // Prevent the default form submission
-  
+
               // Create a FormData object to handle file uploads and form data
               var formData = new FormData(this);
-  
+
               $.ajax({
                   url: $(this).attr('action'), // The URL of your POST request
                   method: 'POST',
@@ -208,7 +208,7 @@
                       if (response.success) {
                           // Show success message
                           alert('Product Line created successfully!');
-                          
+
                           // Reload the page to show the new records
                           window.location.reload();
                       } else {

@@ -24,6 +24,10 @@ Route::middleware('admin')->group(function ()
                         ->name('product_line.create');
                         Route::post('delete-product-line', [ProductController::class, "removeProductLine"])
                         ->name('product_line.delete');
+                        Route::get( "/edit-product-line/{product_line_id}", [ProductController::class,"editProductLine"])
+                        ->name('product_line.edit');
+                        Route::put( "/update-product-line/{product_line_id}", [ProductController::class,"updateProductLine"])
+                        ->name("product_line.update");
                         Route::get("/add-product", [ProductController::class,"addProductForm"]);
                         Route::post("/add-product", [ProductController::class,"storeProduct"]);
                         Route::post('/add-brand', [ProductController::class, 'createNewBrand'])

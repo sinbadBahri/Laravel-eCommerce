@@ -21,8 +21,8 @@ use Illuminate\Http\UploadedFile;
  * @method bool isValidMimeType(UploadedFile $file) Checks if the file MIME type is allowed.
  * @method ProductImage uploadImageForProduct(UploadedFile $file, ProductLine $productLine) Uploads an image for a product.
  * @method PostImage uploadImageForPost(UploadedFile $file, Post $post) Uploads an image for a post.
- * @method CategoryImage uploadImageForCategory() Uploads an image for a category.
- * @method void deleteCategoryImageBeforeUpload() Removes the image related to a category.
+ * @method CategoryImage uploadImageForCategory(UploadedFile $file, Category $category) Uploads an image for a category.
+ * @method void deleteCategoryImageBeforeUpload(Category $category) Removes the image related to a category.
  */
 class ImageUploadService
 {

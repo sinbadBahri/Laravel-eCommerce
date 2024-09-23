@@ -59,7 +59,7 @@ class CategoryController extends Controller
     /**
      * An Edit Form of a specific Category.
      *
-     * @param Request $request The HTTP request containing the category ID.
+     * @param int $category_id The ID of the Category instance to be edited.
      * @return View The view for editing a Category instance.
      */
     public function edit(int $category_id): View
@@ -99,14 +99,14 @@ class CategoryController extends Controller
     }
 
     /**
-     * Validates the request data for creates or updates a Category instance.
+     * Validates the request data and creates or updates a Category instance.
      *
      * Note that this method could be called when either a Category instance is getting created or updated,
      * therefore when the $category_id is null probably the update method is calling this method.
      *
      * @param Request $request The request object containing the category data.
      * @param int|null $category_id The ID of the Category to update, or null if creating a new Category.
-     * @return Category The newly created Category instance.
+     * @return Category The updated or newly created Category instance.
      */
     private function makeOrUpdateCategory(Request $request, int $category_id = null): Category
     {

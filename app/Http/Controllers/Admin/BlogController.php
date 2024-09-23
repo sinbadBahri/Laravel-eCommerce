@@ -21,13 +21,13 @@ class BlogController extends Controller
     {
         $this->imageUploadService = $imageUploadService;
     }
-    
+
     public function postsList(): View
     {
 
         $blogPosts = Post::all();
         return view(view: 'admin.blog.postList', data: compact('blogPosts'));
-        
+
     }
 
     /**
@@ -41,12 +41,12 @@ class BlogController extends Controller
 
         Post::find($request->post_id)->delete();
         return redirect()->back()->with('success','Post has been Deleted');
-        
+
     }
 
     /**
-     * Retrieves a Post Create Form. 
-     * 
+     * Retrieves a Post Create Form.
+     *
      * @return View The view for creating a new Post.
      */
     public function create(): View
@@ -71,7 +71,7 @@ class BlogController extends Controller
         $this->attachImage(request: $request, post: $newPost);
 
         return redirect()->back()->with('success','Post Created');
-        
+
     }
 
     /**
@@ -88,37 +88,36 @@ class BlogController extends Controller
         $request->validate([
             'title' => 'required|string|max:100',
         ]);
-    
+
         // Create the new category
         $category = Genre::create(['title' => $request->title]);
-    
+
         // Return a JSON response
         return response()->json([
             'success' => true,
             'category' => $category
         ]);
-        
+
     }
 
     /**
      * An Edit Form of a specific blog Post.
-     * 
+     *
      * @param Request $request The HTTP request containing the post ID.
      * @return View The view for editing a blog post.
      */
     public function edit(int $post_id): View
     {
-        
+
         $post = Post::find($post_id);
         $allGenres = Genre::all();
         $comments = $post->comments;
-        
-        // dd(count($comments));
+
         return view(
             view: 'admin.forms.postEditForm',
             data: compact(['post', 'allGenres', 'comments'])
         );
-    
+
     }
 
     /**
@@ -130,7 +129,7 @@ class BlogController extends Controller
      */
     public function update(Request $request, int $post_id): RedirectResponse
     {
-        
+
         $post = $this->makeOrUpdatePost(request: $request, post_id: $post_id);
         $this->addGenre(request: $request, post: $post);
         $this->attachImage(request: $request, post: $post);
@@ -141,24 +140,24 @@ class BlogController extends Controller
     }
 
     /**
-     * Validates the request data and creates or updates a new Post.
+     * Validates the request data and creates or updates a Post instance.
      *
      * Note that this method could be called when either a Post is getting created or updated,
      * therefore when the $post_id is null probably the update method is calling this method.
-     *   
+     *
      * @param Request $request The request object containing the post data.
      * @param int|null $post_id The ID of the post to update, or null if creating a new post.
-     * @return Post The newly created post object.
-     */  
+     * @return Post The updated or newly created post object.
+     */
     private function makeOrUpdatePost(Request $request, int $post_id = null)
     {
         # Validate the request data
         $request->validate([
-            
+
             'title'        => ['required', 'string', 'max:255'],
             'slug'         => ['required', 'string', 'max:255', 'lowercase'],
             'description'  => ['required', 'string', 'max:3000'],
-        
+
         ]);
 
         # Credentials to create or update a Post
@@ -168,13 +167,13 @@ class BlogController extends Controller
             'slug'         => $request->slug,
             'description'  => $request->description,
             'status'       => $request->publish == "on" ? true : false,
-        
+
         ];
 
         $post = Post::updateOrCreate(['id' => $post_id], $credentials);
 
         return $post;
-        
+
     }
 
     /**
@@ -191,21 +190,21 @@ class BlogController extends Controller
         {
             foreach ($request->genres as $genre_id)
             {
-    
+
                 $post->genres()->sync($genre_id);
-    
+
             }
-            
+
             $post->save();
         }
     }
 
     /**
      * Attaches an image to a post if a file is present in the request.
-     * 
-     * If the request contains an image file, the function validates the image, converts it to binary, 
+     *
+     * If the request contains an image file, the function validates the image, converts it to binary,
      * retrieves the MIME type, and creates a new PostImage entry with the image details linked to the post.
-     * 
+     *
      * @param Request $request The HTTP request containing the image file.
      * @param Post $post The post to which the image will be attached.
      * @return void
@@ -244,15 +243,15 @@ class BlogController extends Controller
 
         if ($commentIds = $request->selected_comments)
         {
-            
+
             Comment::whereIn('id', $commentIds)->delete();
             return redirect()->route('post.edit', $post_id)
             ->with('success', count($commentIds)." comments deleted successfully.");
-       
+
         }
-    
+
         return redirect()->route('post.edit', $post_id)
         ->with('error', 'No comments selected.');
-        
+
     }
 }
