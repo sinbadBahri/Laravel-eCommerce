@@ -333,8 +333,4 @@ class ProductController extends Controller
         }
     }
 
-    public function attributesView()
-    {
-        return view(view: 'admin.product.attributes');
-    }
 }

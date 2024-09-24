@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FinanceAndPaymentController;
@@ -45,10 +46,11 @@ Route::middleware('admin')->group(function ()
                         ->name('category.edit');
                         Route::put( "/update-category/{category_id}", [CategoryController::class,"update"])
                         ->name("category.update");
-                        // Route
 
                         # Attribute
-                        Route::get("/attributes", [ProductController::class,"attributesView"]);
+                        Route::get("/attributes", [AttributeController::class,"index"]);
+                        Route::post("/attributes/create-new-attribute", [AttributeController::class, "store"])
+                        ->name('attribute.create');
 
                     }
                 );
