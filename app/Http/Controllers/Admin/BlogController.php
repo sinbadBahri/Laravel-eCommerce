@@ -15,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 
 class BlogController extends Controller
 {
-    protected $imageUploadService;
+    private $imageUploadService;
 
     public function __construct(ImageUploadService $imageUploadService)
     {
@@ -39,7 +39,9 @@ class BlogController extends Controller
     public function delete(Request $request): RedirectResponse
     {
 
-        Post::find($request->post_id)->delete();
+        $post = Post::findOrFail($request->post_id);
+        $post->delete();
+
         return redirect()->back()->with('success','Post has been Deleted');
 
     }
@@ -140,94 +142,6 @@ class BlogController extends Controller
     }
 
     /**
-     * Validates the request data and creates or updates a Post instance.
-     *
-     * Note that this method could be called when either a Post is getting created or updated,
-     * therefore when the $post_id is null probably the update method is calling this method.
-     *
-     * @param Request $request The request object containing the post data.
-     * @param int|null $post_id The ID of the post to update, or null if creating a new post.
-     * @return Post The updated or newly created post object.
-     */
-    private function makeOrUpdatePost(Request $request, int $post_id = null)
-    {
-        # Validate the request data
-        $request->validate([
-
-            'title'        => ['required', 'string', 'max:255'],
-            'slug'         => ['required', 'string', 'max:255', 'lowercase'],
-            'description'  => ['required', 'string', 'max:3000'],
-
-        ]);
-
-        # Credentials to create or update a Post
-        $credentials = [
-
-            'title'        => $request->title,
-            'slug'         => $request->slug,
-            'description'  => $request->description,
-            'status'       => $request->publish == "on" ? true : false,
-
-        ];
-
-        $post = Post::updateOrCreate(['id' => $post_id], $credentials);
-
-        return $post;
-
-    }
-
-    /**
-     * Syncs Genres to a Post if Genres are provided in the request.
-     *
-     * @param Request $request The HTTP request containing genres data.
-     * @param Post $post The post to attach genres to.
-     * @return void
-     */
-    private function addGenre(Request $request, Post $post): void
-    {
-
-        if ($request->genres !== null)
-        {
-            foreach ($request->genres as $genre_id)
-            {
-
-                $post->genres()->sync($genre_id);
-
-            }
-
-            $post->save();
-        }
-    }
-
-    /**
-     * Attaches an image to a post if a file is present in the request.
-     *
-     * If the request contains an image file, the function validates the image, converts it to binary,
-     * retrieves the MIME type, and creates a new PostImage entry with the image details linked to the post.
-     *
-     * @param Request $request The HTTP request containing the image file.
-     * @param Post $post The post to which the image will be attached.
-     * @return void
-     */
-    private function attachImage(Request $request, Post $post): void
-    {
-        if ($request->hasFile('image'))
-        {
-            $imageFile = $request->file('image');
-
-            # Validate the image using the ImageUploadService
-            if ($this->imageUploadService->isValid($imageFile))
-            {
-                # Upload the image
-                $this->imageUploadService->uploadImageForPost(
-                    file: $imageFile,
-                    post: $post,
-                );
-            }
-        }
-    }
-
-    /**
      * Bulk delete comments for a specific post.
      *
      * This method deletes multiple comments associated with a post based on the
@@ -253,5 +167,113 @@ class BlogController extends Controller
         return redirect()->route('post.edit', $post_id)
         ->with('error', 'No comments selected.');
 
+    }
+
+    /**
+     * Validates the request data and creates or updates a Post instance.
+     *
+     * Note that this method could be called when either a Post is getting created or updated,
+     * therefore when the $post_id is null probably the update method is calling this method.
+     *
+     * @param Request $request The request object containing the post data.
+     * @param int|null $post_id The ID of the post to update, or null if creating a new post.
+     * @return Post The updated or newly created post object.
+     */
+    private function makeOrUpdatePost(Request $request, int $post_id = null)
+    {
+
+        $this->validatePostData(request: $request);
+
+        $postData = $this->preparePostData(request: $request);
+
+        $post = Post::updateOrCreate(['id' => $post_id], $postData);
+
+        return $post;
+
+    }
+
+    /**
+     * Validates the Post request data.
+     *
+     * This method checks if the incoming request has valid fields for creating or updating a Post instance.
+     * Required fields include 'title' and 'slug' and 'description'.
+     *
+     * @param Request $request The HTTP request containing the post data.
+     * @return void
+     */
+    private function validatePostData(Request $request): void
+    {
+        $request->validate([
+
+            'title'        => ['required', 'string', 'max:255'],
+            'slug'         => ['required', 'string', 'max:255', 'lowercase'],
+            'description'  => ['required', 'string', 'max:3000'],
+
+        ]);
+    }
+
+    /**
+     * Prepares the Post data for database storage.
+     *
+     * This method collects the validated request input and organizes it into an array ready for
+     * storing in the database. It converts the `status/publish` field to a boolean value.
+     *
+     * @param Request $request The HTTP request containing the post data.
+     * @return array An associative array of post data to be used for creating a record.
+     */
+    private function preparePostData(Request $request): array
+    {
+        return [
+
+            'title'        => $request->title,
+            'slug'         => $request->slug,
+            'description'  => $request->description,
+            'status'       => $request->publish == "on" ? true : false,
+
+        ];
+    }
+
+    /**
+     * Syncs Genres to a Post if Genres are provided in the request.
+     *
+     * @param Request $request The HTTP request containing genres data.
+     * @param Post $post The post to attach genres to.
+     * @return void
+     */
+    private function addGenre(Request $request, Post $post): void
+    {
+        if ($request->has('genres'))
+        {
+            $post->genres()->sync($request->genres);
+            $post->save();
+        }
+    }
+
+    /**
+     * Attaches an image to a post if a file is present in the request.
+     *
+     * If the request contains an image file, the function validates the image, converts it to binary,
+     * retrieves the MIME type, and creates a new PostImage entry with the image details linked to the post.
+     *
+     * @param Request $request The HTTP request containing the image file.
+     * @param Post $post The post to which the image will be attached.
+     * @return void
+     */
+    private function attachImage(Request $request, Post $post): void
+    {
+        if ($request->hasFile('image'))
+        {
+            $imageFile = $request->file('image');
+
+            # Validates the image using the ImageUploadService
+            if ($this->imageUploadService->isValid($imageFile))
+            {
+                # Uploads the image
+                $this->imageUploadService->uploadImageForPost(
+                    file: $imageFile,
+                    post: $post,
+                );
+            }
+        }
     }
 }

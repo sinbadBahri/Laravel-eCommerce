@@ -20,25 +20,26 @@
                                     <h4 class="modal-title" id="loginModalLabel">Add Category</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="modalForm">
+                                    <form id="modalForm" action="{{route('genre.create')}}" method="POST" >
+                                        @csrf
                                         <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name" placeholder="Category Name">
+                                            <label for="category-name">Genre Name</label>
+                                            <input type="text" class="form-control" id="genre-title" name="title" placeholder="Artificial Intelligence">
                                         </div>
                                         <div id="errorMessages" class="error-message"></div>
-                                        <button type="submit" class="btn btn-primary btn-block">Create Category</button>
+                                        <button type="submit" class="btn btn-primary btn-block">Create Genre</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Edit Blog Post Form -->
                     <div class="form-group">
                         <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
-                            
+
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" class="form-control" id="title" name="title" value="{{ $post->title }}" required>
@@ -60,8 +61,8 @@
                                 <input type="file" class="form-control" id="image" name="image">
                                 @if ($post->images)
                                 @foreach ($post->images as $image)
-                                    
-                                <p>Current Image: 
+
+                                <p>Current Image:
                                     <img src="data:{{ $image->mime_type }};base64,{{ base64_encode($image->image) }}" class="img-fluid shadow-2-strong rounded mb-4" alt="{{ $image->alternative_text }}">
                                 </p>
                                 @endforeach
@@ -76,7 +77,7 @@
                                         <option value="{{$genre->id}}" @if(in_array($genre->id, $post->genres->pluck('id')->toArray())) selected @endif>{{$genre->title}}</option>
                                     @endforeach
                                 </select>
-                                
+
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
                                     Add Blog Post Category
                                 </button>
@@ -106,9 +107,9 @@
 <!-- Comments Section -->
 <section class="border-bottom mb-3">
     <p class="text-center"><strong>Comments</strong></p>
-    
+
     @if(count($comments) > 0)
-        
+
     <form id="deleteSelectedCommentsForm" action="{{ route('comments.bulkDelete', $post->id) }}" method="POST">
         @csrf
         @method('DELETE')
@@ -125,7 +126,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <!-- Checkbox for selecting comment -->
                                         <input type="checkbox" class="comment-checkbox" name="selected_comments[]" value="{{ $comment->id }}" onchange="updateDeleteButton()">
-                                        
+
                                         <div>
                                             <h5>{{ $comment->user->name }}</h5>
                                             <p class="small">{{ Hekmatinasser\Verta\Verta::instance($comment->created_at)->formatWord('l dS F') }}</p>
@@ -166,24 +167,38 @@
 
 <script>
     $(document).ready(function() {
+        // Handle the form submission
         $('#modalForm').on('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault(); // Prevent default form submission
 
-            var errors = [];
-            var categoryName = $('#category-name').val().trim();
+            var form = $(this);
+            var formData = form.serialize(); // Serialize the form data
 
-            // Basic validation
-            if (categoryName === '') {
-                errors.push('Category name is required.');
-            }
+            $.ajax({
+                url: form.attr('action'), // The URL where the form will be submitted
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    // Assuming the response contains the new category details
+                    if (response.success) {
+                        // Update the genres dropdown list
+                        $('#genres').append(new Option(response.category.title, response.category.id));
 
-            // Display errors or success message
-            if (errors.length > 0) {
-                $('#errorMessages').html(errors.join('<br>'));
-            } else {
-                $('#errorMessages').html('');
-                alert('Category created successfully!');
-            }
+                        // Close the modal
+                        $('#loginModal').modal('hide');
+
+                        // Optionally, you can show a success message
+                        alert('Genre added successfully.');
+                    } else {
+                        // Handle errors
+                        $('#errorMessages').html(response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle AJAX errors
+                    $('#errorMessages').html('An error occurred. Please try again.');
+                }
+            });
         });
     });
 

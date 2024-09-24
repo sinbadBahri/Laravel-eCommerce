@@ -70,7 +70,6 @@ class FinanceAndPaymentController extends Controller
      */
     public function addHistory(Request $request, int $wallet_id): JsonResponse
     {
-        // dd("karim");
         $request->validate([
             'amount' => 'required|numeric',
         ]);
@@ -137,7 +136,7 @@ class FinanceAndPaymentController extends Controller
      * 'description', 'valid_until', 'max_amount', and 'code' are optional. It also validates
      * if the discount code is unique.
      *
-     * @param Request $request  The HTTP request containing the discount data.
+     * @param Request $request The HTTP request containing the discount data.
      * @return void
      */
     private function validateDiscount(Request $request): void
