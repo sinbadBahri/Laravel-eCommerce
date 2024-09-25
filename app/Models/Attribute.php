@@ -10,7 +10,7 @@ class Attribute extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'description'];
-    
+
 
     public function product_types()
     {
@@ -23,7 +23,7 @@ class Attribute extends Model
 
     }
 
-    public function attribute_values()
+    public function attributeValues()
     {
 
         return $this->hasMany

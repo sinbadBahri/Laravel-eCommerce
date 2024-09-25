@@ -134,7 +134,31 @@
                                 @endif
                             </div>
                             <br>
+                            <h4>Attributes:</h4>
+                            @if (count($attributeCollection) > 0)
+
+                                @foreach ($attributeCollection as $attribute)
+                                <div>
+                                    <label>{{ $attribute->title }}</label>
+                                    @php
+                                        // Find the AttributeValue for this ProductLine
+                                        $attributeValue = $attribute->attributeValues()
+                                                                    ->whereHas('productLines', function($query) use ($productLine) {
+                                                                        $query->where('product_line_id', $productLine->id);
+                                                                    })
+                                                                    ->first();
+                                    @endphp
+                                    <input type="text" name="attributes[{{ $attribute->id }}]" value="{{ $attributeValue ? $attributeValue->value : '-no value-' }}">
+                                </div>
+                                @endforeach
+                                
+                            @else
+                                    <h4>NO Attributes Defined for this Type of Product</h4>
+
+                            @endif
                             <br>
+                            <br>
+
 
                             <!-- Custom Select Dropdown for Discounts -->
                             <div class="form-group custom-select discount-select">

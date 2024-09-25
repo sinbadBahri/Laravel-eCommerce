@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Finance\Discount;
 use App\Models\Product;
 use App\Models\ProductLine;
 use App\Models\ProductType;
+use App\Support\Attribute\ProductAttributeService;
 use App\Support\ImageUpload\ImageUploadService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -17,11 +20,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $imageUploadService;
+    private ImageUploadService $imageUploadService;
+    private ProductAttributeService $productAttributeService;
 
-    public function __construct(ImageUploadService $imageUploadService)
-    {
-        $this->imageUploadService = $imageUploadService;
+    public function __construct(
+        ImageUploadService $imageUploadService,
+        ProductAttributeService $productAttributeService,
+    ) {
+        $this->imageUploadService      = $imageUploadService;
+        $this->productAttributeService = $productAttributeService;
     }
 
     public function index(): View
@@ -73,9 +80,10 @@ class ProductController extends Controller
     public function editProductLine(int $product_line_id): View
     {
         $content = [
-            'discounts'   => Discount::all(),
-            'products'    => Product::all(),
-            'productLine' => ProductLine::find($product_line_id),
+            'discounts'           => Discount::all(),
+            'products'            => Product::all(),
+            'productLine'         => ProductLine::find($product_line_id),
+            'attributeCollection' => $this->getRelatedAttributes($product_line_id),
         ];
 
         return view(view: 'admin.forms.productLineEditForm', data: $content);
@@ -96,6 +104,11 @@ class ProductController extends Controller
             product_line_id: $product_line_id,
         );
 
+        $this->updateAttributeValue(
+            request: $request,
+            productLine: $productLine,
+        );
+
         $this->updateDiscount(
             request: $request,
             productLine: $productLine,
@@ -108,6 +121,18 @@ class ProductController extends Controller
 
         return redirect('/admin-panel/products')
         ->with('success', 'Product Line Updated.');
+    }
+
+    /**
+     * Get related attributes for a specific ProductLine instance.
+     *
+     * @param int $product_line_id The ID of the product line to retrieve attributes for.
+     * @return mixed The related attributes for the specified product line.
+     */
+    private function getRelatedAttributes(int $product_line_id)
+    {
+        return $this->productAttributeService
+                    ->getRelatedAttributes($product_line_id);
     }
 
     /**
@@ -211,6 +236,16 @@ class ProductController extends Controller
     {
         $productLine->discount_id = $discountId;
         $productLine->save();
+    }
+
+    private function updateAttributeValue(Request $request, ProductLine $productLine): void
+    {
+        $attributes = collect($request->input('attributes', []));
+
+        $this->productAttributeService->updateAttributeValuesForProductLine(
+            productLine: $productLine,
+            attributes: $attributes,
+        );
     }
 
 

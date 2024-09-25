@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\Attribute\ProductAttributeService;
 use App\Support\Storage\Contracts\StorageInterface;
 use App\Support\Storage\SessionStorage;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(ProductAttributeService::class, function ($app) {
+            return new ProductAttributeService();
+        });
     }
 
     /**

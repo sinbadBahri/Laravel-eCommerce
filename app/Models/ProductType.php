@@ -11,7 +11,7 @@ class ProductType extends Model
 
 
     protected $fillable = ['title'];
-    
+
 
     public function attributes()
     {
@@ -19,9 +19,9 @@ class ProductType extends Model
         return $this->belongsToMany
         (
             related: Attribute::class,
-            table: 'product_type_attribute_relations',   
+            table: 'product_type_attribute_relations',
         );
-        
+
     }
 
     public function products()
@@ -32,7 +32,7 @@ class ProductType extends Model
             related: Product::class,
             foreignKey: 'product_type_id',
         );
-        
+
     }
-    
+
 }

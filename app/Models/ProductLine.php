@@ -36,6 +36,11 @@ class ProductLine extends Model
             );
     }
 
+    public function getProductType()
+    {
+        return $this->product->productType;
+    }
+
     public function attributeValues()
     {
 
@@ -118,7 +123,7 @@ class ProductLine extends Model
      *
      * Checks if the discount is still active.
      * Also checks if the authenticated user is allowed to use this discount.
-     * 
+     *
      * @param string $code The discount code to search for.
      * @return Discount|null The discount if found and valid; otherwise, null.
      */
@@ -136,14 +141,14 @@ class ProductLine extends Model
 
     /**
      * Calculates the discounted price for the product line.
-     * 
-     * Checks if the given discount is valid and still active. 
-     * 
+     *
+     * Checks if the given discount is valid and still active.
+     *
      * If a discount is applicable, calculates the discounted price based on
      * the discount percentage and maximum amount.
-     * 
+     *
      * If no valid discount is available, returns the original price.
-     * 
+     *
      * @param Discount $discount The discount to apply.
      * @return float The final price considering the discount.
      */
@@ -169,7 +174,7 @@ class ProductLine extends Model
 
     /**
      * Boot method for the ProductLine model.
-     * 
+     *
      * Sets up a creating event listener to automatically assign a Tax to each ProductLine instance.
      */
     protected static function boot()
@@ -185,8 +190,8 @@ class ProductLine extends Model
     /**
      * This Static method is responsible for updating the stock-quantity of product lines
      * after each payment transaction.
-     * 
-     * @param Payment $payment finds which products to update regarding this payment. 
+     *
+     * @param Payment $payment finds which products to update regarding this payment.
      * @return void
      */
     public static function updateStock(Payment $payment)

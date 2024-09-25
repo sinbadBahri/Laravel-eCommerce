@@ -9,53 +9,53 @@ use Illuminate\Support\Collection;
 class Product extends Model
 {
     use HasFactory;
-    
+
 
     protected $fillable = [
         'name', 'slug', 'description',
         'brand_id', 'product_type_id',
     ];
 
-    
+
     /**
      * Returns the Brand of the Product
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function brand()
     {
-    
+
         return $this->belongsTo
         (
             related: Brand::class,
             foreignKey: 'brand_id',
         );
-        
+
     }
 
     /**
      * Returns the Tye of the Product.
      * This realation is useful because each type of product, has specific attributes.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function productType()
     {
-    
+
         return $this->belongsTo
         (
-            related: Brand::class,
+            related: ProductType::class,
             foreignKey: 'product_type_id',
         );
-        
+
     }
 
     /**
      * Returns All the categories anlong with their parents related to the product instance.
-     * 
-     * Note: Do not use $product->categories it will rais a Logic Error. 
-     * use $product->categories() instead. 
-     * 
+     *
+     * Note: Do not use $product->categories it will rais a Logic Error.
+     * use $product->categories() instead.
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function categories()
@@ -68,12 +68,12 @@ class Product extends Model
             table: 'category_product_relations'
         )
         ->get();
-        
+
         # Load parent categories recursively
         $allCategories = $categories->flatMap(function ($category) {
 
             return $this->getCategoryWithAncestors($category);
-        
+
         });
 
         # Remove duplicate categories and return
@@ -84,12 +84,12 @@ class Product extends Model
     public function productLines()
     {
 
-        return $this->hasMany 
+        return $this->hasMany
         (
             related: ProductLine::class,
             foreignKey: 'product_id',
         );
-        
+
     }
 
     private function getCategoryWithAncestors(Category $category): Collection
@@ -104,7 +104,7 @@ class Product extends Model
         }
 
         return $ancestors;
-    
+
     }
 
 }
