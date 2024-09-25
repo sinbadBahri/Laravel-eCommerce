@@ -49,7 +49,9 @@ Route::middleware('admin')->group(function ()
 
                         # Attribute
                         Route::get("/attributes", [AttributeController::class,"index"]);
-                        Route::post("/attributes/create-new-attribute", [AttributeController::class, "store"])
+                        Route::post("/delete-product-attribute", [AttributeController::class, "delete"])
+                        ->name('attribute.delete');
+                        Route::post("/create-new-attribute", [AttributeController::class, "store"])
                         ->name('attribute.create');
 
                     }

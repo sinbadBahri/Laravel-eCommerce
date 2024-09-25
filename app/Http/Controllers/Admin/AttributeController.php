@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class AttributeController extends Controller
 {
@@ -15,6 +16,19 @@ class AttributeController extends Controller
     {
         $attributes = Attribute::all();
         return view(view: 'admin.product.attributes', data: compact('attributes'));
+    }
+    /**
+     * Deletes an Attribute instance based on the provided request.
+     *
+     * @param Request $request The request containing the attribute_id to be deleted
+     * @return RedirectResponse A redirect response indicating the success of the deletion
+     */
+    public function delete(Request $request): RedirectResponse
+    {
+        $attribute = Attribute::findOrFail($request->attribute_id);
+        $attribute->delete();
+
+        return redirect()->back()->with('success', 'Attribute has been Deleted');
     }
 
     /**
