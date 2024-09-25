@@ -79,7 +79,7 @@
                                 </select>
 
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
-                                    Add Blog Post Category
+                                    Add Blog Post Genre
                                 </button>
                             </div>
 

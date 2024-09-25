@@ -53,6 +53,10 @@ Route::middleware('admin')->group(function ()
                         ->name('attribute.delete');
                         Route::post("/create-new-attribute", [AttributeController::class, "store"])
                         ->name('attribute.create');
+                        Route::get( "/edit-attribute/{category_id}", [AttributeController::class,"edit"])
+                        ->name('attribute.edit');
+                        Route::put( "/update-attribut/{category_id}", [AttributeController::class,"update"])
+                        ->name("attribute.update");
 
                     }
                 );

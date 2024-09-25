@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
+use App\Models\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -42,6 +43,33 @@ class AttributeController extends Controller
         $this->makeOrUpdateAttribute(request: $request);
 
         return $this->respondWithSuccess("New Attribute Added");
+    }
+
+    public function edit(int $attribute_id): View
+    {
+        $attribute = Attribute::find($attribute_id);
+        $allProductTypes = ProductType::all();
+
+        return view(
+            view: 'admin.forms.attributeEditForm',
+            data: compact(['attribute', 'allProductTypes']),
+        );
+    }
+
+    public function update(Request $request, int $attribute_id): RedirectResponse
+    {
+        $attribute = $this->makeOrUpdateAttribute(
+            request: $request,
+            attribute_id: $attribute_id,
+        );
+
+        $this->attachProductType(
+            request: $request,
+            attribute: $attribute,
+        );
+
+        return redirect('/admin-panel/products/attributes')
+        ->with('success', 'Attribute has been Updated');
     }
 
     /**
@@ -98,6 +126,22 @@ class AttributeController extends Controller
             'title'       => $request->title,
             'description' => $request->description,
         ];
+    }
+
+    /**
+     * Syncs ProducTypes to a Attribute if ProducTypes are provided in the request.
+     *
+     * @param Request $request $request The HTTP request containing product types data.
+     * @param Attribute $attribute The attribute to attach product types to.
+     * @return void
+     */
+    private function attachProductType(Request $request, Attribute $attribute): void
+    {
+        if ($request->has('productTypes'))
+        {
+            $attribute->product_types()->sync($request->productTypes);
+            $attribute->save();
+        }
     }
 
     /**

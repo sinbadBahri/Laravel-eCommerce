@@ -262,7 +262,11 @@ class ProductController extends Controller
         $request->validate(['title' => ['required', 'string', 'max:100']]);
         $productType = ProductType::create(['title' => $request->title]);
 
-        return response()->json(['product_type' => $productType]);
+        return response()->json([
+            'success'     => true,
+            'message'     => "New Product Type Added",
+            'productType' => $productType,
+        ]);
     }
 
     /**

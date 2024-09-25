@@ -66,7 +66,7 @@
                                         @endforeach --}}
                                     </td>
                                     <td>
-                                        <form action="" method="GET">
+                                        <form action="{{route('attribute.edit', $item->id)}}" method="GET">
                                             @csrf
                                             <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" name="attribute_id" value="{{$item->id}}">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
