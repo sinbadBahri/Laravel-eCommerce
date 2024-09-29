@@ -49,7 +49,7 @@
                                 </div>
 
                                 <!-- Hidden select element to store the actual parent value -->
-                                <select class="form-control" name="parent" id="parent-category-select">
+                                <select class="form-control" name="parent" id="product-select">
                                     <!-- 'No Parent' option, selected if no parent exists -->
                                     <option value="" {{ is_null($category->parent_id) ? 'selected' : '' }}>No Parent</option>
 
@@ -120,33 +120,34 @@
 <script src="{{ asset('js/select.js') }}"></script>
 
 <style>
-    /* Your custom select styles */
-    .select-selected {
-        padding: 10px;
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
+  /* Your custom select styles */
+  .select-selected {
+    padding: 10px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
 
-    .select-items {
-        display: none;
-        position: absolute;
-        background-color: #f1f1f1;
-        z-index: 1;
-        width: 100%;
-    }
+  .select-items {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    z-index: 1;
+    width: 100%;
+  }
 
-    .select-items div {
-        padding: 10px;
-        cursor: pointer;
-    }
+  .select-items div {
+    padding: 10px;
+    cursor: pointer;
+  }
 
-    .select-items div:hover {
-        background-color: #ddd;
-    }
+  .select-items div:hover {
+    background-color: #ddd;
+  }
 
-    .custom-select:hover .select-items {
-        display: block;
-    }
-</style>
+  /* Add custom styles */
+  .custom-select:hover .select-items {
+    display: block;
+  }
+  </style>
 
 @endsection

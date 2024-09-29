@@ -37,6 +37,12 @@
                             <li><a title="All Payments" href="/admin-panel/finance-payment/users-payments"><span class="mini-sub-pro">All Payments</span></a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i> <span class="mini-click-non">Widgets</span></a>
+                        <ul class="submenu-angle" aria-expanded="false">
+                            <li><a title="Blog Widgets" href="/admin-panel/widget-management/blog-widgets"><span class="mini-sub-pro">Blog Widgets</span></a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>

@@ -1,16 +1,25 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Handle Product Select Dropdown
-    setupCustomSelect(".product-select", "product-select");
+    setupCustomSelect(".custom-select", "product-select");
 
-    // Handle Discount Select Dropdown
+    // Handle Discount Select Dropdown (if applicable)
     setupCustomSelect(".discount-select", "discount-select");
 
-    // Generic function to handle custom select dropdowns
     function setupCustomSelect(selectContainerClass, selectElementId) {
         const container = document.querySelector(selectContainerClass);
+        if (!container) {
+            console.error(`Container with class ${selectContainerClass} not found.`);
+            return; // Exit if container not found
+        }
+
         const selectedDiv = container.querySelector(".select-selected");
         const customItems = container.querySelectorAll(".select-items div");
         const actualSelect = document.getElementById(selectElementId);
+
+        if (!selectedDiv || !customItems.length || !actualSelect) {
+            console.error('One of the necessary elements is missing');
+            return; // Exit if necessary elements are missing
+        }
 
         // Show selected value in the custom dropdown
         customItems.forEach(item => {

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attribute;
-use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Finance\Discount;
@@ -238,6 +236,13 @@ class ProductController extends Controller
         $productLine->save();
     }
 
+    /**
+     * Updates the attribute values for a specific product line.
+     *
+     * @param Request $request The HTTP request containing the attributes data.
+     * @param ProductLine $productLine The product line to update the attribute values for.
+     * @return void
+     */
     private function updateAttributeValue(Request $request, ProductLine $productLine): void
     {
         $attributes = collect($request->input('attributes', []));
