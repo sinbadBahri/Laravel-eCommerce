@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\Widgets\CategoryWidgetController;
 use App\Http\Controllers\Admin\Widgets\CommentWidgetController;
 use App\Http\Controllers\Admin\Widgets\PostWidgetController;
+use App\Http\Controllers\Admin\Widgets\ProductWidgetController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function ()
@@ -119,13 +120,15 @@ Route::middleware('admin')->group(function ()
 
         Route::prefix('widget-management')->group(function ()
           {
-            # Blog
+            # Blog - Post
             Route::get("/post-widgets", [PostWidgetController::class, "index"])
             ->name('postWidget.all');
             Route::get('/post-widget/{widget_id}', [PostWidgetController::class, "edit"])
             ->name('postWidget.edit');
             Route::put('/post-widget/{widget_id}', [PostWidgetController::class, "update"])
             ->name('postWidget.update');
+
+            # Blog - Comment
             Route::get("/comment-widgets", [CommentWidgetController::class, "index"])
             ->name('commentWidget.all');
             Route::get('/comment-widget/{widget_id}', [CommentWidgetController::class, "edit"])
@@ -140,6 +143,14 @@ Route::middleware('admin')->group(function ()
             ->name('categoryWidget.edit');
             Route::put('/edit-category-widget/{widget_id}', [CategoryWidgetController::class, "update"])
             ->name('categoryWidget.update');
+
+            # Product
+            Route::get("/product-widgets", [ProductWidgetController::class, "index"])
+            ->name('productWidget.all');
+            Route::get('/edit-product-widget/{widget_id}', [ProductWidgetController::class, "edit"])
+            ->name('productWidget.edit');
+            Route::put('/edit-product-widget/{widget_id}', [ProductWidgetController::class, "update"])
+            ->name('productWidget.update');
 
           }
         );

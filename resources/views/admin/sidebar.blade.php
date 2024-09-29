@@ -43,6 +43,7 @@
                             <li><a title="Post Widgets" href="/admin-panel/widget-management/post-widgets"><span class="mini-sub-pro">Post Widgets</span></a></li>
                             <li><a title="Comment Widgets" href="/admin-panel/widget-management/comment-widgets"><span class="mini-sub-pro">Comment Widgets</span></a></li>
                             <li><a title="Category Widgets" href="/admin-panel/widget-management/category-widgets"><span class="mini-sub-pro">Category Widgets</span></a></li>
+                            <li><a title="Product Widgets" href="/admin-panel/widget-management/product-widgets"><span class="mini-sub-pro">Product Widgets</span></a></li>
                         </ul>
                     </li>
                 </ul>
