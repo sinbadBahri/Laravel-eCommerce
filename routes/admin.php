@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FinanceAndPaymentController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\Widgets\BlogWidgetController;
+use App\Http\Controllers\Admin\Widgets\CategoryWidgetController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function ()
@@ -127,6 +128,13 @@ Route::middleware('admin')->group(function ()
             ->name('commentWidget.edit');
             Route::put('/comment-widget/{widget_id}', [BlogWidgetController::class, "updateCommentWidget"])
             ->name('commentWidget.update');
+
+            # Category
+            Route::get("/category-widgets", [CategoryWidgetController::class, "index"]);
+            Route::get('/edit-category-widget/{widget_id}', [CategoryWidgetController::class, "edit"])
+            ->name('categoryWidget.edit');
+            Route::put('/edit-category-widget/{widget_id}', [CategoryWidgetController::class, "update"])
+            ->name('categoryWidget.update');
 
           }
         );

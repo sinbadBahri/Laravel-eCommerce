@@ -41,6 +41,7 @@
                         <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i> <span class="mini-click-non">Widgets</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
                             <li><a title="Blog Widgets" href="/admin-panel/widget-management/blog-widgets"><span class="mini-sub-pro">Blog Widgets</span></a></li>
+                            <li><a title="Category Widgets" href="/admin-panel/widget-management/category-widgets"><span class="mini-sub-pro">Category Widgets</span></a></li>
                         </ul>
                     </li>
                 </ul>

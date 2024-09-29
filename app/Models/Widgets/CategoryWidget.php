@@ -10,10 +10,10 @@ class CategoryWidget extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_widgets';
+    protected $table = 'category_widgets';
 
     protected $fillable = ['title', 'is_active'];
-    
+
 
     public function categories()
     {
