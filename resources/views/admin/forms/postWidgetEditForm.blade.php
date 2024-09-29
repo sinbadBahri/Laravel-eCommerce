@@ -20,7 +20,7 @@
 
                     <div class="form-group">
 
-                        <form id="editBlogWidgetForm" action="{{route('postWidget.update', $postWidget->id)}}" method="POST" enctype="multipart/form-data">
+                        <form id="editBlogWidgetForm" action="{{route('postWidget.update', $widget->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -28,7 +28,7 @@
 
                             <div class="form-group">
                                 <label for="price">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ $postWidget->title }}" placeholder="a title">
+                                <input type="text" class="form-control" id="title" name="title" value="{{ $widget->title }}" placeholder="a title">
                                 <a href="">Do not Change the Title if is not necessarily</a>
                             </div>
                             <br>
@@ -37,8 +37,8 @@
                             <div class="form-group custom-select-container">
                                 <label for="posts">Select Your Post(s)</label>
                                 <select id="posts" name="posts[]" class="custom-select" multiple>
-                                    @foreach ($allPosts as $post)
-                                        <option value="{{$post->id}}" @if(in_array($post->id, $postWidget->posts->pluck('id')->toArray())) selected @endif>{{$post->title}}</option>
+                                    @foreach ($posts as $post)
+                                        <option value="{{$post->id}}" @if(in_array($post->id, $widget->posts->pluck('id')->toArray())) selected @endif>{{$post->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label class="form-check-label">Is Active</label>
                                 <label class="switch">
-                                    <input type="checkbox" id="is_active" name="is_active" {{ $postWidget->is_active ? 'checked' : '' }}>
+                                    <input type="checkbox" id="is_active" name="is_active" {{ $widget->is_active ? 'checked' : '' }}>
                                     <span class="slider"></span>
                                 </label>
                             </div>

@@ -20,7 +20,7 @@
 
                     <div class="form-group">
 
-                        <form id="editBlogWidgetForm" action="{{route('categoryWidget.update', $categoryWidget->id)}}" method="POST" enctype="multipart/form-data">
+                        <form id="editBlogWidgetForm" action="{{route('categoryWidget.update', $widget->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -28,7 +28,7 @@
 
                             <div class="form-group">
                                 <label for="price">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" value="{{ $categoryWidget->title }}" placeholder="a title">
+                                <input type="text" class="form-control" id="title" name="title" value="{{ $widget->title }}" placeholder="a title">
                                 <a href="">Do not Change the Title if is not necessarily</a>
                             </div>
                             <br>
@@ -38,7 +38,7 @@
                                 <label for="categories">Select Your Category(s)</label>
                                 <select id="categories" name="categories[]" class="custom-select" multiple>
                                     @foreach ($allCategories as $category)
-                                        <option value="{{$category->id}}" @if(in_array($category->id, $categoryWidget->categories->pluck('id')->toArray())) selected @endif>{{$category->name}}</option>
+                                        <option value="{{$category->id}}" @if(in_array($category->id, $widget->categories->pluck('id')->toArray())) selected @endif>{{$category->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label class="form-check-label">Is Active</label>
                                 <label class="switch">
-                                    <input type="checkbox" id="is_active" name="is_active" {{ $categoryWidget->is_active ? 'checked' : '' }}>
+                                    <input type="checkbox" id="is_active" name="is_active" {{ $widget->is_active ? 'checked' : '' }}>
                                     <span class="slider"></span>
                                 </label>
                             </div>

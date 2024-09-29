@@ -7,8 +7,9 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FinanceAndPaymentController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\Widgets\BlogWidgetController;
 use App\Http\Controllers\Admin\Widgets\CategoryWidgetController;
+use App\Http\Controllers\Admin\Widgets\CommentWidgetController;
+use App\Http\Controllers\Admin\Widgets\PostWidgetController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function ()
@@ -119,18 +120,22 @@ Route::middleware('admin')->group(function ()
         Route::prefix('widget-management')->group(function ()
           {
             # Blog
-            Route::get("/blog-widgets", [BlogWidgetController::class, "index"]);
-            Route::get('/post-widget/{widget_id}', [BlogWidgetController::class, "editPostWidget"])
+            Route::get("/post-widgets", [PostWidgetController::class, "index"])
+            ->name('postWidget.all');
+            Route::get('/post-widget/{widget_id}', [PostWidgetController::class, "edit"])
             ->name('postWidget.edit');
-            Route::put('/post-widget/{widget_id}', [BlogWidgetController::class, "updatePostWidget"])
+            Route::put('/post-widget/{widget_id}', [PostWidgetController::class, "update"])
             ->name('postWidget.update');
-            Route::get('/comment-widget/{widget_id}', [BlogWidgetController::class, "editCommentWidget"])
+            Route::get("/comment-widgets", [CommentWidgetController::class, "index"])
+            ->name('commentWidget.all');
+            Route::get('/comment-widget/{widget_id}', [CommentWidgetController::class, "edit"])
             ->name('commentWidget.edit');
-            Route::put('/comment-widget/{widget_id}', [BlogWidgetController::class, "updateCommentWidget"])
+            Route::put('/comment-widget/{widget_id}', [CommentWidgetController::class, "update"])
             ->name('commentWidget.update');
 
             # Category
-            Route::get("/category-widgets", [CategoryWidgetController::class, "index"]);
+            Route::get("/category-widgets", [CategoryWidgetController::class, "index"])
+            ->name('categoryWidget.all');
             Route::get('/edit-category-widget/{widget_id}', [CategoryWidgetController::class, "edit"])
             ->name('categoryWidget.edit');
             Route::put('/edit-category-widget/{widget_id}', [CategoryWidgetController::class, "update"])
