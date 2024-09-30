@@ -12,7 +12,7 @@ class CommentWidget extends Model
 
     protected $table = 'comment_widgets';
 
-    protected $fillable = [];
+    protected $fillable = ['title', 'is_active'];
 
 
     public function comments()
@@ -23,13 +23,13 @@ class CommentWidget extends Model
             related: Comment::class,
             table: 'comments_widgets_relations',
         );
-        
+
     }
 
     /**
      * This method returns only the main comments of a specific post.
      * Does not include the reply comments related to that posts.
-     * 
+     *
      * @param string $post_id
      * @return array
      */
@@ -38,8 +38,8 @@ class CommentWidget extends Model
 
         $allComments = $this->getAllPostComments(post_id: $post_id);
         $orphanComments = [];
-        
-        foreach ($allComments as $comment) 
+
+        foreach ($allComments as $comment)
         {
 
             if($comment->parent == null)
@@ -49,13 +49,13 @@ class CommentWidget extends Model
         }
 
         return $orphanComments;
-        
+
     }
 
     /**
      * Returns the number of total comments related to a specific post.
      * Includes both main comments and replies.
-     *  
+     *
      * @param string $post_id
      * @return int
      */
@@ -64,13 +64,13 @@ class CommentWidget extends Model
 
         $allComments = $this->getAllPostComments(post_id: $post_id);
         return count($allComments);
-        
+
     }
 
     /**
      * returns all the comments of a specific posts.
      * regarding the ones that have parent the ones that have not.
-     * 
+     *
      * @param string $post_id
      * @return mixed
      */
@@ -80,7 +80,7 @@ class CommentWidget extends Model
         return $this->comments
                     ->where('post_id', $post_id)
                     ->all();
-        
+
     }
 
 }

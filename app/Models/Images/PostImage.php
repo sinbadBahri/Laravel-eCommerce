@@ -13,17 +13,15 @@ class PostImage extends Model
         'alternative_text',
         'mime_type',
         'image',
-        'product_line_id',
+        'post_id',
     ];
 
     protected $guarded = [];
 
-    
+
     public function product()
     {
 
-        return $this->belongsTo(related:Post::class);
-        
+        return $this->belongsTo(related: Post::class);
     }
-
 }

@@ -12,6 +12,10 @@ class PostWidget extends Model
 {
     use HasFactory;
 
+
+    protected $fillable = ['title', 'is_active'];
+
+
     public function posts()
     {
 
@@ -20,7 +24,7 @@ class PostWidget extends Model
             related: Post::class,
             table: "posts_widgets_relations",
         );
-        
+
     }
 
     /**
@@ -33,7 +37,7 @@ class PostWidget extends Model
     {
 
         return $this->posts->where("id", $id)->first();
-        
+
     }
 
     /**
@@ -46,15 +50,15 @@ class PostWidget extends Model
     {
 
         return $this->posts()->inRandomOrder()->take($number)->get();
-        
+
     }
 
     /**
      * Get posts associated with a specific genre.
      *
      * If the $genre_id is null, returns all posts.
-     * Otherwise, retrieves the genre using the $genre_id, 
-     * fetches all posts with that genre, and returns the common posts 
+     * Otherwise, retrieves the genre using the $genre_id,
+     * fetches all posts with that genre, and returns the common posts
      * between the widget's posts and the genre's posts.
      *
      * @param int|null $genre_id The ID of the genre to filter posts by.
@@ -62,7 +66,7 @@ class PostWidget extends Model
      */
     public function getPostsWithGenre($genre_id)
     {
-        
+
         if ($genre_id == null)
         {
             return $this->posts;
@@ -72,7 +76,7 @@ class PostWidget extends Model
         $allPostsWithGenre = $genre->posts;
 
         return $this->findCommonPosts($allPostsWithGenre);
-        
+
     }
 
     /**
@@ -94,7 +98,7 @@ class PostWidget extends Model
         $commonPosts = Post::whereIn("id", $commonIds)->get();
 
         return $commonPosts;
-        
+
     }
 
 }

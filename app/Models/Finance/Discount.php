@@ -14,11 +14,22 @@ class Discount extends Model
     use HasFactory;
 
 
+    protected $fillable = [
+
+        'title',
+        'description',
+        'percentage',
+        'valid_until',
+        'max_amount',
+        'have_code',
+        'code'
+    ];
+
     public function products()
     {
 
         return $this->hasMany(ProductLine::class);
-        
+
     }
 
     public function users()
@@ -29,7 +40,7 @@ class Discount extends Model
             related: User::class,
             table: "discount_user_relations",
         );
-        
+
     }
 
     /**
@@ -40,16 +51,16 @@ class Discount extends Model
 
         try {
             $user_id = JWTAuth::user()->id;
-    
+
             return $this->users()->where("user_id", $user_id)->exists();
         } catch (\Throwable $th) {
         }
-        
+
     }
 
     /**
      * Returns the discount amount based on the given price.
-     * 
+     *
      * Calculates the discounted price based on the discount percentage and maximum amount.
      *
      * @param int $price The original price before discount.
@@ -63,9 +74,9 @@ class Discount extends Model
         : ($this->max_amount * $this->percentage) / 100;
 
         return $discountAmount;
-        
+
     }
-    
+
     public function getHoursRemaining()
     {
 
@@ -75,6 +86,6 @@ class Discount extends Model
 
         # Calculate the difference in hours
         return $now->diffInHours($futureDate);
-        
+
     }
 }

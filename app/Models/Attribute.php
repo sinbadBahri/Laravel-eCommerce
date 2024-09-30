@@ -9,18 +9,21 @@ class Attribute extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['title', 'description'];
+
+
     public function product_types()
     {
 
         return $this->belongsToMany
         (
             related: ProductType::class,
-            table: 'product_type_attribute_relations',   
+            table: 'product_type_attribute_relations',
         );
-        
+
     }
 
-    public function attribute_values()
+    public function attributeValues()
     {
 
         return $this->hasMany
@@ -28,7 +31,7 @@ class Attribute extends Model
             related: AttributeValue::class,
             foreignKey: 'attribute_id'
         );
-        
+
     }
-    
+
 }

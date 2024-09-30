@@ -16,61 +16,68 @@ class ProductLine extends Model
     use HasFactory;
 
 
+    protected $fillable = [
+
+        'product_id',
+        'price',
+        'stock_qty',
+        'sku',
+        'is_available',
+
+    ];
+
+
     public function product()
     {
 
-        return $this->belongsTo
-        (
-            related: Product::class,
-            foreignKey: 'product_id',
-        );
-    
+        return $this->belongsTo(
+                related: Product::class,
+                foreignKey: 'product_id',
+            );
     }
-        
+
+    public function getProductType()
+    {
+        return $this->product->productType;
+    }
+
     public function attributeValues()
     {
 
-        return $this->belongsToMany
-        (
+        return $this->belongsToMany(
 
-            related: AttributeValue::class,
-            table: 'product_line_attr_values',
+                related: AttributeValue::class,
+                table: 'product_line_attr_values',
 
-        );
-        
+            );
     }
 
 
     public function images()
     {
 
-        return $this->hasMany(related:ProductImage::class);
-        
+        return $this->hasMany(related: ProductImage::class);
     }
 
     public function orders()
     {
 
-        return $this->belongsToMany
-        (
-            related: Order::class,
-            table: 'order_items',
-        )
-        ->withPivot('quantity')
-        ->withTimestamps();
-        
+        return $this->belongsToMany(
+                related: Order::class,
+                table: 'order_items',
+            )
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 
 
     public function widgets()
     {
 
-        return $this->belongsToMany
-        (
-            related: ProductWidget::class,
-            table: 'product_widget_product_line',
-        );
-        
+        return $this->belongsToMany(
+                related: ProductWidget::class,
+                table: 'product_widget_product_line',
+            );
     }
 
     /**
@@ -83,14 +90,12 @@ class ProductLine extends Model
     {
 
         return $this->stock_qty >= $quantity;
-        
     }
 
     public function discount()
     {
 
         return $this->belongsTo(Discount::class);
-        
     }
 
     /**
@@ -105,14 +110,12 @@ class ProductLine extends Model
      */
     public function getFinalPrice(string $discount_code = null): float
     {
-        
-        if (! $discount = $this->addDiscountFromCode($discount_code))
-        {
+
+        if (! $discount = $this->addDiscountFromCode($discount_code)) {
             $discount = $this->discount;
         }
 
         return $this->calculateDiscountedPrice($discount);
-
     }
 
     /**
@@ -120,7 +123,7 @@ class ProductLine extends Model
      *
      * Checks if the discount is still active.
      * Also checks if the authenticated user is allowed to use this discount.
-     * 
+     *
      * @param string $code The discount code to search for.
      * @return Discount|null The discount if found and valid; otherwise, null.
      */
@@ -129,10 +132,8 @@ class ProductLine extends Model
 
         $discount = Discount::where('code', $code)->first();
 
-        if ($discount)
-        {
-            if ($discount->valid_until > now() && $discount->isValidForUser())
-            {
+        if ($discount) {
+            if ($discount->valid_until > now() && $discount->isValidForUser()) {
                 return $discount;
             }
         }
@@ -140,14 +141,14 @@ class ProductLine extends Model
 
     /**
      * Calculates the discounted price for the product line.
-     * 
-     * Checks if the given discount is valid and still active. 
-     * 
+     *
+     * Checks if the given discount is valid and still active.
+     *
      * If a discount is applicable, calculates the discounted price based on
      * the discount percentage and maximum amount.
-     * 
+     *
      * If no valid discount is available, returns the original price.
-     * 
+     *
      * @param Discount $discount The discount to apply.
      * @return float The final price considering the discount.
      */
@@ -156,28 +157,24 @@ class ProductLine extends Model
 
         $price = $this->price;
 
-        if ($discount && $discount->valid_until > now())
-        {
+        if ($discount && $discount->valid_until > now()) {
 
             return $price - $discount->getDiscountAmount(price: $price);
-
         }
 
         return $price;
-        
     }
 
     public function tax()
     {
 
         return $this->belongsTo(Tax::class);
-        
     }
 
-    
+
     /**
      * Boot method for the ProductLine model.
-     * 
+     *
      * Sets up a creating event listener to automatically assign a Tax to each ProductLine instance.
      */
     protected static function boot()
@@ -193,8 +190,8 @@ class ProductLine extends Model
     /**
      * This Static method is responsible for updating the stock-quantity of product lines
      * after each payment transaction.
-     * 
-     * @param Payment $payment finds which products to update regarding this payment. 
+     *
+     * @param Payment $payment finds which products to update regarding this payment.
      * @return void
      */
     public static function updateStock(Payment $payment)
@@ -203,14 +200,10 @@ class ProductLine extends Model
         $product_lines = $payment->order->products;
 
 
-        foreach ($product_lines as $product_line)
-        {
+        foreach ($product_lines as $product_line) {
 
             $product_line->stock_qty -= $product_line->pivot->quantity;
             $product_line->save();
-
         }
-        
     }
-
 }
