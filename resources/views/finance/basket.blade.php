@@ -18,8 +18,8 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
 
 
 <section class="buycart container">
-        
-        
+
+
     <div class="row">
         <div class="col-sm-5 col-md-4 col-lg-3 col-xl-2 mt-5">
             <div class="yourbuycart">
@@ -35,18 +35,18 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
         @if (!$productCollection == null)
 
         @foreach ($productCollection as $product)
-            
+
         <div class="row d-flex align-items-center">
             <div class="col-12 col-md-3 p-4 text-center">
                 <img src="data:{{ $product->images[0]->mime_type }};base64,{{ base64_encode($product->images[0]->image) }}" class="d-block w-100" alt="{{ $product->images[0]->alternative_text }} width="200" style="border-radius: 15px;"">
-            
+
             </div>
             <div class="col-md-9 col-xl-3 col-xxl-3 text-center p-4">
                 <h4>{{$product->title}}</h4>
                 <p style="color: #6A6A6A; font-size: 14px; padding-top: 10px;">قیمت محصول:</p>
                 @if ($product->price == $product->getFinalPrice())
                 <p style="font-size: 18px ;">{{$product->getFinalPrice()}} تومان</p>
-                @else   
+                @else
                 <span
                 style="text-decoration: line-through; font-size: 13px; text-decoration-color: #c412f5;">{{$product->price}}
                 تومان</span>
@@ -54,32 +54,33 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
                 @endif
             </div>
             <div class="col-sm-12 col-md-8 col-xl-3 col-xxl-3 text-center text-md-start text-xl-center">
-                
+
                 <div class="btn-group">
-                    <form action="/basket/add" method="POST">
+                    <form id="product-form-{{ $product->id }}" class="product-form" action="/basket/add" method="POST">
                         @csrf
-                        <button name="productLine" value="{{$product->id}}" type="submit" class="add-btn"><i class="bi bi-plus"></i></button>
+                        <input type="hidden" name="productLine" value="{{ $product->id }}">
+                        <button type="submit" class="add-btn"><i class="bi bi-plus" data-product-id="{{ $product->id }}" ></i></button>
                     </form>
-                    <button class="numb-btn">{{$product->quantity}}</button>
+                    <button class="numb-btn" id="quantity-{{ $product->id }}">{{ $product->quantity }}</button>
                     <form action="/basket/remove-product" method="POST">
                     @csrf
                     <button name="productLineId" value="{{$product->id}}" type="submit" class="trash-btn"><i class="bi bi-trash"></i></button>
                     </form>
                     <button class="count-btn">تعداد</button>
                 </div>
-                
-                
+
+
             </div>
             <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-3 text-center text-xl-center">
                 <p>قیمت : {{$product->getFinalPrice() * $product->quantity}} تومان</p>
             </div>
         </div>
         @endforeach
-            
+
         @else
 
         <h3>سبد خرید شما خالی است.</h3>
-            
+
         @endif
     </div>
 
@@ -151,12 +152,16 @@ integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6
 
 </section>
 
+<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/toaster.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
 integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
 crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
 integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
 crossorigin="anonymous"></script>
+
 
 
 

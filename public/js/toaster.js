@@ -4,6 +4,7 @@ $(document).ready(function() {
 
         var form = $(this);
         var formData = form.serialize(); // Serialize form data
+        var productId = form.find('input[name="productLine"]').val();
 
         $.ajax({
             url: form.attr('action'),
@@ -13,6 +14,7 @@ $(document).ready(function() {
                 if (response.success) {
                     showToast('Success', response.message, 'success');
                     updateCartItems();
+                    updateQuantity(productId);
                 }
             },
             error: function(xhr) {
@@ -58,5 +60,26 @@ $(document).ready(function() {
         var toastEl = $('.toast').last()[0];
         var toast = new bootstrap.Toast(toastEl);
         toast.show();
+    }
+
+    function updateQuantity(productId) {
+        // Find the quantity button by ID (make sure this ID is unique in the HTML)
+        var quantityBtn = $('#quantity-' + productId);
+
+        // Debug: Check if the button is found
+        console.log('Button found:', quantityBtn.length > 0);
+
+        // Check if the quantity button exists on the page
+        if (quantityBtn.length) {
+            // Get the current quantity and update it by incrementing
+            var currentQuantity = parseInt(quantityBtn.text());
+            console.log('Current quantity:', currentQuantity);
+
+            // Update the text of the button with the new quantity
+            quantityBtn.text(currentQuantity + 1);
+            console.log('Updated quantity:', currentQuantity + 1);
+        } else {
+            console.log('No quantity button found for product ID: ' + productId);
+        }
     }
 });
